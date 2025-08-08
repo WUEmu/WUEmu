@@ -11,7 +11,7 @@ namespace WOEmu6.Core.Packets.Server
         public bool WithWater { get; }
         public bool WithExtraData { get; }
 
-        public TileStripPacket(short x, short y, short w, short h, bool withWater = false, bool withExtraData = false)
+        public TileStripPacket(short x, short y, short w, short h, bool withWater = false, bool withExtraData = true)
         {
             X = x;
             Y = y;
@@ -23,7 +23,7 @@ namespace WOEmu6.Core.Packets.Server
 
         public byte Opcode => 73;
 
-        public void Write(PacketWriter writer)
+        public void Write(ServerContext context, PacketWriter writer)
         {
             writer.PushByte((byte)(WithWater ? 1 : 0));
             writer.PushByte((byte)(WithExtraData ? 1 : 0));
@@ -32,8 +32,26 @@ namespace WOEmu6.Core.Packets.Server
             writer.PushShort(H);
             writer.PushShort(X);
 
-            for (int i = 0; i < W * H; i++)
-                writer.PushInt(10);
+            for (var x = 0; x < W; x++)
+            {
+                for (var y = 0; y < H; y++)
+                {
+                    var tempTileX = X + x;
+                    var tempTileY = Y + y;
+                    if (tempTileX < 0 || tempTileX >= 1 << context.TopLayer.MeshSize || tempTileY < 0 ||
+                        tempTileY >= 1 << context.TopLayer.MeshSize)
+                    {
+                        tempTileY = tempTileX = 0;
+                    }
+                    
+                    writer.PushInt(context.TopLayer.Data[tempTileX | tempTileY << context.TopLayer.MeshSize]);
+                    if (WithExtraData)
+                        writer.PushByte((byte)(context.Flags.GetTile(tempTileX, tempTileY) & 0xFF));
+                }
+            }
+
+            // for (int i = 0; i < W * H; i++)
+                // writer.PushInt(10);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace WOEmu6.Core.Packets.Server
         
         public byte Opcode => 0xF1;
         
-        public void Write(PacketWriter writer)
+        public void Write(ServerContext context, PacketWriter writer)
         {
             // writer.PushByte(0xF1);
             writer.PushByte((byte)(Success ? 1 : 0));

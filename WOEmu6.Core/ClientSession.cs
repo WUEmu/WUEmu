@@ -43,7 +43,7 @@ namespace WOEmu6.Core.Packets
                 if (packet == null)
                 {
                     Console.WriteLine($"Unimplemented opcode {opcode}");
-                    return;
+                    continue;
                 }
 
                 packet.Read(reader);
@@ -55,7 +55,7 @@ namespace WOEmu6.Core.Packets
         {
             var writer = new PacketWriter();
             writer.PushByte(packet.Opcode);
-            packet.Write(writer);
+            packet.Write(serverContext, writer);
             var bytes = writer.Finish();
             encryption.Encrypt(bytes, 0, bytes.Length);
             stream.Write(bytes);

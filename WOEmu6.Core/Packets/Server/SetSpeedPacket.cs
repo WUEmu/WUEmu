@@ -13,7 +13,7 @@ namespace WOEmu6.Core.Packets.Server
         
         public byte Opcode => 32;
         
-        public void Write(PacketWriter writer)
+        public void Write(ServerContext context, PacketWriter writer)
         {
             writer.PushFloat(Speed);
         }

@@ -6,6 +6,6 @@ namespace WOEmu6.Core.Packets.Server
     {
         byte Opcode { get; }
         
-        void Write(PacketWriter writer);
+        void Write(ServerContext context, PacketWriter writer);
     }
 }

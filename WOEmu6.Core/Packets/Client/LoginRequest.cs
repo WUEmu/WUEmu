@@ -1,4 +1,5 @@
-﻿using WO.Core;
+﻿using System;
+using WO.Core;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
@@ -31,8 +32,10 @@ namespace WOEmu6.Core.Packets.Client
 
         public void Handle(ClientSession client)
         {
+            Console.WriteLine("Player {0} joined!", UserName);
+            
             // Write a login response containing initial stuff.
-            client.Send(new LoginResponsePacket(true, "Welcome to WOEmu 6.0!", 0, 0, 0, 0, 1));
+            client.Send(new LoginResponsePacket(true, "Welcome to WOEmu 6.0!", 0, 200*4, 200*4, 50, 1));
 
             // Sleep bonus information.
             client.Send(new SetSleepPacket(500));
@@ -40,14 +43,22 @@ namespace WOEmu6.Core.Packets.Client
             client.Send(new MapInfoPacket());
             
             // Send preliminary tile strip.
-            client.Send(new TileStripPacket(-10, -10, 302, 1));
+            client.Send(new TileStripPacket(200, 200, 50, 50));
+            client.Send(new TileStripPacket(250, 200, 50, 50));
+            client.Send(new TileStripPacket(300, 200, 50, 50));
+            client.Send(new TileStripPacket(200, 250, 50, 50));
+            client.Send(new TileStripPacket(200, 300, 50, 50));
+            client.Send(new TileStripPacket(150, 200, 50, 50));
+            client.Send(new TileStripPacket(100, 200, 50, 50));
+            client.Send(new TileStripPacket(200, 150, 50, 50));
+            client.Send(new TileStripPacket(200, 100, 50, 50));
             
             // Send the movement speed.
-            client.Send(new SetSpeedPacket(1.0f));
+            client.Send(new SetSpeedPacket(2.0f));
             
             client.Send(new StartMovingPacket());
             
-            client.Send(new TeleportPacket(0, 0, 0, 0, true, true, true, 0));
+            client.Send(new TeleportPacket(200*4, 200*4, 50, 0, true, true, true, 0));
         }
     }
 }
