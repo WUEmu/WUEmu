@@ -11,7 +11,7 @@ namespace WOEmu6.Core.Objects
             counter = current;
         }
         
-        public long NewWurmId()
+        public long NewWurmId(ObjectType type)
         {
             return Interlocked.Increment(ref counter);
         }

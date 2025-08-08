@@ -35,13 +35,12 @@ namespace WOEmu6.Core.File
             FileSize = inputStream.Length;
             MapDimension = (int)(Math.Sqrt(FileSize) / 2);
             MeshSize = (int)(Math.Log(MapDimension) / Math.Log(2.0d));
-            Console.WriteLine("Mesh size: " + MeshSize);
             reader = new BinaryReader(inputStream);
         }
 
         public void Load()
         {
-            Console.WriteLine("Loading mesh file {0}", filename);
+            Console.Write("Loading mesh file {0}... ", filename);
             
             // Read header
             var header = reader.ReadBytes(1024);
@@ -57,7 +56,6 @@ namespace WOEmu6.Core.File
                 Size = 1 << SizeLevel;
             }
             
-            Console.WriteLine(" Size = {0}", Size * Size + 1);
             Data = new int[Size * Size + 1];
             LinesPerRow = Size / 128;
 
@@ -65,9 +63,7 @@ namespace WOEmu6.Core.File
             {
                 for (int x = 0; x < Size; x++)
                     Data[(i * Size) + x] = IPAddress.HostToNetworkOrder(reader.ReadInt32());
-                // var chunk = reader.ReadBytes(Size * 4);
-                // Array.Copy(chunk, 0, Data, Size * i * 4, Size * 4);
-                Console.Write(".");
+                // Console.Write(".");
             }
             Console.WriteLine("done!");
         }

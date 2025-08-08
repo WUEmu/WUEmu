@@ -16,6 +16,7 @@ namespace WOEmu6.Core.Commands
             RegisterCommand("speed", new SetSpeedCommand());
             RegisterCommand("weather", new WeatherCommand());
             RegisterCommand("item", new SpawnItem());
+            RegisterCommand("music", new PlayMusicCommand());
         }
 
         public void RegisterCommand(string command, IChatCommand handler)

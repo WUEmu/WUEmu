@@ -6,7 +6,7 @@
         {
             Model = model;
             SizeModifier = size;
-            WurmId = context.WurmIdGenerator.NewWurmId();
+            WurmId = context.WurmIdGenerator.NewWurmId(ObjectType.Fence);
         }
         
         public override long WurmId { get; }
