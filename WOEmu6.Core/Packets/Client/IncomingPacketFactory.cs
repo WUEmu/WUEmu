@@ -13,6 +13,8 @@ namespace WOEmu6.Core.Packets.Client
 
             RegisterPacket(new SteamLoginRequest());
             RegisterPacket(new LoginRequest());
+            RegisterPacket(new PlayerMove());
+            RegisterPacket(new BmlResponsePacket());
         }
 
         public void RegisterPacket(IIncomingPacket packet) => packetList[packet.Opcode] = packet;

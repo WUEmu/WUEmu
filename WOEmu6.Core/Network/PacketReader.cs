@@ -45,6 +45,12 @@ namespace WO.Core
             return (encoding ?? Encoding.UTF8).GetString(ReadBytes(length));
         }
 
+        public string ReadShortPrefixedString(Encoding? encoding = null)
+        {
+            var length = PopShort();
+            return (encoding ?? Encoding.UTF8).GetString(ReadBytes(length));
+        }
+
         public short PopShort()
         {
             return IPAddress.HostToNetworkOrder(reader.ReadInt16());

@@ -1,4 +1,5 @@
-﻿using WO.Core;
+﻿using System;
+using WO.Core;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -13,6 +14,9 @@ namespace WOEmu6.Core.Packets.Server
 
         public TileStripPacket(short x, short y, short w, short h, bool withWater = false, bool withExtraData = true)
         {
+            if (w * h > 13_100)
+                throw new ArgumentException("Can not send tile block bigger than 13100 units, because it does not fit in one packet.");
+            
             X = x;
             Y = y;
             W = w;
@@ -49,9 +53,6 @@ namespace WOEmu6.Core.Packets.Server
                         writer.PushByte((byte)(context.Flags.GetTile(tempTileX, tempTileY) & 0xFF));
                 }
             }
-
-            // for (int i = 0; i < W * H; i++)
-                // writer.PushInt(10);
         }
     }
 }

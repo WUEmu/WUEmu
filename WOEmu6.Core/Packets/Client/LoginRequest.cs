@@ -1,5 +1,6 @@
 ﻿using System;
 using WO.Core;
+using WOEmu6.Core.BML;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
@@ -33,32 +34,24 @@ namespace WOEmu6.Core.Packets.Client
         public void Handle(ClientSession client)
         {
             Console.WriteLine("Player {0} joined!", UserName);
+
+            client.Player = new Player(client);
             
             // Write a login response containing initial stuff.
-            client.Send(new LoginResponsePacket(true, "Welcome to WOEmu 6.0!", 0, 200*4, 200*4, 50, 1));
+            client.Send(new LoginResponsePacket(true, "Welcome to WOEmu 6.0!", 
+                client.Player.Rotation, client.Player.X, client.Player.Y, client.Player.Z, 1));
 
             // Sleep bonus information.
             client.Send(new SetSleepPacket(500));
-            
             client.Send(new MapInfoPacket());
-            
-            // Send preliminary tile strip.
-            client.Send(new TileStripPacket(200, 200, 50, 50));
-            client.Send(new TileStripPacket(250, 200, 50, 50));
-            client.Send(new TileStripPacket(300, 200, 50, 50));
-            client.Send(new TileStripPacket(200, 250, 50, 50));
-            client.Send(new TileStripPacket(200, 300, 50, 50));
-            client.Send(new TileStripPacket(150, 200, 50, 50));
-            client.Send(new TileStripPacket(100, 200, 50, 50));
-            client.Send(new TileStripPacket(200, 150, 50, 50));
-            client.Send(new TileStripPacket(200, 100, 50, 50));
-            
-            // Send the movement speed.
+            client.Send(new TileStripPacket( (short)(client.Player.TileX - (100/2)), (short)(client.Player.TileY - (100/2)), (short)100, (short)100));
             client.Send(new SetSpeedPacket(2.0f));
-            
             client.Send(new StartMovingPacket());
+            client.Send(new TeleportPacket(client.Player.X, client.Player.Y, client.Player.Z, 0, true, true, true, 0));
             
-            client.Send(new TeleportPacket(200*4, 200*4, 50, 0, true, true, true, 0));
+            
+            var form = new BmlForm(1, "Message Of The Day", @"varray{center{header{text='WOEmu 6.0';}};label{text='Welcome to WOemu'};input{id='test';maxlines='5';text='This is a test';maxchars='1024';};button{text='Do Something';id='do_it'};}");
+            client.Send(new BmlFormPacket(form));
         }
     }
 }

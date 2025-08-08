@@ -22,6 +22,8 @@ namespace WOEmu6.Core.Packets
             this.stream = client.GetStream();
             encryption = new Encryption();
         }
+        
+        public Player Player { get; set; }
 
         public void Run()
         {
@@ -42,7 +44,7 @@ namespace WOEmu6.Core.Packets
                 var packet = serverContext.IncomingPacketFactory.Get(opcode);
                 if (packet == null)
                 {
-                    Console.WriteLine($"Unimplemented opcode {opcode}");
+                    Console.WriteLine($"Unimplemented opcode {opcode} ({(sbyte)opcode})");
                     continue;
                 }
 
