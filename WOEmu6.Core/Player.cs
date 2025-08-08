@@ -1,4 +1,5 @@
 ﻿using System;
+using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
 
@@ -10,14 +11,17 @@ namespace WOEmu6.Core
 
         public Player(ClientSession client, string name)
         {
+            World = ServerContext.Instance.Value.World;
             this.client = client;
             Name = name;
-            // X = 200 * 4;
-            // Y = 200 * 4;
-            X = 1512.0f;
-            Y = 2148.0f;
+            X = World.SpawnX;
+            Y = World.SpawnY;
             Z = 5.0f;
         }
+        
+        public WurmId Id { get => -1; }
+
+        public World World { get; }
         
         public string Name { get; }
         

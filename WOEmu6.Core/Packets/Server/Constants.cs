@@ -1,5 +1,21 @@
 ﻿namespace WOEmu6.Core.Packets.Server
 {
+    public enum ClientFeature : byte
+    {
+        Compass = 0,
+        Binoculars = 1,
+        Toolbelt = 2
+    }
+
+    public enum EffectType : short
+    {
+        Light,
+        Fire,
+        Transparent,
+        Glow,
+        Flames
+    }
+    
     public enum SupportTicketCategory : byte
     {
         None = 0,

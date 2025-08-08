@@ -52,7 +52,14 @@ namespace WOEmu6.Core.Packets
                     }
 
                     packet.Read(reader);
-                    packet.Handle(this);
+                    try
+                    {
+                        packet.Handle(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error: " + ex);
+                    }
                 }
             }
             catch (IOException ex)

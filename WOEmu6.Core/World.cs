@@ -5,8 +5,11 @@ namespace WOEmu6.Core
 {
     public class World
     {
-        public World()
+        public World(float spawnX, float spawnY)
         {
+            SpawnX = spawnX;
+            SpawnY = spawnY;
+            
             TopLayer = new Mesh("top_layer.map");
             TopLayer.Load();
             
@@ -18,6 +21,10 @@ namespace WOEmu6.Core
             
             Objects = new ObjectGateway();
         }
+
+        public float SpawnX { get; }
+        
+        public float SpawnY { get; }
         
         public Mesh CaveLayer { get; }
         

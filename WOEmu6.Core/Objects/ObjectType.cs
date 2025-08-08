@@ -11,7 +11,8 @@
         Spell = 0x0F,
         Plan = 0x10,
         CaveTile = 0x11,
-        Skill = 0x12
+        Skill = 0x12,
+        TileCorner = 0x1B
     }
 
     public enum BorderDirection : byte

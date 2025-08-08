@@ -36,6 +36,6 @@
 
         public static implicit operator long(WurmId id) => id.Value;
 
-        public override string ToString() => $"WurmId({Type}, {Origin}, {Counter:X12})";
+        public override string ToString() => $"WurmId({Type:X}, {Origin}, {Counter:X12})";
     }
 }
