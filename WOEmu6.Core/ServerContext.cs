@@ -1,4 +1,6 @@
-﻿using WOEmu6.Core.File;
+﻿using WOEmu6.Core.Commands;
+using WOEmu6.Core.File;
+using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Client;
 
 namespace WOEmu6.Core
@@ -8,6 +10,8 @@ namespace WOEmu6.Core
         public ServerContext()
         {
             IncomingPacketFactory = new IncomingPacketFactory();
+            Commands = new CommandRepository();
+            WurmIdGenerator = new WurmIdGenerator(5_000);
 
             TopLayer = new MeshFileReader("top_layer.map");
             TopLayer.Load();
@@ -20,6 +24,10 @@ namespace WOEmu6.Core
         
         public MeshFileReader Flags { get; }
         
-        public IncomingPacketFactory IncomingPacketFactory { get; }    
+        public IncomingPacketFactory IncomingPacketFactory { get; }
+        
+        public CommandRepository Commands { get; }
+        
+        public WurmIdGenerator WurmIdGenerator { get; }
     }
 }

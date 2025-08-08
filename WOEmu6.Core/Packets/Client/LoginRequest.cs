@@ -31,11 +31,11 @@ namespace WOEmu6.Core.Packets.Client
             IsExtraTileData = reader.ReadByte() == 1;
         }
 
-        public void Handle(ClientSession client)
+        public void Handle(ServerContext context, ClientSession client)
         {
             Console.WriteLine("Player {0} joined!", UserName);
 
-            client.Player = new Player(client);
+            client.Player = new Player(client, UserName);
             
             // Write a login response containing initial stuff.
             client.Send(new LoginResponsePacket(true, "Welcome to WOEmu 6.0!", 

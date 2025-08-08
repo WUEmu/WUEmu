@@ -49,7 +49,7 @@ namespace WOEmu6.Core.Packets
                 }
 
                 packet.Read(reader);
-                packet.Handle(this);
+                packet.Handle(serverContext, this);
             }
         }
 

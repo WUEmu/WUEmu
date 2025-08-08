@@ -8,15 +8,18 @@ namespace WOEmu6.Core
     {
         private readonly ClientSession client;
 
-        public Player(ClientSession client)
+        public Player(ClientSession client, string name)
         {
             this.client = client;
+            Name = name;
             // X = 200 * 4;
             // Y = 200 * 4;
-            X = 1351.25f;
-            Y = 735.25f;
-            Z = 0.5f;
+            X = 1512.0f;
+            Y = 2148.0f;
+            Z = 5.0f;
         }
+        
+        public string Name { get; }
         
         public float X { get; set; }
         public float Y { get; set; }
