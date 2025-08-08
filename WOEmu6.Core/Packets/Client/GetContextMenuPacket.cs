@@ -31,6 +31,11 @@ namespace WOEmu6.Core.Packets.Client
                 return;
             
             var menu = obj.GetContextMenu(client);
+            // negative number is the amount of entries under the submenu
+            menu.Add(new ContextMenuEntry(-1, "DEVELOPER TOOLS"));
+            menu.Add(new ContextMenuEntry(9001, "Get ID info"));
+            // menu.Add(new ContextMenuEntry(0, "DEVELOPER TOOLS"));
+            
             Console.WriteLine("Req: {0}, Source: {1}, Target = {2} ({2:X16})", RequestId, SourceId, TargetId);
             client.Send(new ContextMenuPacket(RequestId, menu, "This is a test"));
         }

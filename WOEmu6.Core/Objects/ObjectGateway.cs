@@ -20,7 +20,9 @@ namespace WOEmu6.Core.Objects
                     var coordinate = id.ToTileCoordinate();
                     var direction = id.ToDirection();
                     Console.WriteLine($"Coord({coordinate}, dir={direction})");
-                    break;
+                    // break;
+                    
+                    return new TileBorder(id);
                 }
 
                 case ObjectType.Skill:
@@ -28,6 +30,11 @@ namespace WOEmu6.Core.Objects
                     Console.WriteLine("Skill");
 
                     break;
+                }
+
+                case ObjectType.Wall:
+                {
+                    return new StructureWall(id);
                 }
 
                 default:

@@ -31,6 +31,8 @@ namespace WO.Core
             writer.Write(p);
         }
 
+        public void WriteBoolean(bool b) => writer.Write((byte)(b ? 1 : 0));
+
         public void PushInt(int p)
         {
             writer.Write(IPAddress.HostToNetworkOrder(p));

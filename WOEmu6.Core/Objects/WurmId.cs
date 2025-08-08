@@ -10,11 +10,9 @@
             Counter = id >> 24;
         }
 
-        public WurmId(ObjectType type, long counter)
+        public WurmId(ObjectType type, short origin, long counter) 
+            : this((long)((counter << 24) | ((short)((origin << 8) & 0xFFFF)) | ((byte)type & 0xFF)))
         {
-            Value = (long)((counter << 24) | ((byte)type & 0xFF));
-            Type = type;
-            Counter = counter;
         }
         
         public long Value { get; }
@@ -36,6 +34,6 @@
 
         public static implicit operator long(WurmId id) => id.Value;
 
-        public override string ToString() => $"WurmId({Type:X}, {Origin}, {Counter:X12})";
+        public override string ToString() => $"WurmId({Type.ToString()}, {Origin}, {Counter:X12})";
     }
 }

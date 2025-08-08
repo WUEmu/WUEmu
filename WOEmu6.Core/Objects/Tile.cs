@@ -2,31 +2,27 @@
 using System.Collections.Generic;
 using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
+using WOEmu6.Core.Utilities;
 
 namespace WOEmu6.Core.Objects
 {
     public class Tile : ObjectBase
     {
-        public int X { get; }
-        public int Y { get; }
+        public short X { get; }
+        public short Y { get; }
         private int encodedValue;
 
-        public Tile(int encodedValue, int x, int y)
+        public Tile(int encodedValue, short x, short y)
         {
             X = x;
             Y = y;
             this.encodedValue = encodedValue;
+            Id = new WurmId(ObjectType.Tile, 0, 0); // todo: encode properly
         }
 
-        public override WurmId Id
-        {
-            get => encodedValue;
-            protected set => throw new NotSupportedException("Cannot set ID of tile");
-        }
-        
         public TileType TileType
         {
-            get => (TileType)((encodedValue >> 24) >> 24);
+            get => (TileType)(encodedValue >> 24);
             set => encodedValue = (((byte)value) << 24) | (encodedValue & 0xFFFFFF);
         }
 
@@ -49,12 +45,15 @@ namespace WOEmu6.Core.Objects
                 new ContextMenuEntry(3, "Raise"),
                 new ContextMenuEntry(4, "Lower"),
                 new ContextMenuEntry(5, "Flatten Around"),
+                new ContextMenuEntry(6, "Make structure"),
+                new ContextMenuEntry(7, "Add to build plan")
             };
         }
 
         public override void OnMenuItemClick(ClientSession session, short itemId)
         {
             var world = ServerContext.Instance.Value.World;
+            session.Player.SetStatusText($"Clicking menu item {itemId:X}");
             
             switch (itemId)
             {
@@ -84,7 +83,7 @@ namespace WOEmu6.Core.Objects
                         {
                             var xTarget = X + x;
                             var yTarget = Y + y;
-                            var tile = world.TopLayer.GetTileValue(xTarget, yTarget);
+                            var tile = world.TopLayer.GetTileValue((short)xTarget, (short)yTarget);
                             tile.Height = Height;
                             tile.CommitChanges();
                         }
@@ -93,9 +92,26 @@ namespace WOEmu6.Core.Objects
                     session.Send(new TileStripPacket((short)(X - 10), (short)(Y - 10), 20, 20));
                     break;
                 }
+
+                case 6:
+                {
+                    session.Send(new AddStructurePacket(new Structure(StructureType.House, "My House", new Position2D<short>(X, Y), 0)));
+                    break;
+                }
+
+                case 7:
+                {
+                    session.Send(new StructureBuildPlanPacket(new WurmId(ObjectType.Structure, 0, 1), 0, new List<Position2D<short>>
+                    {
+                        new Position2D<short>((short)X, (short)Y)
+                    }));
+                    break;
+                }
             }
         }
 
         protected override ObjectType Type => ObjectType.Tile;
+
+        public override string ToString() => $"Tile({TileType}, {X}, {Y})";
     }
 }

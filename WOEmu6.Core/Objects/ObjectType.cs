@@ -4,6 +4,7 @@
     {
         Item = 0x02,
         Tile = 0x03,
+        Structure = 0x04,
         Wall = 0x05,
         Fence = 0x07,
         TileBorder = 0x0C,

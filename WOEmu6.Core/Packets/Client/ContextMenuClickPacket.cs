@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WO.Core;
+using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
 {
@@ -32,7 +33,14 @@ namespace WOEmu6.Core.Packets.Client
             foreach (var target in Targets)
             {
                 var obj = world.Objects.GetObject(target);
-                obj.OnMenuItemClick(client, EntryId);
+                if (EntryId == 9001)
+                {
+                    client.Send(new ServerMessagePacket("DeveloperTools", ""));
+                    client.Send(new ServerMessagePacket("DeveloperTools", obj.Id.ToString()));
+                    client.Send(new ServerMessagePacket("DeveloperTools", obj.ToString()));
+                }
+                else
+                    obj.OnMenuItemClick(client, EntryId);
             }
         }
     }

@@ -72,7 +72,7 @@ namespace WOEmu6.Core.File
 
         public int GetTile(int x, int y) => Data[x | y << SizeLevel];
 
-        public Tile GetTileValue(int x, int y) => new Tile(GetTile(x, y), x, y);
+        public Tile GetTileValue(short x, short y) => new Tile(GetTile(x, y), x, y);
 
         public void SetTile(int x, int y, int value) => Data[x | y << SizeLevel] = value;
 

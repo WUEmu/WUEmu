@@ -7,6 +7,82 @@
         Toolbelt = 2
     }
 
+    public enum StructureType : byte
+    {
+        House,
+        Bridge
+    }
+
+    public enum StructureFloorType : byte
+    {
+        Floor = 10,
+        Door,
+        Opening,
+        Roof,
+        Solid,
+        Staircase,
+        WideStaircase,
+        RightStaircase,
+        LeftStaircase,
+        WideStaircaseRight,
+        WideStaircaseLeft,
+        WideStaircaseBoth,
+        ClockwiseStaircase,
+        AnticlockwiseStaircase,
+        ClockwiseStaircaseWithBanisters,
+        AnticlockwiseStaircaseWithBanisters
+    }
+
+    public enum StructureFloorState : byte
+    {
+        Planning = 0xFF,
+        Building = 0,
+        Completed = 0b10000000
+    }
+
+    public enum StructureFloorMaterial : byte
+    {
+        Wood,
+        StoneBrick,
+        SandstoneSlab,
+        SlateSlab,
+        Thatch,
+        MetalIron,
+        MetalSteel,
+        MetalCopper,
+        ClayBrick,
+        MetalGold,
+        MetalSilver,
+        MarbleSlab,
+        Standalone, // ?
+        StoneSlab
+    }
+
+    public enum WallType : byte
+    {
+        Solid,
+        Window,
+        Door,
+        DoubleDoor,
+        Arched,
+        NarrowWindow,
+        Portcullis,
+        Barred,
+        Rubble,
+        Balcony,
+        Jetty,
+        Oriel,
+        CanopyDoor,
+        WideWindow,
+        ArchedLeft,
+        ArchedRight,
+        ArchedT,
+        Scaffolding,
+        Fence,
+        // ...
+        Plan = 127
+    }
+
     public enum EffectType : short
     {
         Light,

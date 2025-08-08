@@ -7,7 +7,7 @@ namespace WOEmu6.Core.Objects
 {
     public abstract class ObjectBase : IContextMenuProvider
     {
-        public virtual WurmId Id { get; protected set; } 
+        public WurmId Id { get; protected set; } 
         
         protected abstract ObjectType Type { get; }
 

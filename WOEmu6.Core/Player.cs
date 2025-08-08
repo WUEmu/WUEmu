@@ -34,6 +34,12 @@ namespace WOEmu6.Core
         
         public float Rotation { get; set; }
 
+        /// <summary>
+        /// Sets the status text in the player's GUI in the right panel. 
+        /// </summary>
+        /// <param name="text">The text to show to the player.</param>
+        public void SetStatusText(string text) => client.Send(new SetStatusBarPacket(text));
+
         public void Move(float x, float y, float z, float rotation)
         {
             X = x;
@@ -41,14 +47,23 @@ namespace WOEmu6.Core
             Z = z;
             Rotation = rotation;
 
-            var width = 100;
-            var height = 100;
+            short width = 100;
+            short height = 100;
             
             //Console.WriteLine($"Player moved to ({X}, {Y}, {Z})");
             if (TileX % 25 == 0 || TileY % 25 == 0)
             {
                 Console.WriteLine("Sending new tile chunk");
-                client.Send(new TileStripPacket( (short)(TileX - (width/2)), (short)(TileY - (width/2)), (short)100, (short)height));
+                // client.Send(new TileStripPacket( (short)(TileX - (width/2)), (short)(TileY - (width/2)), (short)100, (short)height));
+
+                
+                
+                
+                // top 100x50 far tiles around the player.
+                // client.Send(new FarTileChunkPacket((short)(client.Player.TileX - (100/2)), (short)(client.Player.TileY - (100/2) - 50), 100, 50));
+                
+                // client.Send(new FarTileChunkPacket((short)(TileX - width), (short)(TileY - width), width, height));
+                // client.Send(new FarTileChunkPacket((short)(TileX + width), (short)(TileY - width), width, height));
             }
         }
     }
