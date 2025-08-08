@@ -8,7 +8,7 @@ namespace WOEmu6.Core.Packets.Client
 {
     public class GetContextMenuPacket : IIncomingPacket
     {
-        public byte Opcode => 126;
+        public byte Opcode => 0x7E;
         
         public byte RequestId { get; private set; }
         
@@ -31,12 +31,14 @@ namespace WOEmu6.Core.Packets.Client
 
             var menuItems = new List<ContextMenuEntry>
             {
-                new ContextMenuEntry(1, "Hello"),
-                new ContextMenuEntry(2, "World")
+                new ContextMenuEntry(1, "Make Dirt"),
+                new ContextMenuEntry(2, "Make Cobblestone"),
+                new ContextMenuEntry(3, "Raise"),
+                new ContextMenuEntry(4, "Lower"),
+                new ContextMenuEntry(5, "Flatten Around")
             };
             
             client.Send(new ContextMenuPacket(RequestId, menuItems, "This is a test"));
-            client.Send(new StartDrumRollPacket());
         }
     }
 }

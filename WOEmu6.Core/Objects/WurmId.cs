@@ -9,6 +9,13 @@
             Origin = (short)((id >> 8) & 0xFFFF);
             Counter = id >> 24;
         }
+
+        public WurmId(ObjectType type, long counter)
+        {
+            Value = (long)((counter << 24) | ((byte)type & 0xFF));
+            Type = type;
+            Counter = counter;
+        }
         
         public long Value { get; }
         
@@ -25,7 +32,9 @@
 
         public BorderDirection ToDirection() => (BorderDirection)((byte)((Value >> 8) & 0xF));
 
-        public static implicit operator WurmId(long value) => new WurmId(value); 
+        public static implicit operator WurmId(long value) => new WurmId(value);
+
+        public static implicit operator long(WurmId id) => id.Value;
 
         public override string ToString() => $"WurmId({Type}, {Origin}, {Counter:X12})";
     }

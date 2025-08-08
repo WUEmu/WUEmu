@@ -18,6 +18,7 @@ namespace WOEmu6.Core.Packets.Client
             RegisterPacket(new ClientMessagePacket());
             RegisterPacket(new GetContextMenuPacket());
             RegisterPacket(new SupportTicketPacket());
+            RegisterPacket(new ContextMenuClickPacket());
         }
 
         public void RegisterPacket(IIncomingPacket packet) => packetList[packet.Opcode] = packet;

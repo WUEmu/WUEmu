@@ -29,6 +29,13 @@ namespace WOEmu6.Core.Objects
                     Console.WriteLine($"Coord({coordinate}, dir={direction})");
                     break;
                 }
+
+                case ObjectType.Skill:
+                {
+                    Console.WriteLine("Skill");
+
+                    break;
+                }
                 
                 default:
                     Console.WriteLine($"Object not implemented yet for {id}");
