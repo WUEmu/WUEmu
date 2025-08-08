@@ -3,7 +3,7 @@ The Wurm Unlimited server emulator project.
 
 This README is just a placeholder for now.
 
-_I dedicate this project to my mother who has left this world, and my daughter, who has brought peace to my world._
+❤️‍🩹 _I dedicate this project to my mother who has left this world, and my daughter, who has brought peace to my world._
 
 ## Progress
 
