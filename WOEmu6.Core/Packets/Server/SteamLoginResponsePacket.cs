@@ -1,0 +1,25 @@
+﻿using WO.Core;
+
+namespace WOEmu6.Core.Packets.Server
+{
+    public class SteamLoginResponsePacket : IOutgoingPacket
+    {
+        public SteamLoginResponsePacket(bool success, string errorMessage = null)
+        {
+            Success = success;
+            ErrorMessage = errorMessage ?? string.Empty;
+        }
+        
+        public bool Success { get; }
+        
+        public string ErrorMessage { get; }
+
+        public byte Opcode => 0xCC;
+
+        public void Write(PacketWriter writer)
+        {
+            writer.PushByte((byte)(Success ? 1 : 0));
+            writer.WriteShortPrefixedString(ErrorMessage);
+        }
+    }
+}

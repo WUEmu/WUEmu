@@ -1,0 +1,562 @@
+﻿switch (cmd) {
+      case 36:
+        reallyHandleCmdMoveCreature(bb);
+        break;
+      case 99:
+        reallyHandleCmdMessage(bb);
+        break;
+      case 45:
+        reallyHandleCmdMessageMulticolored(bb);
+        break;
+      case 76:
+        reallyHandleCmdAddToInventory(bb);
+        break;
+      case -10:
+        reallyHandleCmdRemoveFromInventory(bb);
+        break;
+      case 68:
+        reallyHandleCmdUpdateInventory(bb);
+        break;
+      case -7:
+        inventoryWindowId = bb.getLong();
+        id = bb.getLong();
+        subtype = bb.get();
+        switch (subtype) {
+          case 1:
+            ql = bb.getFloat();
+            damage = bb.getFloat();
+            rawWeight = bb.getInt();
+            weight = rawWeight * 0.001F;
+            impIcon = bb.getShort();
+            this.serverConnectionListener.updateInventoryItemData(inventoryWindowId, id, ql, damage, weight, impIcon);
+            break;
+          case 2:
+            parentId = bb.getLong();
+            this.serverConnectionListener.updateInventoryItemParent(inventoryWindowId, id, parentId);
+            break;
+          case 3:
+            name = readStringByteLength(bb);
+            this.serverConnectionListener.updateInventoryItemCustomName(inventoryWindowId, id, name);
+            break;
+          case 4:
+            nr = (bb.get() & 0xFF) / 255.0F;
+            ng = (bb.get() & 0xFF) / 255.0F;
+            nb = (bb.get() & 0xFF) / 255.0F;
+            this.serverConnectionListener.updateInventoryItemColor(inventoryWindowId, id, nr, ng, nb);
+            break;
+          case 5:
+            type = bb.getShort();
+            desc = readStringByteLength(bb);
+            this.serverConnectionListener.updateInventoryItemType(inventoryWindowId, id, type, desc);
+            break;
+          case 6:
+            break;
+          case 7:
+            temps = bb.get();
+            str1 = readStringShortLength(bb);
+            if (!str1.isEmpty())
+              this.serverConnectionListener.updateInventoryItemName(inventoryWindowId, id, str1); 
+            this.serverConnectionListener.updateInventoryItemTemperature(inventoryWindowId, id, temps);
+            break;
+        } 
+        if (Options.USE_DEV_DEBUG)
+          System.out.println("Unknown inventory update subtype " + subtype + " for win=" + inventoryWindowId + " and item=" + id); 
+        return;
+      case -21:
+        wurmId = bb.getLong();
+        bridgeId = bb.getLong();
+        this.serverConnectionListener.setBridgeId(wurmId, bridgeId);
+        break;
+      case 50:
+        reallyHandleCmdFocusLevelChanged(bb);
+        break;
+      case 108:
+        reallyHandleCmdAddCreature(bb);
+        break;
+      case 72:
+        reallyHandleCmdMoveCreatureAndSetZ(bb);
+        break;
+      case 14:
+        reallyHandleCmdDeleteCreature(bb);
+        break;
+      case 103:
+        reallyHandleCmdTilestripFar(bb);
+        break;
+      case 73:
+        reallyHandleCmdTilestrip(bb);
+        break;
+      case 70:
+        reallyHandleCmdTilestripNear(bb);
+        break;
+      case 102:
+        reallyHandleCmdTilestripCave(bb);
+        break;
+      case -23:
+        subCommand = bb.get();
+        if (subCommand == 0) {
+          byte requestId = bb.get();
+          int actionCount = bb.get() & 0xFF;
+          List<PlayerAction> actionList = new ArrayList<>();
+          for (int i = 0; i < actionCount; i++) {
+            short s = bb.getShort();
+            boolean instant = (bb.get() != 0);
+            actionList.add(new PlayerAction(s, 65535, "", instant));
+          } 
+          this.serverConnectionListener.addAvailableSelectionBarActions(requestId, actionList);
+          break;
+        } 
+        if (subCommand == 2) {
+          long l = bb.getLong();
+          this.serverConnectionListener.setSelectedItemForKeeping(l);
+          break;
+        } 
+        if (subCommand == 1) {
+          long l = bb.getLong();
+          this.serverConnectionListener.updateSelectionbarActions(l);
+        } 
+        break;
+      case 20:
+        reallyHandleCmdAvailableActions(bb);
+        break;
+      case -9:
+        reallyHandleCmdAddItem(bb);
+        break;
+      case 75:
+        receiveItemOrCorpse(bb.getLong(), bb);
+        break;
+      case 10:
+        reallyHandleCmdRemoveItem(bb);
+        break;
+      case 44:
+        reallyHandleCmdRenameItem(bb);
+        break;
+      case -48:
+        reallyHandleCmdChangeModelName(bb);
+        break;
+      case 80:
+        reallyHandleCmdWound();
+        break;
+      case 124:
+        reallyHandleCmdSetSkill(bb);
+        break;
+      case 66:
+        reallyHandleCmdUpdateSkill(bb);
+        break;
+      case -12:
+        reallyHandleCmdActionString(bb);
+        break;
+      case 64:
+        reallyHandleCmdAddEffect(bb);
+        break;
+      case 95:
+        reallyHandleCmdAdvancedEffect(bb);
+        break;
+      case 19:
+        reallyHandleCmdSetItemState(bb);
+        break;
+      case 37:
+        reallyHandleCmdRemoveEffect(bb);
+        break;
+      case 90:
+        reallyHandleCmdStatusStamina(bb);
+        break;
+      case 61:
+        reallyHandleCmdStatusHunger(bb);
+        break;
+      case 105:
+        reallyHandleCmdStatusThirst(bb);
+        break;
+      case 5:
+        reallyHandleCmdStatusWeight(bb);
+        break;
+      case 32:
+        reallyHandleCmdSpeedModifier(bb);
+        break;
+      case 87:
+        reallyHandleCmdTimeLeft(bb);
+        break;
+      case 112:
+        reallyHandleCmdAddStructure(bb);
+        break;
+      case 48:
+        reallyHandleCmdRemoveStructure(bb);
+        break;
+      case 96:
+        reallyHandleCmdBuildMark(bb);
+        break;
+      case 49:
+        reallyHandleCmdAddWall(bb);
+        break;
+      case 122:
+        reallyHandleCmdOpenWall(bb);
+        break;
+      case 127:
+        reallyHandleCmdCloseWall(bb);
+        break;
+      case 54:
+        reallyHandleCmdRemoveWall(bb);
+        break;
+      case 125:
+        reallyHandleCmdSetPassable(bb);
+        break;
+      case 107:
+        reallyHandleCmdServerTime(bb);
+        break;
+      case 82:
+        reallyHandleCmdAddFloor(bb);
+        break;
+      case 77:
+        reallyHandleCmdRemoveFloor(bb);
+        break;
+      case -11:
+        reallyHandleCmd(bb);
+        break;
+      case 47:
+        reallyHandleCmdRename(bb);
+        break;
+      case 98:
+        reallyHandleCmdFightMoveOptions(bb);
+        break;
+      case -14:
+        reallyHandleCmdFightStatus(bb);
+        break;
+      case -17:
+        reallyHandleCmdSpecialMove(bb);
+        break;
+      case -37:
+        reallyHandleCmdUpdatePlayerKingdom(bb);
+        break;
+      case 25:
+        reallyHandleCmdSetTarget(bb);
+        break;
+      case 53:
+        reallyHandleCmdHasTarget(bb);
+        break;
+      case 11:
+        reallyHandleCmdSetCreatureDamage(bb);
+        break;
+      case 51:
+        reallyHandleCmdTeleport(bb);
+        break;
+      case 116:
+        reallyHandleCmdOpenInventoryWindow(bb);
+        break;
+      case 58:
+        reallyHandleCmdOpenInventoryContainer(bb);
+        break;
+      case 120:
+        reallyHandleCmdCloseInventoryWindow(bb);
+        break;
+      case -44:
+        reallyHandleCmdOpenWindowType(bb);
+        break;
+      case 119:
+        reallyHandleCmdOpenTradeWindow(bb);
+        break;
+      case 121:
+        reallyHandleCmdCloseTradeWIndow();
+        break;
+      case 42:
+        reallyHandleCmdSetTradeAgree(bb);
+        break;
+      case 91:
+        reallyHandleCmdTradeChanged(bb);
+        break;
+      case 12:
+        reallyHandleCmdAddFence(bb);
+        break;
+      case 13:
+        reallyHandleCmdRemoveFence(bb);
+        break;
+      case 83:
+        reallyHandleCmdOpenFence(bb);
+        break;
+      case -58:
+        reallyHandleCmdAddMineDoor(bb);
+        break;
+      case -59:
+        reallyHandleCmdRemoveMineDoor(bb);
+        break;
+      case -60:
+        reallyHandleCmdOpenMineDoor(bb);
+        break;
+      case -61:
+        reallyHandleCmdCloseMineDoor(bb);
+        break;
+      case 86:
+        reallyHandleCmdPlaySound(bb);
+        break;
+      case 115:
+        reallyHandleCmdPlayMusic(bb);
+        break;
+      case -18:
+        reallyHandleCmdStatusString(bb);
+        break;
+      case -13:
+        reallyHandleCmdJoinGroup(bb);
+        break;
+      case 114:
+        reallyHandleCmdPartGroup(bb);
+        break;
+      case 6:
+        reallyHandleCmdSetCreatureAttitude(bb);
+        break;
+      case 40:
+        reallyHandleCmdSendAllKingdom(bb);
+        break;
+      case 39:
+        reallyHandleCmdSendNewKingdom(bb);
+        break;
+      case -20:
+        reallyHandleCmdServerPortal();
+        break;
+      case -45:
+        reallyHandleCmdSendMapInfo(bb);
+        break;
+      case -43:
+        reallyHandleCmdMapAnnotations(bb);
+        break;
+      case -50:
+        reallyHandleCmdValreiMap(bb);
+        break;
+      case -46:
+        reallyHandleCmdItemCreationList(bb);
+        break;
+      case -49:
+        reallyHandleCmdSendPlonk(bb);
+        break;
+      case -42:
+        reallyHandleCmdSendWindowTypeData(bb);
+        break;
+      case 100:
+        reallyHandleCmdAchievementList(bb);
+        break;
+      case 38:
+        reallyHandleCmdNewAchievement(bb);
+        break;
+      case -39:
+        reallyHandleCmdPersonalGoalList(bb);
+        break;
+      case 46:
+        reallyHandleCmdWeatherUpdate(bb);
+        break;
+      case 23:
+        reallyHandleCmdReconnect(bb);
+        return;
+      case 62:
+        reallyHandleCmdToggleSwitch(bb);
+        break;
+      case 79:
+        reallyHandleCmdClimb(bb);
+        break;
+      case 28:
+        reallyHandleCmdStunned(bb);
+        break;
+      case 65:
+        reallyHandleCmdDead();
+        break;
+      case 29:
+        reallyHandleCmdMoreItems(bb);
+        break;
+      case -16:
+        reallyHandleCmdEmpty(bb);
+        break;
+      case 30:
+        reallyHandleCmdCreatureLayer(bb);
+        break;
+      case -30:
+        reallyHandleCmdToggleClientFeature(bb);
+        break;
+      case 106:
+        reallyHandleCmdBmlForm(bb);
+        break;
+      case 109:
+        reallyHandleCmdAttachEffect(bb);
+        break;
+      case 18:
+        reallyHandleCmdUnattachEffect(bb);
+        break;
+      case 101:
+        reallyHandleCmdSetEquipment(bb);
+        break;
+      case 110:
+        reallyHandleCmdUseItem(bb);
+        break;
+      case 71:
+        reallyHandleCmdStopUseItem(bb);
+        break;
+      case 92:
+        reallyHandleCmdRepaint(bb);
+        break;
+      case 74:
+        reallyHandleCmdResize(bb);
+        break;
+      case -54:
+        reallyHandleCmdRarity(bb);
+        break;
+      case 22:
+        reallyHandleCmdStateDamage(bb);
+        break;
+      case 34:
+        reallyHandleCmdStateHousewallDamage(bb);
+        break;
+      case 4:
+        reallyHandleCmdClientQuit(bb);
+        break;
+      case 111:
+        reallyHandleCmdAttachCreature(bb);
+        break;
+      case 63:
+        reallyHandleCmdSetVehicleController(bb);
+        break;
+      case 24:
+        reallyHandleCmdPlayAnimation(bb);
+        break;
+      case -19:
+        reallyHandleCmdSetWater(bb);
+        break;
+      case 88:
+        reallyHandleCmdAnimationWithTarget(bb);
+        break;
+      case 85:
+        reallyHandleCmdSetStance(bb);
+        break;
+      case 26:
+        reallyHandleCmdSetFightStyle(bb);
+        break;
+      case 94:
+        reallyHandleCmdSetGroundOffset(bb);
+        break;
+      case 117:
+        reallyHandleCmdWindImpact(bb);
+        break;
+      case 60:
+        reallyHandleCmdMountSpeed(bb);
+        break;
+      case 67:
+        reallyHandleCmdRotate(bb);
+        break;
+      case 35:
+        reallyHandleCmdProjectile(bb);
+        break;
+      case 59:
+        reallyHandleCmdAvailableServer(bb);
+        break;
+      case 52:
+        reallyHandleCmdNewFace(bb);
+        break;
+      case 2:
+        reallyHandleCmdCustomizeFace(bb);
+        break;
+      case 3:
+        reallyHandleCmdAck(bb);
+        break;
+      case -28:
+        this.serverConnectionListener.startMoving();
+        break;
+      case 93:
+        break;
+      case 7:
+        reallyHandleCmdAddSpellEffect(bb);
+        break;
+      case -47:
+        reallyHandleCmdStatusEffectBar(bb);
+        break;
+      case 17:
+        reallyHandleCmdRemoveSpellEffect(bb);
+        break;
+      case -4:
+        reallyHandleCmdAddTileEffect(bb);
+        break;
+      case -5:
+        reallyHandleCmdRemoveTileEffect(bb);
+        break;
+      case 33:
+        reallyHandleCmdMissionState(bb);
+        break;
+      case 113:
+        reallyHandleCmdRemoveMissionState(bb);
+        break;
+      case 78:
+        reallyHandleCmdItemModelName(bb);
+        break;
+      case 21:
+        reallyHandleCmdAddClothing(bb);
+        break;
+      case 27:
+        reallyHandleCmdRemoveClothing(bb);
+        break;
+      case -31:
+        reallyHandleCmdAddHorseItem(bb);
+        break;
+      case 55:
+        reallyHandleCmdRemoveHorseItem(bb);
+        break;
+      case -15:
+        reallyHandleCmdLogin(bb);
+        break;
+      case -52:
+        reallyHandleCmdSteamAuth(bb);
+        break;
+      case 118:
+        reallyHandleCmdLoginFailure(bb);
+        break;
+      case -33:
+        this.serverConnectionListener.updatePlayerTitles(readStringShortLength(bb), readStringShortLength(bb));
+        break;
+      case 1:
+        reallyHandleCmdSleepBonusInfo(bb);
+        break;
+      case -27:
+        reallyHandleTargetStatus(bb);
+        break;
+      case 56:
+        this.serverConnectionListener.drumrollStarted();
+        break;
+      case 89:
+        reallyHandleCmdUpdateFriendsList(bb);
+        break;
+      case -34:
+        reallyHandleCmdTicketAdd(bb);
+        break;
+      case -36:
+        reallyHandleCmdTicketRemove(bb);
+        break;
+      case -25:
+        reallyHandleCmdBridge(bb);
+        break;
+      case -26:
+        reallyHandleCmdPermissions(bb);
+        break;
+      case -51:
+        reallyHandleCmdShowDeedPlan(bb);
+        break;
+      case -55:
+        reallyHandleCmdCookbook(bb);
+        break;
+      case -56:
+        reallyHandleCmdWaystone(bb);
+        break;
+      case -57:
+        reallyHandleCmdShowLinks(bb);
+        break;
+      case -62:
+        reallyHandleCmdValreiFight(bb);
+        break;
+      case -63:
+        reallyHandleCmdPlaceItem(bb);
+        break;
+      case -64:
+        reallyHandleCmdFish(bb);
+        break;
+      case -65:
+        reallyHandleCmdClearWindow(bb);
+        break;
+      case -66:
+        reallyHandleCmdOpenCloseWindow(bb);
+        break;
+      default:
+        if (isDev())
+          System.out.println("Ignoring unknown cmd " + cmd); 
+        break;
+    } 
