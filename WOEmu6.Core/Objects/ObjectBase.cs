@@ -18,5 +18,10 @@ namespace WOEmu6.Core.Objects
 
         public virtual IList<ContextMenuEntry> GetContextMenu(ClientSession session) =>
             new List<ContextMenuEntry>();
+
+        public virtual void OnMenuItemClick(ClientSession session, short itemId)
+        {
+            // placeholder
+        }
     }
 }

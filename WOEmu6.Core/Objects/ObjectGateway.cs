@@ -6,13 +6,13 @@ namespace WOEmu6.Core.Objects
     {
         public ObjectBase GetObject(WurmId id)
         {
+            var world = ServerContext.Instance.Value.World;
             switch (id.Type)
             {
                 case ObjectType.Tile:
                 {
                     var coordinate = id.ToTileCoordinate();
-                    Console.WriteLine(coordinate);
-                    break;
+                    return world.TopLayer.GetTileValue(coordinate.Item1, coordinate.Item2);
                 }
 
                 case ObjectType.TileBorder:
