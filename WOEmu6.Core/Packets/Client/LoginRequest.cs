@@ -32,7 +32,7 @@ namespace WOEmu6.Core.Packets.Client
             IsExtraTileData = reader.ReadByte() == 1;
         }
 
-        public void Handle(ServerContext context, ClientSession client)
+        public void Handle(ClientSession client)
         {
             Console.WriteLine("Player {0} joined!", UserName);
 
@@ -49,9 +49,9 @@ namespace WOEmu6.Core.Packets.Client
             client.Send(new SetSpeedPacket(2.0f));
             client.Send(new StartMovingPacket());
             client.Send(new TeleportPacket(client.Player.X, client.Player.Y, client.Player.Z, 0, true, true, true, 0));
-            client.Send(new AddSkillPacket(new Skill(
-                1, null, "Programming", 9000, 9000
-            )));
+//            client.Send(new AddSkillPacket(new Skill(
+//                context, null, "Programming", 9000, 9000
+//            )));
             
             var form = new BmlForm(1, "Message Of The Day", @"varray{center{header{text='WOEmu 6.0';}};label{text='Welcome to WOemu'};input{id='test';maxlines='5';text='This is a test';maxchars='1024';};button{text='Do Something';id='do_it'};}");
             client.Send(new BmlFormPacket(form));

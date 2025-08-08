@@ -37,7 +37,7 @@ namespace WOEmu6.Core.Packets.Client
             TokenLength = reader.PopLong();
         }
 
-        public void Handle(ServerContext context, ClientSession session)
+        public void Handle(ClientSession session)
         {
             var response = new SteamLoginResponsePacket(true);
             session.Send(response);

@@ -8,4 +8,8 @@
       <Folder Include="Events\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="NLua" Version="1.7.5" />
+    </ItemGroup>
+
 </Project>

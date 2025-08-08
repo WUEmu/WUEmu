@@ -23,22 +23,16 @@ namespace WOEmu6.Core.Packets.Client
             SourceId = reader.PopLong();
         }
 
-        public void Handle(ServerContext context, ClientSession client)
+        public void Handle(ClientSession client)
         {
-            var gw = new ObjectGateway(context);
-            gw.GetObject(TargetId);
-            Console.WriteLine("Req: {0}, Source: {1}, Target = {2} ({2:X16})", RequestId, SourceId, TargetId);
-
-            var menuItems = new List<ContextMenuEntry>
-            {
-                new ContextMenuEntry(1, "Make Dirt"),
-                new ContextMenuEntry(2, "Make Cobblestone"),
-                new ContextMenuEntry(3, "Raise"),
-                new ContextMenuEntry(4, "Lower"),
-                new ContextMenuEntry(5, "Flatten Around")
-            };
+            var gw = ServerContext.Instance.Value.World.Objects;            
+            var obj = gw.GetObject(TargetId);
+            if (obj == null)
+                return;
             
-            client.Send(new ContextMenuPacket(RequestId, menuItems, "This is a test"));
+            var menu = obj.GetContextMenu(client);
+            Console.WriteLine("Req: {0}, Source: {1}, Target = {2} ({2:X16})", RequestId, SourceId, TargetId);
+            client.Send(new ContextMenuPacket(RequestId, menu, "This is a test"));
         }
     }
 }

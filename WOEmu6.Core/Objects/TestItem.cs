@@ -2,14 +2,11 @@
 {
     public class TestItem : Item
     {
-        public TestItem(ServerContext context, string model, float size = 1.0f) : base(context)
+        public TestItem(string model, float size = 1.0f)
         {
             Model = model;
             SizeModifier = size;
-            WurmId = context.WurmIdGenerator.NewWurmId(ObjectType.Fence);
         }
-        
-        public override long WurmId { get; }
 
         public override string Name => "My Test Item";
 

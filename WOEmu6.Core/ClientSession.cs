@@ -10,46 +10,55 @@ namespace WOEmu6.Core.Packets
 {
     public class ClientSession
     {
-        private readonly ServerContext serverContext;
+        private ServerContext serverContext;
         private readonly TcpClient client;
         private readonly Stream stream;
-        private readonly Encryption encryption; 
+        private readonly Encryption encryption;
 
-        public ClientSession(ServerContext serverContext, TcpClient client)
+        public ClientSession(TcpClient client)
         {
-            this.serverContext = serverContext;
             this.client = client;
             this.stream = client.GetStream();
             encryption = new Encryption();
+            serverContext = ServerContext.Instance.Value;
         }
-        
+
         public Player Player { get; set; }
 
         public void Run()
         {
-            while (true)
+            try
+
             {
-                var p0 = new byte[2];
-                stream.ReadExactly(p0, 0, 2);
-                encryption.Decrypt(p0);
-                var lenPacketReader = new PacketReader(p0);
-                var len = lenPacketReader.PopShort();
-
-                var p1 = new byte[len];
-                stream.ReadExactly(p1, 0, len);
-                encryption.Decrypt(p1);
-
-                var reader = new PacketReader(p1);
-                var opcode = reader.ReadByte();
-                var packet = serverContext.IncomingPacketFactory.Get(opcode);
-                if (packet == null)
+                while (true)
                 {
-                    Console.WriteLine($"Unimplemented opcode {opcode} ({(sbyte)opcode})");
-                    continue;
-                }
+                    var p0 = new byte[2];
+                    stream.ReadExactly(p0, 0, 2);
+                    encryption.Decrypt(p0);
+                    var lenPacketReader = new PacketReader(p0);
+                    var len = lenPacketReader.PopShort();
 
-                packet.Read(reader);
-                packet.Handle(serverContext, this);
+                    var p1 = new byte[len];
+                    stream.ReadExactly(p1, 0, len);
+                    encryption.Decrypt(p1);
+
+                    var reader = new PacketReader(p1);
+                    var opcode = reader.ReadByte();
+                    var packet = serverContext.IncomingPacketFactory.Get(opcode);
+                    if (packet == null)
+                    {
+                        Console.WriteLine($"Unimplemented opcode {opcode} ({(sbyte)opcode})");
+                        continue;
+                    }
+
+                    packet.Read(reader);
+                    packet.Handle(this);
+                }
+            }
+            catch (IOException ex)
+            {
+                // User disconnected.
+                Console.WriteLine("User disconnected.");
             }
         }
 

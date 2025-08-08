@@ -33,7 +33,7 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushLong(Item.WurmId);
+            writer.PushLong(Item.Id);
             writer.PushFloat(X);
             writer.PushFloat(Y);
             writer.PushFloat(Rotation);

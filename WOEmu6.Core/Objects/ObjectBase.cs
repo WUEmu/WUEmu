@@ -1,7 +1,22 @@
-﻿namespace WOEmu6.Core.Objects
+﻿using System.Collections.Generic;
+using System.Linq;
+using WOEmu6.Core.Packets;
+using WOEmu6.Core.Packets.Server;
+
+namespace WOEmu6.Core.Objects
 {
-    public abstract class ObjectBase
+    public abstract class ObjectBase : IContextMenuProvider
     {
-        public abstract WurmId Id { get; } 
+        public virtual WurmId Id { get; protected set; } 
+        
+        protected abstract ObjectType Type { get; }
+
+        protected void GenerateId()
+        {
+            // Id = new WurmId(Type, Context.WurmIdGenerator.NewWurmId(Type));
+        }
+
+        public virtual IList<ContextMenuEntry> GetContextMenu(ClientSession session) =>
+            new List<ContextMenuEntry>();
     }
 }

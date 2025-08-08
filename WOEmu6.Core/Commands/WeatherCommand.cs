@@ -6,7 +6,7 @@ namespace WOEmu6.Core.Commands
 {
     public class WeatherCommand : IChatCommand
     {
-        public bool Execute(ServerContext context, ClientSession client, string[] arguments)
+        public bool Execute(ClientSession client, string[] arguments)
         {
             // /weather <cloudiness> <fog> <rain> <windRot> <windPow>
             if (arguments.Length != 5)

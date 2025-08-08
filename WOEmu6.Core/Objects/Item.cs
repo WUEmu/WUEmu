@@ -1,16 +1,7 @@
 ﻿namespace WOEmu6.Core.Objects
 {
-    public abstract class Item
+    public abstract class Item : ObjectBase
     {
-        protected ServerContext Context { get; }
-        
-        protected Item(ServerContext context)
-        {
-            Context = context;
-        }
-        
-        public abstract long WurmId { get; }
-        
         public abstract string Name { get; }
         
         public abstract string HoverText { get; }
@@ -28,5 +19,7 @@
         public virtual float Quality { get; } = 0;
         
         public virtual float Damage { get; } = 0;
+
+        protected override ObjectType Type => ObjectType.Item;
     }
 }

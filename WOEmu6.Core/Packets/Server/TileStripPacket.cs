@@ -36,21 +36,23 @@ namespace WOEmu6.Core.Packets.Server
             writer.PushShort(H);
             writer.PushShort(X);
 
+            var mesh = context.World.TopLayer;
+            var flagsMesh = context.World.Flags;
             for (var x = 0; x < W; x++)
             {
                 for (var y = 0; y < H; y++)
                 {
                     var tempTileX = X + x;
                     var tempTileY = Y + y;
-                    if (tempTileX < 0 || tempTileX >= 1 << context.TopLayer.MeshSize || tempTileY < 0 ||
-                        tempTileY >= 1 << context.TopLayer.MeshSize)
+                    if (tempTileX < 0 || tempTileX >= 1 << mesh.MeshSize || tempTileY < 0 ||
+                        tempTileY >= 1 << mesh.MeshSize)
                     {
                         tempTileY = tempTileX = 0;
                     }
                     
-                    writer.PushInt(context.TopLayer.Data[tempTileX | tempTileY << context.TopLayer.MeshSize]);
+                    writer.PushInt(mesh.Data[tempTileX | tempTileY << mesh.MeshSize]);
                     if (WithExtraData)
-                        writer.PushByte((byte)(context.Flags.GetTile(tempTileX, tempTileY) & 0xFF));
+                        writer.PushByte((byte)(flagsMesh.GetTile(tempTileX, tempTileY) & 0xFF));
                 }
             }
         }

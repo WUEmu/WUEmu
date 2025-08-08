@@ -22,7 +22,7 @@ namespace WOEmu6.Core.Packets.Client
             Layer = reader.ReadByte();
         }
 
-        public void Handle(ServerContext context, ClientSession client)
+        public void Handle(ClientSession client)
         {
             if (client.Player == null)
                 return;

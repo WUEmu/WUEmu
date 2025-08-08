@@ -17,7 +17,7 @@ namespace WOEmu6.Core.Packets.Client
             Contents = reader.ReadBytePrefixedString();
         }
 
-        public void Handle(ServerContext context, ClientSession client)
+        public void Handle(ClientSession client)
         {
             client.Send(new AddSupportTicketPacket(
                 0x9023844,

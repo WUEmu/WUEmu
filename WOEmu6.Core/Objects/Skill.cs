@@ -2,9 +2,8 @@
 {
     public class Skill : ObjectBase
     {
-        public Skill(long skillId, Skill parent, string name, float value, float maxValue, byte affinities = 0)
+        public Skill(Skill parent, string name, float value, float maxValue, byte affinities = 0)
         {
-            Id = new WurmId(ObjectType.Skill, skillId);
             Parent = parent;
             Name = name;
             Value = value;
@@ -21,7 +20,7 @@
         public float MaxValue { get; }
         
         public byte Affinities { get; }
-        
-        public override WurmId Id { get; }
+
+        protected override ObjectType Type => ObjectType.Skill;
     }
 }

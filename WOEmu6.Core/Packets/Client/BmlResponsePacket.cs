@@ -35,7 +35,7 @@ namespace WOEmu6.Core.Packets.Client
             Parameters = parameters;
         }
 
-        public void Handle(ServerContext context, ClientSession client)
+        public void Handle(ClientSession client)
         {
             Console.WriteLine("Player submitted a BML form!");
             Console.WriteLine(" - Button: {0}", ButtonId);

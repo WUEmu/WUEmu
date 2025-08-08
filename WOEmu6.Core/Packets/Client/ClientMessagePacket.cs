@@ -18,18 +18,18 @@ namespace WOEmu6.Core.Packets.Client
             Channel = reader.ReadBytePrefixedString();
         }
 
-        public void Handle(ServerContext context, ClientSession client)
+        public void Handle(ClientSession client)
         {
             Console.WriteLine("[{0}/{1}] {2}", client.Player.Name, Channel, Text);
 
             if (Text.StartsWith("/"))
             {
                 var tokens = Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                var cmd = context.Commands.GetCommand(tokens[0]);
+                var cmd = ServerContext.Instance.Value.Commands.GetCommand(tokens[0]);
                 if (cmd == null)
                     client.Send(new ServerMessagePacket(":Event", $"Unrecognized command '{Text}'.", 255, 0, 0));
                 else
-                    cmd.Execute(context, client, tokens[1..]);
+                    cmd.Execute(client, tokens[1..]);
             }
 
             client.Send(new ServerMessagePacket(":Event", $"You said: '{Text}'", 255, 0, 0, MessageType.OnScreenInfo));

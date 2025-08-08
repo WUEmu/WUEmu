@@ -7,7 +7,7 @@ namespace WOEmu6.Core.Commands
 {
     public class SpawnItem : IChatCommand
     {
-        public bool Execute(ServerContext context, ClientSession client, string[] arguments)
+        public bool Execute(ClientSession client, string[] arguments)
         {
 //            Console.WriteLine("{0:X}", (sbyte)-9);
             if (arguments.Length == 0)
@@ -18,7 +18,7 @@ namespace WOEmu6.Core.Commands
             if (arguments.Length == 2)
                 size = float.Parse(arguments[1]);
 
-            client.Send(new PlaceItemPacket(new TestItem(context, model, size), client.Player.X, client.Player.Y, client.Player.Z));
+            client.Send(new PlaceItemPacket(new TestItem(model, size), client.Player.X, client.Player.Y, client.Player.Z));
             return true;
         }
     }

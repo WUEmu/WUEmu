@@ -4,14 +4,7 @@ namespace WOEmu6.Core.Objects
 {
     public class ObjectGateway
     {
-        private readonly ServerContext context;
-
-        public ObjectGateway(ServerContext context)
-        {
-            this.context = context;
-        }
-        
-        public void GetObject(WurmId id)
+        public ObjectBase GetObject(WurmId id)
         {
             switch (id.Type)
             {
@@ -36,11 +29,13 @@ namespace WOEmu6.Core.Objects
 
                     break;
                 }
-                
+
                 default:
                     Console.WriteLine($"Object not implemented yet for {id}");
                     break;
             }
+
+            return null;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace WOEmu6.Core.Packets.Server
     
     public class ContextMenuPacket : IOutgoingPacket
     {
-        public ContextMenuPacket(byte requestId, List<ContextMenuEntry> menuItems, string wikiPage = null)
+        public ContextMenuPacket(byte requestId, IList<ContextMenuEntry> menuItems, string wikiPage = null)
         {
             RequestId = requestId;
             MenuItems = menuItems;
@@ -28,7 +28,7 @@ namespace WOEmu6.Core.Packets.Server
         
         public byte RequestId { get; }
         
-        public List<ContextMenuEntry> MenuItems { get; }
+        public IList<ContextMenuEntry> MenuItems { get; }
         
         public string WikiPage { get; }
 

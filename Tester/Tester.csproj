@@ -11,4 +11,14 @@
       <ProjectReference Include="..\WOEmu6.Core\WOEmu6.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Scripts\commands\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Scripts\skills\test.lua">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

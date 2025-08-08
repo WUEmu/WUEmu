@@ -2,6 +2,7 @@
 {
     public enum ObjectType : byte
     {
+        Item = 0x02,
         Tile = 0x03,
         Wall = 0x05,
         Fence = 0x07,

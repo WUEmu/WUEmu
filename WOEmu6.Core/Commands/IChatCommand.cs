@@ -4,6 +4,6 @@ namespace WOEmu6.Core.Commands
 {
     public interface IChatCommand
     {
-        bool Execute(ServerContext context, ClientSession client, string[] arguments);
+        bool Execute(ClientSession client, string[] arguments);
     }
 }

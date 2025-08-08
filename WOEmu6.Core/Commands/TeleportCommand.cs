@@ -6,7 +6,7 @@ namespace WOEmu6.Core.Commands
 {
     public class TeleportCommand : IChatCommand
     {
-        public bool Execute(ServerContext context, ClientSession client, string[] arguments)
+        public bool Execute(ClientSession client, string[] arguments)
         {
             if (arguments.Length != 2)
                 return false;

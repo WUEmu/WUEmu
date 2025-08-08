@@ -2,37 +2,12 @@
 using System.IO;
 using System.Net;
 using WO.Core;
+using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.File
 {
-    public class MeshTileValue
-    {
-        public MeshTileValue(int value)
-        {
-            Value = value;
-        }
-        
-        public int Value { get; private set; }
-
-        public TileType Type
-        {
-            get => (TileType)((Value >> 24) >> 24);
-            set => Value = (((byte)value) << 24) | (Value & 0xFFFFFF);
-        }
-
-        public short Height
-        {
-            get => (short)(Value & 0xFFFF);
-            set => Value = (int)(((Value & 0xFFFF0000) | (value)));
-        }
-
-        public static implicit operator MeshTileValue(int v) => new MeshTileValue(v);
-
-        public static implicit operator int(MeshTileValue v) => v.Value;
-    }
-    
-    public class MeshFileReader
+    public class Mesh
     {
         private const long MeshFileMagic = 5136955264682433437L;
         
@@ -55,7 +30,7 @@ namespace WOEmu6.Core.File
         public int MeshSize { get; private set; } 
         public int MapDimension { get; private set;} 
         
-        public MeshFileReader(string path)
+        public Mesh(string path)
         {
             filename = Path.GetFileNameWithoutExtension(path);
             inputStream = System.IO.File.OpenRead(path);
@@ -97,10 +72,10 @@ namespace WOEmu6.Core.File
 
         public int GetTile(int x, int y) => Data[x | y << SizeLevel];
 
-        public MeshTileValue GetTileValue(int x, int y) => GetTile(x, y);
+        public Tile GetTileValue(int x, int y) => GetTile(x, y);
 
         public void SetTile(int x, int y, int value) => Data[x | y << SizeLevel] = value;
 
-        public void SetTileValue(int x, int y, MeshTileValue value) => SetTile(x, y, value);
+        public void SetTileValue(int x, int y, Tile value) => SetTile(x, y, value);
     }
 }

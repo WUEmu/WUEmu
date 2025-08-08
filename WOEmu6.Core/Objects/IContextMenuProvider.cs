@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using WOEmu6.Core.Packets;
+using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Objects
 {
     public interface IContextMenuProvider
     {
-        IEnumerable<string> GetContextMenu(ServerContext context, ClientSession session);
+        IList<ContextMenuEntry> GetContextMenu(ClientSession session);
     }
 }

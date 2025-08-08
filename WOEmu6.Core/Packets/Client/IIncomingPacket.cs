@@ -8,6 +8,6 @@ namespace WOEmu6.Core.Packets.Client
         
         void Read(PacketReader reader);
 
-        void Handle(ServerContext context, ClientSession client);
+        void Handle(ClientSession client);
     }
 }
