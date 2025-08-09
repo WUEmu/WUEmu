@@ -25,12 +25,12 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.PushLong(StructureId);
-            writer.PushByte(Layer);
-            writer.PushByte((byte)TileCoordinates.Count);
+            writer.WriteByte(Layer);
+            writer.WriteByte((byte)TileCoordinates.Count);
             foreach (var position in TileCoordinates)
             {
-                writer.PushShort(position.X);
-                writer.PushShort(position.Y);
+                writer.WriteShort(position.X);
+                writer.WriteShort(position.Y);
             }
         }
     }

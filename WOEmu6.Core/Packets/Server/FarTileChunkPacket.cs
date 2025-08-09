@@ -26,10 +26,10 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushShort(X);
-            writer.PushShort(Y);
-            writer.PushShort(W);
-            writer.PushShort(H);
+            writer.WriteShort(X);
+            writer.WriteShort(Y);
+            writer.WriteShort(W);
+            writer.WriteShort(H);
             
             var mesh = context.World.TopLayer;
             var types = new List<byte>();
@@ -47,13 +47,13 @@ namespace WOEmu6.Core.Packets.Server
                     }
 
                     var tile = mesh.GetTileValue(tempTileX, tempTileY);
-                    writer.PushShort(tile.Height);
+                    writer.WriteShort(tile.Height);
                     types.Add((byte)tile.TileType);
                 }
             }
 
             foreach (var type in types)
-                writer.PushByte(type);
+                writer.WriteByte(type);
         }
     }
 }

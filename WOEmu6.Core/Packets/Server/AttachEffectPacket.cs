@@ -31,11 +31,11 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.PushLong(Target);
-            writer.PushByte((byte)Effect);
-            writer.PushByte(Data0);
-            writer.PushByte(Data1);
-            writer.PushByte(Data2);
-            writer.PushByte(Data3);
+            writer.WriteByte((byte)Effect);
+            writer.WriteByte(Data0);
+            writer.WriteByte(Data1);
+            writer.WriteByte(Data2);
+            writer.WriteByte(Data3);
         }
     }
 }

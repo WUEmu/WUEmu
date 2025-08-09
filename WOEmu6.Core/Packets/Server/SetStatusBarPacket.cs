@@ -9,7 +9,7 @@ namespace WOEmu6.Core.Packets.Server
             Text = text;
         }
 
-        public byte Opcode => (byte)(-18 & 0xFF);
+        public byte Opcode => -18 & 0xFF;
         
         public string Text { get; }
         

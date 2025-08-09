@@ -15,7 +15,7 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushByte(1);
+            writer.WriteByte((byte)1);
             writer.PushInt(SleepBonusSeconds);
         }
     }

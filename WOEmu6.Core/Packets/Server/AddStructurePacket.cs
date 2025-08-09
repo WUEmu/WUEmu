@@ -17,11 +17,11 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.PushLong(Structure.Id);
-            writer.PushByte((byte)Structure.StructureType);
+            writer.WriteByte((byte)Structure.StructureType);
             writer.WriteBytePrefixedString(Structure.Name);
-            writer.PushShort(Structure.Position.X);
-            writer.PushShort(Structure.Position.Y);
-            writer.PushByte(Structure.Layer);
+            writer.WriteShort(Structure.Position.X);
+            writer.WriteShort(Structure.Position.Y);
+            writer.WriteByte(Structure.Layer);
         }
     }
 }

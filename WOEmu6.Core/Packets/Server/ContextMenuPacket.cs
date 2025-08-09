@@ -34,13 +34,13 @@ namespace WOEmu6.Core.Packets.Server
 
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushByte(RequestId);
-            writer.PushByte((byte)MenuItems.Count);
+            writer.WriteByte(RequestId);
+            writer.WriteByte((byte)MenuItems.Count);
             foreach (var entry in MenuItems)
             {
-                writer.PushShort(entry.Id);
+                writer.WriteShort(entry.Id);
                 writer.WriteBytePrefixedString(entry.Caption);
-                writer.PushByte(0); // ?
+                writer.WriteByte((byte)0); // ?
             }
             
             writer.WriteBytePrefixedString(WikiPage);

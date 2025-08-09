@@ -37,10 +37,10 @@ namespace WOEmu6.Core.Packets.Server
             writer.PushFloat(Y);
             writer.PushFloat(Z);
             writer.PushFloat(Rotation);
-            writer.PushByte((byte)(Local ? 1 : 0));
-            writer.PushByte((byte)(IsOnSurface ? 0 : -1));
-            writer.PushByte((byte)(Disembark ? 1 : 0));
-            writer.PushByte(StartCommandingType);
+            writer.WriteByte((byte)(Local ? 1 : 0));
+            writer.WriteByte((byte)(IsOnSurface ? 0 : -1));
+            writer.WriteByte((byte)(Disembark ? 1 : 0));
+            writer.WriteByte(StartCommandingType);
             writer.PushInt(TeleportCounter);
         }
     }

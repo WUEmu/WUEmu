@@ -71,8 +71,10 @@ namespace WOEmu6.Core.Packets
 
         public void Send(IOutgoingPacket packet)
         {
+            // Console.WriteLine($"Writing packet {packet.GetType().Name} {packet.Opcode} (signed={(sbyte)packet.Opcode})");
+            
             var writer = new PacketWriter();
-            writer.PushByte(packet.Opcode);
+            writer.WriteByte(packet.Opcode);
             packet.Write(serverContext, writer);
             var bytes = writer.Finish();
             encryption.Encrypt(bytes, 0, bytes.Length);

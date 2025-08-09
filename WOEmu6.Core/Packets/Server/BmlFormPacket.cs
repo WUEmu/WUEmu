@@ -16,19 +16,19 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushByte(1); // part no. for text longer than the max short length for the packet.
-            writer.PushShort(Form.Id);
+            writer.WriteByte((byte)1); // part no. for text longer than the max short length for the packet.
+            writer.WriteShort(Form.Id);
             writer.WriteBytePrefixedString(Form.Title);
-            writer.PushShort(Form.Width);
-            writer.PushShort(Form.Height);
+            writer.WriteShort(Form.Width);
+            writer.WriteShort(Form.Height);
             writer.PushFloat(Form.X);
             writer.PushFloat(Form.Y);
-            writer.PushByte((byte)(Form.Resizable ? 1 : 0));
-            writer.PushByte((byte)(Form.Closeable ? 1 : 0));
-            writer.PushByte(Form.R);
-            writer.PushByte(Form.G);
-            writer.PushByte(Form.B);
-            writer.PushByte(1); // max parts
+            writer.WriteByte((byte)(Form.Resizable ? 1 : 0));
+            writer.WriteByte((byte)(Form.Closeable ? 1 : 0));
+            writer.WriteByte(Form.R);
+            writer.WriteByte(Form.G);
+            writer.WriteByte(Form.B);
+            writer.WriteByte((byte)1); // max parts
             writer.WriteShortPrefixedString(Form.Contents);
         }
     }

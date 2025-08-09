@@ -41,18 +41,18 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteBytePrefixedString(Item.Name);
             writer.WriteBytePrefixedString(Item.HoverText);
             writer.WriteBytePrefixedString(Item.Model);
-            writer.PushByte((byte)(IsOnSurface ? 1 : 0));
-            writer.PushByte(Item.Material);
+            writer.WriteByte((byte)(IsOnSurface ? 1 : 0));
+            writer.WriteByte(Item.Material);
             writer.WriteBytePrefixedString(Item.Description);
-            writer.PushShort(0); // image number
-            writer.PushByte(1);
+            writer.WriteShort(0); // image number
+            writer.WriteByte((byte)1);
             writer.PushFloat(Item.Quality);
             writer.PushFloat(Item.Damage);
             writer.PushFloat(Item.SizeModifier);
             writer.PushLong(0); // bridge?
-            writer.PushByte(Item.Rarity);
-            writer.PushByte(0); // something about containers
-            writer.PushByte(0); // extra data
+            writer.WriteByte(Item.Rarity);
+            writer.WriteByte((byte)0); // something about containers
+            writer.WriteByte((byte)0); // extra data
         }
     }
 }

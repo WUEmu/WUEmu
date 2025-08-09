@@ -50,12 +50,12 @@ namespace WOEmu6.Core.Packets.Server
         {
             writer.PushInt(1);
             writer.PushLong(TicketId);
-            writer.PushByte((byte)Category);
+            writer.WriteByte((byte)Category);
             writer.WriteBytePrefixedString(Contents);
-            writer.PushByte((byte)Color);
+            writer.WriteByte((byte)Color);
             writer.WriteShortPrefixedString(Description);
             
-            writer.PushByte((byte)Actions.Length);
+            writer.WriteByte((byte)Actions.Length);
             foreach (var action in Actions)
             {
                 writer.PushInt(action.ActionId);

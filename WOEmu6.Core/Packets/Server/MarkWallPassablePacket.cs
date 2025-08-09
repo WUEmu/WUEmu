@@ -23,12 +23,12 @@ namespace WOEmu6.Core.Packets.Server
         {
             writer.PushLong(StructureId);
             var wallCoords = Wall.Id.ToTileCoordinate();
-            writer.PushShort(wallCoords.Item1);
-            writer.PushShort(wallCoords.Item2);
-            writer.PushByte((byte)(Passable ? 1 : 0)); // passable
-            writer.PushByte((byte)(Wall.Id.ToDirection() == BorderDirection.Horizontal ? 0 : 1));
-            writer.PushShort(0); //height wtf
-            writer.PushByte(0); //layer
+            writer.WriteShort(wallCoords.Item1);
+            writer.WriteShort(wallCoords.Item2);
+            writer.WriteByte((byte)(Passable ? 1 : 0)); // passable
+            writer.WriteByte((byte)(Wall.Id.ToDirection() == BorderDirection.Horizontal ? 0 : 1));
+            writer.WriteShort(0); //height wtf
+            writer.WriteByte((byte)0); //layer
         }
     }
 }

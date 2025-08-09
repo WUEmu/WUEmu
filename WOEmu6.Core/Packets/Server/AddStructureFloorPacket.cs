@@ -30,14 +30,14 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.PushLong(StructureId);
-            writer.PushShort(Position.X);
-            writer.PushShort(Position.Y);
-            writer.PushShort(10); // height
-            writer.PushByte((byte)FloorType);
-            writer.PushByte((byte)Material);
-            writer.PushByte((byte)State);
-            writer.PushByte(0); // layer
-            writer.PushByte(0); // direction... why though??
+            writer.WriteShort(Position.X);
+            writer.WriteShort(Position.Y);
+            writer.WriteShort(0); // height
+            writer.WriteByte((byte)FloorType);
+            writer.WriteByte((byte)Material);
+            writer.WriteByte((byte)State);
+            writer.WriteByte((byte)0); // layer
+            writer.WriteByte((byte)0); // direction... why though??
         }
     }
 }

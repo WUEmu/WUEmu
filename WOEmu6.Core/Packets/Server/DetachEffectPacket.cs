@@ -20,7 +20,7 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.PushLong(Target);
-            writer.PushByte((byte)Effect);
+            writer.WriteByte((byte)Effect);
         }
     }
 }

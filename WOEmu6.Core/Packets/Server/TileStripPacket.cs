@@ -29,12 +29,12 @@ namespace WOEmu6.Core.Packets.Server
 
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushByte((byte)(WithWater ? 1 : 0));
-            writer.PushByte((byte)(WithExtraData ? 1 : 0));
-            writer.PushShort(Y);
-            writer.PushShort(W);
-            writer.PushShort(H);
-            writer.PushShort(X);
+            writer.WriteByte((byte)(WithWater ? 1 : 0));
+            writer.WriteByte((byte)(WithExtraData ? 1 : 0));
+            writer.WriteShort(Y);
+            writer.WriteShort(W);
+            writer.WriteShort(H);
+            writer.WriteShort(X);
 
             var mesh = context.World.TopLayer;
             var flagsMesh = context.World.Flags;
@@ -52,7 +52,7 @@ namespace WOEmu6.Core.Packets.Server
                     
                     writer.PushInt(mesh.Data[tempTileX | tempTileY << mesh.MeshSize]);
                     if (WithExtraData)
-                        writer.PushByte((byte)(flagsMesh.GetTile(tempTileX, tempTileY) & 0xFF));
+                        writer.WriteByte((byte)(flagsMesh.GetTile(tempTileX, tempTileY) & 0xFF));
                 }
             }
         }

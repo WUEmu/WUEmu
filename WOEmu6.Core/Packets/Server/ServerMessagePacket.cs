@@ -36,11 +36,11 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteBytePrefixedString(Channel);
-            writer.PushByte(R);
-            writer.PushByte(G);
-            writer.PushByte(B);
+            writer.WriteByte(R);
+            writer.WriteByte(G);
+            writer.WriteByte(B);
             writer.WriteShortPrefixedString(Message);
-            writer.PushByte((byte)Type);
+            writer.WriteByte((byte)Type);
         }
     }
 }

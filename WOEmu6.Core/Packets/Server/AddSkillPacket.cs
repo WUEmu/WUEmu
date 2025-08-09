@@ -24,7 +24,7 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteBytePrefixedString(Skill.Name);
             writer.PushFloat(Skill.Value);
             writer.PushFloat(Skill.MaxValue);
-            writer.PushByte(Skill.Affinities);
+            writer.WriteByte(Skill.Affinities);
         }
     }
 }

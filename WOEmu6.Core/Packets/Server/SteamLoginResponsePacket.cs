@@ -18,7 +18,7 @@ namespace WOEmu6.Core.Packets.Server
 
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushByte((byte)(Success ? 1 : 0));
+            writer.WriteByte((byte)(Success ? 1 : 0));
             writer.WriteShortPrefixedString(ErrorMessage);
         }
     }

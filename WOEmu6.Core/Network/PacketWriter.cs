@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -15,21 +16,9 @@ namespace WO.Core
             writer = new BinaryWriter(stream);
         }
 
-        public void PushSByte(sbyte b)
-        {
-            writer.Write(b);
-        }
-
-        public void Dispose()
-        {
-            stream.Close();
-            writer.Close();
-        }
+        public void WriteByte(sbyte b) => writer.Write(b);
            
-        public void PushByte(byte p)
-        {
-            writer.Write(p);
-        }
+        public void WriteByte(byte p) => writer.Write(p);
 
         public void WriteBoolean(bool b) => writer.Write((byte)(b ? 1 : 0));
 
@@ -50,10 +39,9 @@ namespace WO.Core
             writer.Write(_f);
         }
 
-        public void PushShort(short p)
-        {
-            writer.Write(IPAddress.HostToNetworkOrder(p));
-        }
+        public void WriteShort(short p) => writer.Write(BinaryPrimitives.ReverseEndianness(p));
+
+        public void WriteShort(ushort p) => writer.Write(BinaryPrimitives.ReverseEndianness(p));
 
         public void PushBytes(byte[] p)
         {
@@ -62,13 +50,13 @@ namespace WO.Core
 
         public void WriteBytePrefixedString(string str)
         {
-            PushByte((byte)str.Length);
+            WriteByte((byte)str.Length);
             PushBytes(Encoding.UTF8.GetBytes(str));
         }
 
         public void WriteShortPrefixedString(string str)
         {
-            PushShort((short)str.Length);
+            WriteShort((short)str.Length);
             PushBytes(Encoding.UTF8.GetBytes(str));
         }
 

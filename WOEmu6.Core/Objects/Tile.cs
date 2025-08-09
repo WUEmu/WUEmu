@@ -10,12 +10,16 @@ namespace WOEmu6.Core.Objects
     {
         public short X { get; }
         public short Y { get; }
+        
+        public byte Layer { get; }
+        
         private int encodedValue;
 
         public Tile(int encodedValue, short x, short y)
         {
             X = x;
             Y = y;
+            Layer = 0;
             this.encodedValue = encodedValue;
             Id = new WurmId(ObjectType.Tile, 0, 0); // todo: encode properly
         }
@@ -46,7 +50,18 @@ namespace WOEmu6.Core.Objects
                 new ContextMenuEntry(4, "Lower"),
                 new ContextMenuEntry(5, "Flatten Around"),
                 new ContextMenuEntry(6, "Make structure"),
-                new ContextMenuEntry(7, "Add to build plan")
+                new ContextMenuEntry(7, "Add to build plan"),
+                
+                new ContextMenuEntry(10, "TEST TITLES"),
+                
+                new ContextMenuEntry(-7, "Tile Effects"),
+                new ContextMenuEntry(100, "Fire Pillar"),
+                new ContextMenuEntry(101, "Ice Pillar"),
+                new ContextMenuEntry(102, "Fungus Trap"),
+                new ContextMenuEntry(103, "Lava"),
+                new ContextMenuEntry(104, "Snow"),
+                new ContextMenuEntry(105, "Tentacles"),
+                new ContextMenuEntry(106, "- Remove Effect"),
             };
         }
 
@@ -54,9 +69,39 @@ namespace WOEmu6.Core.Objects
         {
             var world = ServerContext.Instance.Value.World;
             session.Player.SetStatusText($"Clicking menu item {itemId:X}");
+
+            // session.Send(new SetWeightPacket(0.4f));
             
             switch (itemId)
             {
+                case 100:
+                    session.Send(new AddTileEffectPacket(this, TileEffectType.FirePillar, 0, true));
+                    break;
+                
+                case 101:
+                    session.Send(new AddTileEffectPacket(this, TileEffectType.IcePillar, 0, true));
+                    break;
+                
+                case 102:
+                    session.Send(new AddTileEffectPacket(this, TileEffectType.FungusTrap, 0, true));
+                    break;
+                
+                case 103:
+                    session.Send(new AddTileEffectPacket(this, TileEffectType.Lava, 0, true));
+                    break;
+                
+                case 104:
+                    session.Send(new AddTileEffectPacket(this, TileEffectType.Snow, 0, true));
+                    break;
+                
+                case 105:
+                    session.Send(new AddTileEffectPacket(this, TileEffectType.Tentacles, 0, true));
+                    break;
+                
+                case 106:
+                    session.Send(new RemoveTileEffectPacket(this));
+                    break;
+                
                 case 1:
                     TileType = TileType.Dirt;
                     CommitChanges();
@@ -73,6 +118,10 @@ namespace WOEmu6.Core.Objects
                     Height += 10;
                     CommitChanges();
                     session.Send(new TileStripPacket((short)X, (short)Y, 1, 1 ));
+                    break;
+                
+                case 10:
+                    session.Send(new SetPlayerTitles("King", "What"));
                     break;
             
                 case 5:

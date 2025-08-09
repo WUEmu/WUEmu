@@ -35,9 +35,9 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             // writer.PushByte(0xF1);
-            writer.PushByte((byte)(Success ? 1 : 0));
+            writer.WriteByte((byte)(Success ? 1 : 0));
             writer.WriteShortPrefixedString(WelcomeMessage);
-            writer.PushByte(Layer);
+            writer.WriteByte(Layer);
             writer.PushLong(Time);
             writer.PushLong(DateTime.Now.Ticks);
             writer.PushFloat(Rotation);
@@ -45,14 +45,14 @@ namespace WOEmu6.Core.Packets.Server
             writer.PushFloat(Y);
             writer.PushFloat(Z);
             writer.WriteShortPrefixedString("model.creature.humanoid.human.player");
-            writer.PushByte(Power);
+            writer.WriteByte(Power);
             
-            writer.PushByte(0); // command type (for vehicles?)
-            writer.PushShort(10); // retry seconds?
+            writer.WriteByte((byte)0); // command type (for vehicles?)
+            writer.WriteShort(10); // retry seconds?
             writer.PushLong(0);//face
-            writer.PushByte(0); //kingdom template
+            writer.WriteByte((byte)0); //kingdom template
             writer.PushInt(0); //teleport counter
-            writer.PushByte(1); //blood?
+            writer.WriteByte((byte)1); //blood?
             writer.PushLong(0); // bridge id
             writer.PushFloat(3); //ground offset
             writer.PushInt(32); // tile size X

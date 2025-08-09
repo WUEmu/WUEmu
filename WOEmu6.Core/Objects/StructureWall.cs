@@ -17,6 +17,13 @@ namespace WOEmu6.Core.Objects
         public WallType WallType { get; set; }
         
         public string Material { get; set; }
+        
+        public Color Color { get; set; }
+        
+        /// <summary>
+        /// Height offset from ground. (30 units is 1 floor)
+        /// </summary>
+        public short Z { get; set; }
 
         public override IList<ContextMenuEntry> GetContextMenu(ClientSession session)
         {
@@ -40,6 +47,7 @@ namespace WOEmu6.Core.Objects
                 case 2000:
                     IsFinished = true;
                     WallType = WallType.Solid;
+                    Color = Color.Red;
                     Material = "wood";
                     session.Send(new AddStructureWallPacket(new WurmId(ObjectType.Structure, 0 ,1), this));
                     break;

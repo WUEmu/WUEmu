@@ -91,6 +91,16 @@
         Glow,
         Flames
     }
+
+    public enum TileEffectType : byte
+    {
+        Tentacles = 34,
+        FirePillar = 35,
+        IcePillar = 36,
+        FungusTrap = 37,
+        Lava = 51,
+        Snow = 53
+    }
     
     public enum SupportTicketCategory : byte
     {
