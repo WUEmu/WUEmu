@@ -33,7 +33,9 @@ namespace WOEmu6.Core.Packets.Client
             foreach (var target in Targets)
             {
                 var obj = world.Objects.GetObject(target);
-                if (EntryId == 9001)
+                if (EntryId == 1)
+                    client.Send(new ServerMessagePacket(":Event", obj.Description));
+                else if (EntryId == 9001)
                 {
                     client.Send(new ServerMessagePacket("DeveloperTools", ""));
                     client.Send(new ServerMessagePacket("DeveloperTools", obj.Id.ToString()));

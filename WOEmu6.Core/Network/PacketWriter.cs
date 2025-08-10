@@ -50,6 +50,8 @@ namespace WO.Core
 
         public void WriteBytePrefixedString(string str)
         {
+            if (str.Length > 255)
+                throw new ArgumentOutOfRangeException(nameof(str), "String can not be longer than 255 characters.");
             WriteByte((byte)str.Length);
             PushBytes(Encoding.UTF8.GetBytes(str));
         }

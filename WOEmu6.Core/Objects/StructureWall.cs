@@ -29,6 +29,8 @@ namespace WOEmu6.Core.Objects
         {
             return new List<ContextMenuEntry>
             {
+                new ContextMenuEntry(1999, "DELETE"),
+                
                 new ContextMenuEntry(2000, "Create wooden wall"),
                 new ContextMenuEntry(2001, "Create wooden door"),
                 new ContextMenuEntry(2002, "Create wooden window"),
@@ -44,6 +46,11 @@ namespace WOEmu6.Core.Objects
         {
             switch (itemId)
             {
+                case 1999:
+                    // session.Send(new RemoveStructureWallPacket(new WurmId(ObjectType.Structure, 0, 1), this));
+                    session.Send(new RemoveStructurePacket(new WurmId(ObjectType.Structure, 0, 1)));
+                    break;
+                
                 case 2000:
                     IsFinished = true;
                     WallType = WallType.Solid;

@@ -39,6 +39,8 @@ namespace WO.Core
 
         public byte ReadByte() => reader.ReadByte();
 
+        public bool ReadBoolean() => reader.ReadByte() == 1;
+
         public string ReadBytePrefixedString(Encoding? encoding = null)
         {
             var length = ReadByte();

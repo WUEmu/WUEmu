@@ -37,7 +37,7 @@ namespace WOEmu6.Core.Packets.Server
                 writer.WriteByte(Wall.Color.G);
                 writer.WriteByte(Wall.Color.B);
             }
-            writer.WriteShort(Wall.Z); // height (???)
+            writer.WriteShort(Wall.Z);
             writer.WriteByte((byte)0); //layer
             writer.WriteByte((byte)1); // wall orientation (??????)
             

@@ -23,5 +23,7 @@ namespace WOEmu6.Core.Objects
         {
             // placeholder
         }
+
+        public virtual string Description => $"You see a {Type}.";
     }
 }

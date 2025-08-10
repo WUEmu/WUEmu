@@ -44,13 +44,16 @@ namespace WOEmu6.Core.Objects
         {
             return new List<ContextMenuEntry>
             {
-                new ContextMenuEntry(1, "Make Dirt"),
+                new ContextMenuEntry(9234, "Make Dirt"),
                 new ContextMenuEntry(2, "Make Cobblestone"),
                 new ContextMenuEntry(3, "Raise"),
                 new ContextMenuEntry(4, "Lower"),
                 new ContextMenuEntry(5, "Flatten Around"),
                 new ContextMenuEntry(6, "Make structure"),
                 new ContextMenuEntry(7, "Add to build plan"),
+                new ContextMenuEntry(8, "[T] Spawn creasture"),
+                
+                new ContextMenuEntry(200, "[T] Trade Test"),
                 
                 new ContextMenuEntry(10, "TEST TITLES"),
                 
@@ -102,7 +105,13 @@ namespace WOEmu6.Core.Objects
                     session.Send(new RemoveTileEffectPacket(this));
                     break;
                 
-                case 1:
+                case 200:
+                    session.Send(new OpenTradeWindowPacket("Sjebgny", true));
+                    session.Send(new SetTradeAgreePacket(true));
+                    break;
+                
+                case 9234:
+                    session.Send(new SendActionPacket(session.Player.Id, "Making it into dirt", 1));
                     TileType = TileType.Dirt;
                     CommitChanges();
                     session.Send(new TileStripPacket((short)X, (short)Y, 1, 1 ));
@@ -154,6 +163,23 @@ namespace WOEmu6.Core.Objects
                     {
                         new Position2D<short>((short)X, (short)Y)
                     }));
+                    break;
+                }
+
+                case 8:
+                {
+                    var c = new Creature(new WurmId(ObjectType.Creature, 0, 0xbeef));
+                    c.Model = "model.creature.quadraped.wolf.worg";
+                    c.IsSolid = true;
+                    c.Condition = CreatureCondition.Diseased;
+                    c.HoverText = "It peers into your soul...";
+                    c.Position = new Position3D<float>(session.Player.X, session.Player.Y, session.Player.Z);
+                    c.Rotation = session.Player.Rotation;
+                    c.Face = 1;
+                    c.Kingdom = 1;
+                    c.Name = "Jan";
+                    session.Send(new AddCreaturePacket(c));
+                    session.Send(new AddChatUserPacket(c.Id, "Jan"));
                     break;
                 }
             }

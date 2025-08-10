@@ -37,6 +37,11 @@ namespace WOEmu6.Core.Objects
                     return new StructureWall(id);
                 }
 
+                case ObjectType.Creature:
+                {
+                    return new Creature(id);
+                }
+
                 default:
                     Console.WriteLine($"Object not implemented yet for {id}");
                     break;

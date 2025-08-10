@@ -7,6 +7,20 @@
         Toolbelt = 2
     }
 
+    public enum MapAnnotationCommand : byte
+    {
+        Create = 0,
+        Delete,
+        GetPermissions
+    }
+
+    public enum MapAnnotationType : byte
+    {
+        Player,
+        Village,
+        Alliance
+    }
+
     public enum StructureType : byte
     {
         House,
@@ -90,6 +104,21 @@
         Transparent,
         Glow,
         Flames
+    }
+
+    public enum CreatureCondition : byte
+    {
+        Fierce = 1,
+        Angry,
+        Raging,
+        Slow,
+        Alert,
+        Greenish,
+        Lurking,
+        Sly,
+        Hardened,
+        Scared,
+        Diseased
     }
 
     public enum TileEffectType : byte
