@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Serilog;
 using WO.Core;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
@@ -61,7 +62,7 @@ namespace WOEmu6.Core.Packets.Client
             }
             else if (Command == MapAnnotationCommand.Delete)
             {
-                Console.WriteLine($"Deleting annotation {Annotation.Id}");
+                Log.Debug($"Deleting annotation {Annotation.Id}");
             }
         }
     }

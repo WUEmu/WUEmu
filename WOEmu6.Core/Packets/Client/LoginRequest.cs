@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Serilog;
 using WO.Core;
-using WOEmu6.Core.BML;
-using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
@@ -34,7 +32,7 @@ namespace WOEmu6.Core.Packets.Client
 
         public void Handle(ClientSession client)
         {
-            Console.WriteLine("Player {0} joined!", UserName);
+            Log.Information("Player {0} joined!", UserName);
 
             client.Player = new Player(client, UserName);
             

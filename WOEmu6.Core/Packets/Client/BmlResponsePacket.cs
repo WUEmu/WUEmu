@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Serilog;
 using WO.Core;
 
 namespace WOEmu6.Core.Packets.Client
@@ -37,10 +38,10 @@ namespace WOEmu6.Core.Packets.Client
 
         public void Handle(ClientSession client)
         {
-            Console.WriteLine("Player submitted a BML form!");
-            Console.WriteLine(" - Button: {0}", ButtonId);
+            Log.Debug("Player submitted a BML form!");
+            Log.Debug(" - Button: {0}", ButtonId);
             foreach (var kvp in Parameters)
-                Console.WriteLine(" * {0}: {1}", kvp.Key, kvp.Value);
+                Log.Debug(" * {0}: {1}", kvp.Key, kvp.Value);
         }
     }
 }

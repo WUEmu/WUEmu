@@ -50,7 +50,7 @@ namespace WOEmu6.Core.Packets.Server
                         tempTileY = tempTileX = 0;
                     }
                     
-                    writer.PushInt(mesh.Data[tempTileX | tempTileY << mesh.MeshSize]);
+                    writer.PushInt(mesh.GetTile(tempTileX, tempTileY));
                     if (WithExtraData)
                         writer.WriteByte((byte)(flagsMesh.GetTile(tempTileX, tempTileY) & 0xFF));
                 }

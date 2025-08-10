@@ -16,7 +16,9 @@ namespace WOEmu6.Core
             IncomingPacketFactory = new IncomingPacketFactory();
             Commands = new CommandRepository();
             WurmIdGenerator = new WurmIdGenerator(5_000);
-            World = new World(1512.0f, 2148.0f);
+            // World = new World(1436.0f, 2344.0f);
+            // World = new World(1600.0f, 2000.0f);
+            World = new World("default");
         }
         
         public Lua Lua { get; }

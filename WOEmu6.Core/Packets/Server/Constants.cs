@@ -232,4 +232,92 @@
         
         // ...
     }
+
+    public enum FishingRodType : byte
+    {
+        Pole,
+        BasicRod,
+        FineRod,
+        DeepWaterRod,
+        DeepSeaRod,
+        BasicRodWithLine,
+        FineRodWithLine,
+        DeepWaterRodWithLine,
+        DeepSeaRodWithLine
+    }
+
+    public enum FishType : byte
+    {
+        None,
+        Roach,
+        Perch,
+        Trout,
+        Pike,
+        Catfish,
+        Snook,
+        Herring,
+        Carp,
+        Bass,
+        Salmon,
+        Octopus,
+        Marlin,
+        Blueshark,
+        Dorado,
+        Sailfish,
+        Whiteshark,
+        Tuna,
+        Minnow,
+        Loach,
+        Wurmfish,
+        Sardine,
+        Clam
+    }
+
+    public enum FishingFloatType : byte
+    {
+        None,
+        Feather,
+        Twig,
+        Moss,
+        Bark
+    }
+
+    public enum FishingBaitType : byte
+    {
+        None,
+        Fly,
+        Cheese,
+        Dough,
+        Wurm,
+        Sardine,
+        Roach,
+        Perch,
+        Minnow,
+        FishBait,
+        Grub,
+        Wheat,
+        Corn
+    }
+
+    public enum FishingReelType : byte
+    {
+        None,
+        Light,
+        Medium,
+        DeepWater,
+        Professional
+    }
+
+    public enum FishingHookType : byte
+    {
+        None,
+        Wood,
+        Metal,
+        Bone
+    }
+
+    public enum FishingSubCommand : byte
+    {
+        StartFishing
+    }
 }

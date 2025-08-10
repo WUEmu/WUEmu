@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using Serilog;
 using WO.Core;
 using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
@@ -47,7 +48,7 @@ namespace WOEmu6.Core.Packets
                     var packet = serverContext.IncomingPacketFactory.Get(opcode);
                     if (packet == null)
                     {
-                        Console.WriteLine($"Unimplemented opcode {opcode} ({(sbyte)opcode})");
+                        Log.Warning("Unimplemented opcode {opcode} ({opcodeSigned})", opcode, (sbyte)opcode);
                         continue;
                     }
 
@@ -58,14 +59,14 @@ namespace WOEmu6.Core.Packets
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Error: " + ex);
+                        Log.Error(ex, "Error for player {player}", Player?.Name);
                     }
                 }
             }
             catch (IOException ex)
             {
                 // User disconnected.
-                Console.WriteLine("User disconnected.");
+                Log.Information("User disconnected.");
             }
         }
 

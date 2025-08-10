@@ -1,4 +1,5 @@
 ﻿using System;
+using Serilog;
 
 namespace WOEmu6.Core.Objects
 {
@@ -19,17 +20,10 @@ namespace WOEmu6.Core.Objects
                 {
                     var coordinate = id.ToTileCoordinate();
                     var direction = id.ToDirection();
-                    Console.WriteLine($"Coord({coordinate}, dir={direction})");
+                    Log.Debug("Coord({coordinate}, dir={direction})", coordinate, direction);
                     // break;
                     
                     return new TileBorder(id);
-                }
-
-                case ObjectType.Skill:
-                {
-                    Console.WriteLine("Skill");
-
-                    break;
                 }
 
                 case ObjectType.Wall:
@@ -43,7 +37,7 @@ namespace WOEmu6.Core.Objects
                 }
 
                 default:
-                    Console.WriteLine($"Object not implemented yet for {id}");
+                    Log.Warning("Object not implemented yet for {id}", id);
                     break;
             }
 

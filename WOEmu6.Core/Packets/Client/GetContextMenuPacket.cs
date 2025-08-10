@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Serilog;
 using WO.Core;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
@@ -36,7 +37,7 @@ namespace WOEmu6.Core.Packets.Client
             menu.Add(new ContextMenuEntry(9001, "Get ID info"));
             // menu.Add(new ContextMenuEntry(0, "DEVELOPER TOOLS"));
             
-            Console.WriteLine("Req: {0}, Source: {1}, Target = {2} ({2:X16})", RequestId, SourceId, TargetId);
+            Log.Debug("Req: {req}, Source: {src}, Target: {target} ({target:X16})", RequestId, SourceId, TargetId, TargetId);
             client.Send(new ContextMenuPacket(RequestId, menu, "This is a test"));
         }
     }

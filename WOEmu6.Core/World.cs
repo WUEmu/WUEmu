@@ -1,23 +1,34 @@
-﻿using WOEmu6.Core.File;
+﻿using System.IO;
+using System.Text.Json;
+using Serilog;
+using WOEmu6.Core.File;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core
 {
     public class World
     {
-        public World(float spawnX, float spawnY)
+        private string basePath;
+        private WorldConfiguration configuration;
+        
+        public World(string name = "default") //float spawnX, float spawnY)
         {
-            SpawnX = spawnX;
-            SpawnY = spawnY;
+            Log.Information("Loading world {world}", name);
             
-            TopLayer = new Mesh("top_layer.map");
-            TopLayer.Load();
+            basePath = Path.Combine("worlds", name);
+            using (var fs = System.IO.File.Open(Path.Combine(basePath, "world.json"), FileMode.Open))
+            {
+                var reader = new StreamReader(fs);
+                var contents = reader.ReadToEnd();
+                configuration = JsonSerializer.Deserialize<WorldConfiguration>(contents);
+            }
             
-            CaveLayer = new Mesh("map_cave.map");
-            CaveLayer.Load();
+            SpawnX = configuration.SpawnX;
+            SpawnY = configuration.SpawnY;
             
-            Flags = new Mesh("flags.map");
-            Flags.Load();
+            TopLayer = configuration.SurfaceMeshFile != null ? new FileMesh(Path.Combine(basePath, configuration.SurfaceMeshFile)) : new ZoneTestMesh();
+            CaveLayer = configuration.CaveMeshFile != null ? new FileMesh(Path.Combine(basePath, configuration.CaveMeshFile)) : new EmptyMesh();
+            Flags = configuration.FlagMeshFile != null ? new FileMesh(Path.Combine(basePath, configuration.FlagMeshFile)) : new EmptyMesh();
             
             Objects = new ObjectGateway();
         }
@@ -26,11 +37,11 @@ namespace WOEmu6.Core
         
         public float SpawnY { get; }
         
-        public Mesh CaveLayer { get; }
+        public IMesh CaveLayer { get; }
         
-        public Mesh TopLayer { get; }
+        public IMesh TopLayer { get; }
         
-        public Mesh Flags { get; }
+        public IMesh Flags { get; }
         
         public ObjectGateway Objects { get; }
     }

@@ -24,6 +24,14 @@ namespace WOEmu6.Core.Objects
             Id = new WurmId(ObjectType.Tile, 0, 0); // todo: encode properly
         }
 
+        public Tile(short x, short y, short height, TileType type, byte data)
+        {
+            X = x;
+            Y = y;
+            Height = height;
+            TileType = type;
+        }
+
         public TileType TileType
         {
             get => (TileType)(encodedValue >> 24);
@@ -42,7 +50,9 @@ namespace WOEmu6.Core.Objects
 
         public override IList<ContextMenuEntry> GetContextMenu(ClientSession session)
         {
-            return new List<ContextMenuEntry>
+            session.Send(new AddInventoryItem(new TestItem("care")));
+            
+            var res = new List<ContextMenuEntry>
             {
                 new ContextMenuEntry(9234, "Make Dirt"),
                 new ContextMenuEntry(2, "Make Cobblestone"),
@@ -66,6 +76,13 @@ namespace WOEmu6.Core.Objects
                 new ContextMenuEntry(105, "Tentacles"),
                 new ContextMenuEntry(106, "- Remove Effect"),
             };
+
+            if (Height < 0)
+            {
+                res.Add(new ContextMenuEntry(199, "Start Fishing"));
+            }
+
+            return res;
         }
 
         public override void OnMenuItemClick(ClientSession session, short itemId)
@@ -180,6 +197,12 @@ namespace WOEmu6.Core.Objects
                     c.Name = "Jan";
                     session.Send(new AddCreaturePacket(c));
                     session.Send(new AddChatUserPacket(c.Id, "Jan"));
+                    break;
+                }
+
+                case 199:
+                {
+                    session.Send(new FishingStartPacket(10, 10, FishingRodType.FineRodWithLine, 0, FishingReelType.Professional, 0, FishingFloatType.Moss, FishingBaitType.Cheese, false));
                     break;
                 }
             }
