@@ -11,9 +11,11 @@ namespace WOEmu6.Core.Objects
             counter = current;
         }
         
-        public long NewWurmId(ObjectType type)
+        public WurmId NewWurmId(ObjectType type)
         {
-            return Interlocked.Increment(ref counter);
+            // TODO: have a counter per object type.
+            var id = Interlocked.Increment(ref counter);
+            return new WurmId(type, 0, id);
         }
     }
 }

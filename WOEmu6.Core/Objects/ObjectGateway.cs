@@ -33,7 +33,14 @@ namespace WOEmu6.Core.Objects
 
                 case ObjectType.Creature:
                 {
-                    return new Creature(id);
+                    lock (world.creaturesLock)
+                    {
+                        if (world.creatures.TryGetValue(id, out var creature))
+                            return creature;
+                    }
+                    
+                    Log.Warning("Creature with ID {id} not found", id);
+                    break;
                 }
 
                 default:

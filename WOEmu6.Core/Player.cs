@@ -59,8 +59,8 @@ namespace WOEmu6.Core
             //Console.WriteLine($"Player moved to ({X}, {Y}, {Z})");
             if (TileX % 25 == 0 || TileY % 25 == 0)
             {
-                Log.Debug("Sending new tile chunk");
-                client.Send(new TileStripPacket( (short)(TileX - (width/2)), (short)(TileY - (width/2)), (short)100, (short)height));
+                // Log.Debug("Sending new tile chunk");
+                // client.Send(new TileStripPacket( (short)(TileX - (width/2)), (short)(TileY - (width/2)), (short)100, (short)height));
                 // top 100x50 far tiles around the player.
                 // client.Send(new FarTileChunkPacket((short)(client.Player.TileX - (100/2)), (short)(client.Player.TileY - (100/2) - 50), 100, 50));
                 

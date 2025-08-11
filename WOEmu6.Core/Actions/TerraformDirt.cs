@@ -7,6 +7,8 @@ namespace WOEmu6.Core.Actions
 {
     public class TerraformDirt : TimedAction<Tile>
     {
+        public override short ActionId => 2000;
+
         public override TimeSpan GetDuration(ClientSession client, Tile target) => TimeSpan.FromSeconds(3);
 
         public override void OnTimerFinished(ClientSession client, Tile target)

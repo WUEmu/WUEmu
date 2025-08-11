@@ -11,6 +11,12 @@ namespace WOEmu6.Core.Objects
         public Creature(WurmId id)
         {
             Id = id;
+            lock (ServerContext.Instance.Value.World.creaturesLock)
+                ServerContext.Instance.Value.World.creatures.TryAdd(Id, this);
+        }
+
+        public Creature() : this(ServerContext.Instance.Value.WurmIdGenerator.NewWurmId(ObjectType.Creature))
+        {
         }
         
         public string Model { get; set; }

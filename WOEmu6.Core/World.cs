@@ -10,14 +10,20 @@ namespace WOEmu6.Core
 {
     public class World
     {
-        private string basePath;
+        public string basePath;
         private WorldConfiguration configuration;
         private List<WorldTimer> timers;
         private object timerLock = new object();
+
+        // TODO: this must be zoned in the future
+        public Dictionary<long, Creature> creatures;
+        public object creaturesLock = new object();
         
         public World(string name = "default") //float spawnX, float spawnY)
         {
             Log.Information("Loading world {world}", name);
+
+            creatures = new Dictionary<long, Creature>();
             
             basePath = Path.Combine("worlds", name);
             using (var fs = System.IO.File.Open(Path.Combine(basePath, "world.json"), FileMode.Open))

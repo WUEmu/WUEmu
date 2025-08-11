@@ -18,9 +18,9 @@ namespace WOEmu6.Core
                 .CreateLogger();
             
             var serverContext = ServerContext.Instance.Value;
-            var loader = new ScriptLoader(serverContext.Lua, "Scripts");
+            var loader = new ScriptLoader(serverContext);
             loader.Initialize();
-            
+
             var ipEndPoint = new IPEndPoint(IPAddress.Any, 3724);
             var socket = new TcpListener(ipEndPoint);
             socket.Start();

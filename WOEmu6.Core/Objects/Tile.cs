@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WOEmu6.Core.Actions;
 using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
+using WOEmu6.Core.Scripting;
 using WOEmu6.Core.Utilities;
 
 namespace WOEmu6.Core.Objects
@@ -200,8 +201,7 @@ namespace WOEmu6.Core.Objects
 
                 case 8:
                 {
-                    var c = new Creature(new WurmId(ObjectType.Creature, 0, 0xbeef));
-                    c.Model = "model.creature.quadraped.wolf.worg";
+                    var c = new ScriptedCreature("Dragon");
                     c.IsSolid = true;
                     c.Condition = CreatureCondition.Diseased;
                     c.HoverText = "It peers into your soul...";
@@ -209,7 +209,6 @@ namespace WOEmu6.Core.Objects
                     c.Rotation = session.Player.Rotation;
                     c.Face = 1;
                     c.Kingdom = 1;
-                    c.Name = "Jan";
                     session.Send(new AddCreaturePacket(c));
                     session.Send(new AddChatUserPacket(c.Id, "Jan"));
                     break;

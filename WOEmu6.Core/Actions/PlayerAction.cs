@@ -9,6 +9,8 @@ namespace WOEmu6.Core.Actions
     public abstract class PlayerAction<TTarget> 
         where TTarget : ObjectBase
     {
+        public abstract short ActionId { get; }
+        
         public abstract string GetActionText(ClientSession client, TTarget target);
         
         public abstract void Execute(ClientSession client, TTarget target);

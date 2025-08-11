@@ -1,5 +1,6 @@
 ﻿using System;
 using NLua;
+using Serilog;
 using WOEmu6.Core.Commands;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Client;
@@ -13,6 +14,8 @@ namespace WOEmu6.Core
         private ServerContext()
         {
             Lua = new Lua();
+            Lua["print"] = (string str) => Log.Information(str);
+            
             IncomingPacketFactory = new IncomingPacketFactory();
             Commands = new CommandRepository();
             WurmIdGenerator = new WurmIdGenerator(5_000);
