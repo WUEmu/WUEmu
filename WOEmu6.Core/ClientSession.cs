@@ -4,7 +4,9 @@ using System.Net.Sockets;
 using System.Text;
 using Serilog;
 using WO.Core;
+using WOEmu6.Core.Actions;
 using WOEmu6.Core.Network;
+using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets
@@ -81,6 +83,11 @@ namespace WOEmu6.Core.Packets
             encryption.Encrypt(bytes, 0, bytes.Length);
             stream.Write(bytes);
             stream.Flush();
+        }
+
+        public void PerformAction<TTarget>(PlayerAction<TTarget> target) where TTarget : ObjectBase
+        {
+            
         }
     }
 }

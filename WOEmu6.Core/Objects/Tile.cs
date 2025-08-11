@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WOEmu6.Core.Actions;
 using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Utilities;
@@ -126,13 +127,13 @@ namespace WOEmu6.Core.Objects
                     session.Send(new OpenTradeWindowPacket("Sjebgny", true));
                     session.Send(new SetTradeAgreePacket(true));
                     break;
-                
+
                 case 9234:
-                    session.Send(new SendActionPacket(session.Player.Id, "Making it into dirt", 1));
-                    TileType = TileType.Dirt;
-                    CommitChanges();
-                    session.Send(new TileStripPacket((short)X, (short)Y, 1, 1 ));
+                {
+                    var action = new TerraformDirt();
+                    action.Execute(session, this);
                     break;
+                }
             
                 case 2:
                     TileType = TileType.Cobblestone;

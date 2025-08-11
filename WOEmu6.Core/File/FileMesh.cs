@@ -20,7 +20,7 @@ namespace WOEmu6.Core.File
         private int[] data;
         private int linesPerRow;
         
-        public FileMesh(string path)
+        public FileMesh(World world, string path)
         {
             filename = Path.GetFileNameWithoutExtension(path);
             inputStream = System.IO.File.OpenRead(path);
@@ -28,6 +28,8 @@ namespace WOEmu6.Core.File
             MeshSize = (int)(Math.Log(mapDimension) / Math.Log(2.0d));
             reader = new BinaryReader(inputStream);
             Load();
+            
+            world.RegisterTimer(new FileMeshSaveTimer(this));
         }
         
         public int MeshSize { get; }

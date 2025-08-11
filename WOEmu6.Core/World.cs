@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
 using Serilog;
 using WOEmu6.Core.File;
 using WOEmu6.Core.Objects;
+using WOEmu6.Core.Timers;
 
 namespace WOEmu6.Core
 {
@@ -10,6 +12,8 @@ namespace WOEmu6.Core
     {
         private string basePath;
         private WorldConfiguration configuration;
+        private List<WorldTimer> timers;
+        private object timerLock = new object();
         
         public World(string name = "default") //float spawnX, float spawnY)
         {
@@ -25,10 +29,11 @@ namespace WOEmu6.Core
             
             SpawnX = configuration.SpawnX;
             SpawnY = configuration.SpawnY;
-            
-            TopLayer = configuration.SurfaceMeshFile != null ? new FileMesh(Path.Combine(basePath, configuration.SurfaceMeshFile)) : new ZoneTestMesh();
-            CaveLayer = configuration.CaveMeshFile != null ? new FileMesh(Path.Combine(basePath, configuration.CaveMeshFile)) : new EmptyMesh();
-            Flags = configuration.FlagMeshFile != null ? new FileMesh(Path.Combine(basePath, configuration.FlagMeshFile)) : new EmptyMesh();
+
+            timers = new List<WorldTimer>();
+            TopLayer = configuration.SurfaceMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.SurfaceMeshFile)) : new ZoneTestMesh();
+            CaveLayer = configuration.CaveMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.CaveMeshFile)) : new EmptyMesh();
+            Flags = configuration.FlagMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.FlagMeshFile)) : new EmptyMesh();
             
             Objects = new ObjectGateway();
         }
@@ -44,5 +49,18 @@ namespace WOEmu6.Core
         public IMesh Flags { get; }
         
         public ObjectGateway Objects { get; }
+
+        public void RegisterTimer(WorldTimer timer, bool startImmediately = true)
+        {
+            Log.Debug("Registered world timer {timer}, runs every {interval}", timer.Name, timer.Interval);
+            
+            lock (timerLock)
+            {
+                timers.Add(timer);
+            }
+            
+            if (startImmediately)
+                timer.Start();
+        }
     }
 }

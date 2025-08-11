@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using Serilog;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
+using WOEmu6.Core.Timers;
 
 namespace WOEmu6.Core
 {
     public class Player
     {
         private readonly ClientSession client;
+        private List<PlayerTimer> timers;
+        private object timerLock = new object();
 
         public Player(ClientSession client, string name)
         {
@@ -18,6 +22,7 @@ namespace WOEmu6.Core
             X = World.SpawnX;
             Y = World.SpawnY;
             Z = 5.0f;
+            timers = new List<PlayerTimer>();
         }
         
         public WurmId Id { get => -1; }
@@ -62,6 +67,26 @@ namespace WOEmu6.Core
                 // client.Send(new FarTileChunkPacket((short)(TileX - width), (short)(TileY - width), width, height));
                 // client.Send(new FarTileChunkPacket((short)(TileX + width), (short)(TileY - width), width, height));
             }
+        }
+
+        public void RegisterTimer(PlayerTimer timer, bool startImmediately = true)
+        {
+            Log.Debug("Registered player timer {timer}", timer.Name);
+            
+            lock (timerLock)
+            {
+                timers.Add(timer);
+            }
+            
+            if (startImmediately)
+                timer.Start();
+        }
+
+        public void DeregisterTimer(PlayerTimer timer)
+        {
+            lock (timerLock)
+                timers.Remove(timer);
+            Log.Debug("Player timer {timer} deregistered", timer.Name);
         }
     }
 }
