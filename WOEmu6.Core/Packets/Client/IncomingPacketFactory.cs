@@ -17,6 +17,7 @@ namespace WOEmu6.Core.Packets.Client
             RegisterPacket(new BmlResponsePacket());
             RegisterPacket(new ClientMessagePacket());
             RegisterPacket(new GetContextMenuPacket());
+            RegisterPacket(new GetSelectionMenuPacket());
             RegisterPacket(new SupportTicketPacket());
             RegisterPacket(new ContextMenuClickPacket());
             RegisterPacket(new TradeAgreePacket());

@@ -339,4 +339,10 @@
         Linden,
         Orange
     }
+
+    public enum SelectionMenuAction : short
+    {
+        Open = 3,
+        Close = 4
+    }
 }
