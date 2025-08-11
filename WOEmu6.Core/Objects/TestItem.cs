@@ -12,6 +12,7 @@
         public override string Name => "My Test Item";
 
         public override string HoverText => "HOvering";
+        
         public override string Model { get; }
 
         public override float SizeModifier { get; }

@@ -320,4 +320,23 @@
     {
         StartFishing
     }
+
+    public enum TreeType : byte
+    {
+        Birch,
+        Pine,
+        Oak,
+        Cedar,
+        Willow,
+        Maple,
+        Apple,
+        Lemon,
+        Olive,
+        Cherry,
+        Chestnut,
+        Walnut,
+        Fir,
+        Linden,
+        Orange
+    }
 }

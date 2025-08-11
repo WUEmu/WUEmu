@@ -8,7 +8,7 @@
         
         public abstract string Model { get; }
 
-        public virtual byte Material { get; } = 0;
+        public virtual byte Material { get; } = 38;
         
         public abstract string Description { get; }
 

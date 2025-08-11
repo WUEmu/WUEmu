@@ -31,6 +31,7 @@ namespace WOEmu6.Core.Objects
             Y = y;
             Height = height;
             TileType = type;
+            Data = data;
         }
 
         public TileType TileType
@@ -43,6 +44,12 @@ namespace WOEmu6.Core.Objects
         {
             get => (short)(encodedValue & 0xFFFF);
             set => encodedValue = (int)(((encodedValue & 0xFFFF0000) | (value)));
+        }
+
+        public byte Data
+        {
+            get => (byte)((encodedValue >> 16) & 0xFF);
+            set => encodedValue = (int)(((encodedValue & 0xFFFF00FF) | (uint)(value << 8)));
         }
         
         public static implicit operator int(Tile v) => v.encodedValue;
@@ -63,8 +70,9 @@ namespace WOEmu6.Core.Objects
                 new ContextMenuEntry(6, "Make structure"),
                 new ContextMenuEntry(7, "Add to build plan"),
                 new ContextMenuEntry(8, "[T] Spawn creasture"),
-                
                 new ContextMenuEntry(200, "[T] Trade Test"),
+                new ContextMenuEntry(201, "[T] Place Test"),
+                
                 
                 new ContextMenuEntry(10, "TEST TITLES"),
                 
@@ -140,7 +148,13 @@ namespace WOEmu6.Core.Objects
                     CommitChanges();
                     session.Send(new TileStripPacket((short)X, (short)Y, 1, 1 ));
                     break;
-            
+
+                case 201:
+                {
+                    session.Send(new StartPlaceItemPacket(new TestItem("model.furniture.table.square.small")));
+                    break;
+                }
+                
                 case 3:
                     Height += 10;
                     CommitChanges();
@@ -211,6 +225,6 @@ namespace WOEmu6.Core.Objects
 
         protected override ObjectType Type => ObjectType.Tile;
 
-        public override string ToString() => $"Tile({TileType}, {X}, {Y})";
+        public override string ToString() => $"Tile({TileType}, {X}, {Y}, Data={Data:X})";
     }
 }

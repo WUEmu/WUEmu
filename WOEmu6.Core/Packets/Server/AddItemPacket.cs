@@ -3,7 +3,10 @@ using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
 {
-    public class PlaceItemPacket : IOutgoingPacket
+    /// <summary>
+    /// Sends a new item to be placed into the world.
+    /// </summary>
+    public class AddItemPacket : IOutgoingPacket
     {
         public Item Item { get; }
         public float X { get; }
@@ -12,7 +15,7 @@ namespace WOEmu6.Core.Packets.Server
         public bool IsOnSurface { get; }
         public float Rotation { get; }
 
-        public PlaceItemPacket(Item item, float x, float y, float z, bool isOnSurface = true, float rotation = 0f)
+        public AddItemPacket(Item item, float x, float y, float z, bool isOnSurface = true, float rotation = 0f)
         {
             Item = item;
             X = x;
@@ -41,18 +44,18 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteBytePrefixedString(Item.Name);
             writer.WriteBytePrefixedString(Item.HoverText);
             writer.WriteBytePrefixedString(Item.Model);
-            writer.WriteByte((byte)(IsOnSurface ? 1 : 0));
+            writer.WriteByte(0);
             writer.WriteByte(Item.Material);
             writer.WriteBytePrefixedString(Item.Description);
-            writer.WriteShort(0); // image number
+            writer.WriteShort(50); // image number
             writer.WriteByte((byte)1);
             writer.PushFloat(Item.Quality);
             writer.PushFloat(Item.Damage);
             writer.PushFloat(Item.SizeModifier);
             writer.PushLong(0); // bridge?
             writer.WriteByte(Item.Rarity);
-            writer.WriteByte((byte)0); // something about containers
-            writer.WriteByte((byte)0); // extra data
+            writer.WriteByte((byte)1); // 1 means able to placed on top something about containers
+            writer.WriteBoolean(false); // has extra data
         }
     }
 }
