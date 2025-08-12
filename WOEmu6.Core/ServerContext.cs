@@ -1,9 +1,8 @@
 ﻿using System;
-using NLua;
-using Serilog;
 using WOEmu6.Core.Commands;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Client;
+using WOEmu6.Core.Scripting;
 
 namespace WOEmu6.Core
 {
@@ -13,26 +12,26 @@ namespace WOEmu6.Core
         
         private ServerContext()
         {
-            Lua = new Lua();
-            Lua["print"] = (string str) => Log.Information(str);
-            
             IncomingPacketFactory = new IncomingPacketFactory();
             Commands = new CommandRepository();
             WurmIdGenerator = new WurmIdGenerator(5_000);
             // World = new World(1436.0f, 2344.0f);
             // World = new World(1600.0f, 2000.0f);
             World = new World("default");
+            ScriptLoader = new ScriptLoader(this);
+            ScriptWorld = new ScriptWorld(World);
         }
-        
-        public Lua Lua { get; }
         
         public IncomingPacketFactory IncomingPacketFactory { get; }
         
         public CommandRepository Commands { get; }
         
-        
         public WurmIdGenerator WurmIdGenerator { get; }
         
         public World World { get; }
+        
+        public ScriptLoader ScriptLoader { get; }
+        
+        public ScriptWorld ScriptWorld { get; }
     }
 }

@@ -35,5 +35,15 @@
         public static implicit operator long(WurmId id) => id.Value;
 
         public override string ToString() => $"WurmId({Type.ToString()}, {Origin}, {Counter:X12})";
+
+        public override int GetHashCode() => Value.GetHashCode();
+
+        public override bool Equals(object obj)
+        {
+            var otherId = obj as WurmId;
+            if (otherId == null)
+                return false;
+            return Value == otherId.Value;
+        }
     }
 }

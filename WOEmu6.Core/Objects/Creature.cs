@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Utilities;
+using WOEmu6.Core.Zones;
 
 namespace WOEmu6.Core.Objects
 {
     public class Creature : ObjectBase
     {
-        public Creature(WurmId id)
+        public Creature(WurmId id, Zone zone)
         {
             Id = id;
-            lock (ServerContext.Instance.Value.World.creaturesLock)
-                ServerContext.Instance.Value.World.creatures.TryAdd(Id, this);
+            CurrentZone = zone;
         }
 
-        public Creature() : this(ServerContext.Instance.Value.WurmIdGenerator.NewWurmId(ObjectType.Creature))
+        public Creature(Zone zone) : this(ServerContext.Instance.Value.WurmIdGenerator.NewWurmId(ObjectType.Creature), zone)
         {
         }
+        
+        public Zone CurrentZone { get; set; }
         
         public string Model { get; set; }
         
@@ -68,13 +70,20 @@ namespace WOEmu6.Core.Objects
             switch (itemId)
             {
                 case 5000:
-                    session.Send(new MoveCreaturePacket(Id, new Position2D<float>(session.Player.Y + randomY, session.Player.X + randomX), randomRot));
+                    Move(session.Player.X + randomX, session.Player.Y + randomY, randomRot);
                     break;
                 
                 case 5001:
-                    session.Send(new RemoveCreaturePacket(Id));
+                    CurrentZone.RemoveCreature(this);
                     break;
             }
+        }
+
+        public void Move(float x, float y, byte rotation)
+        {
+            Position = new Position3D<float>(x, y, 0);
+            Rotation = rotation;
+            CurrentZone.CreatureMoved(this);
         }
 
         protected override ObjectType Type => ObjectType.Creature;

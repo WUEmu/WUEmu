@@ -5,7 +5,9 @@ using System.Text.Json;
 using Serilog;
 using WOEmu6.Core.File;
 using WOEmu6.Core.Objects;
+using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Timers;
+using WOEmu6.Core.Zones;
 
 namespace WOEmu6.Core
 {
@@ -16,19 +18,18 @@ namespace WOEmu6.Core
         private List<WorldTimer> timers;
         private object timerLock = new object();
 
-        // TODO: this must be zoned in the future
-        public Dictionary<long, Creature> creatures;
-        public object creaturesLock = new object();
+        private List<Player> allPlayers;
+        private object allPlayersLock = new object();
 
-        public List<Player> players;
-        public object playerLock = new object();
-        
+        private Dictionary<WurmId, Item> allItems;
+        private object allItemsLock = new object();
+
         public World(string name = "default") //float spawnX, float spawnY)
         {
             Log.Information("Loading world {world}", name);
 
-            creatures = new Dictionary<long, Creature>();
-            players = new List<Player>();
+            allPlayers = new List<Player>();
+            allItems = new Dictionary<WurmId, Item>();
             
             basePath = Path.Combine("worlds", name);
             using (var fs = System.IO.File.Open(Path.Combine(basePath, "world.json"), FileMode.Open))
@@ -42,11 +43,13 @@ namespace WOEmu6.Core
             SpawnY = configuration.SpawnY;
 
             timers = new List<WorldTimer>();
-            TopLayer = configuration.SurfaceMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.SurfaceMeshFile)) : new ZoneTestMesh();
+            TopLayer = new ZoneTestMesh(); //configuration.SurfaceMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.SurfaceMeshFile)) : new ZoneTestMesh();
             CaveLayer = configuration.CaveMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.CaveMeshFile)) : new EmptyMesh();
             Flags = configuration.FlagMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.FlagMeshFile)) : new EmptyMesh();
             
-            Objects = new ObjectGateway();
+            AllObjects = new ObjectPool();
+            Objects = new ObjectGateway(AllObjects);
+            ZoneManager = new ZoneManager(this, TopLayer);
         }
 
         public float SpawnX { get; }
@@ -60,6 +63,10 @@ namespace WOEmu6.Core
         public IMesh Flags { get; }
         
         public ObjectGateway Objects { get; }
+        
+        public ZoneManager ZoneManager { get; }
+        
+        public ObjectPool AllObjects { get; }
 
         public void RegisterTimer(WorldTimer timer, bool startImmediately = true)
         {
@@ -72,6 +79,57 @@ namespace WOEmu6.Core
             
             if (startImmediately)
                 timer.Start();
+        }
+
+        public void BroadcastPacketToAllPlayers(IOutgoingPacket packet)
+        {
+            Player[] currentPlayers;
+            lock (allPlayersLock)
+                currentPlayers = allPlayers.ToArray();
+            
+            foreach (var player in currentPlayers)
+                player.Client.Send(packet);
+        }
+
+        public void PlayerJoined(Player player)
+        {
+            lock (allPlayersLock)
+                allPlayers.Add(player);
+        }
+
+        public void PlayerDisconnected(Player player)
+        {
+            lock (allPlayersLock)
+                allPlayers.Remove(player);
+        }
+
+        public void RegisterItem(Item item)
+        {
+            lock (allItemsLock)
+            {
+                if (!allItems.TryAdd(item.Id, item))
+                    return;
+            }
+
+            Log.Debug("New item registered: {name}, id={id}", item.Name, item.Id);
+        }
+
+        public void DeregisterItem(Item item)
+        {
+            lock (allItemsLock)
+                allItems.Remove(item.Id);
+            Log.Debug("Item deregistered: {name}, id={id}", item.Name, item.Id);
+        }
+
+        public Item GetItem(WurmId id)
+        {
+            lock (allItemsLock)
+            {
+                if (allItems.TryGetValue(id, out var item))
+                    return item;
+            }
+
+            return null;
         }
     }
 }

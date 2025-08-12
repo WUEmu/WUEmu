@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using MoonSharp.Interpreter;
 using Serilog;
+using WOEmu6.Core.BML;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Timers;
+using WOEmu6.Core.Zones;
 
 namespace WOEmu6.Core
 {
+    [MoonSharpUserData]
     public class Player
     {
         private List<PlayerTimer> timers;
@@ -22,11 +26,15 @@ namespace WOEmu6.Core
             Y = World.SpawnY;
             Z = 5.0f;
             timers = new List<PlayerTimer>();
+
+            CurrentZone = World.ZoneManager.Load((short)(X / 4), (short)(Y / 4));
         }
         
         public WurmId Id { get => -1; }
         
         public ClientSession Client { get; }
+        
+        public Zone CurrentZone { get; private set; } 
 
         public World World { get; }
         
@@ -54,20 +62,24 @@ namespace WOEmu6.Core
             Z = z;
             Rotation = rotation;
 
-            short width = 100;
-            short height = 100;
-            
+            var zoneId = new ZoneId(x, y);
+            if (zoneId != CurrentZone.Id)
+                MoveToDifferentZone(zoneId);
+
+            // short width = 100;
+            // short height = 100;
+
             //Console.WriteLine($"Player moved to ({X}, {Y}, {Z})");
-            if (TileX % 25 == 0 || TileY % 25 == 0)
+            /*if (TileX % 25 == 0 || TileY % 25 == 0)
             {
                 // Log.Debug("Sending new tile chunk");
                 // client.Send(new TileStripPacket( (short)(TileX - (width/2)), (short)(TileY - (width/2)), (short)100, (short)height));
                 // top 100x50 far tiles around the player.
                 // client.Send(new FarTileChunkPacket((short)(client.Player.TileX - (100/2)), (short)(client.Player.TileY - (100/2) - 50), 100, 50));
-                
+
                 // client.Send(new FarTileChunkPacket((short)(TileX - width), (short)(TileY - width), width, height));
                 // client.Send(new FarTileChunkPacket((short)(TileX + width), (short)(TileY - width), width, height));
-            }
+            }*/
         }
 
         public void RegisterTimer(PlayerTimer timer, bool startImmediately = true)
@@ -88,6 +100,30 @@ namespace WOEmu6.Core
             lock (timerLock)
                 timers.Remove(timer);
             Log.Debug("Player timer {timer} deregistered", timer.Name);
+        }
+
+        public void MoveToDifferentZone(ZoneId newZoneId)
+        {
+            CurrentZone.RemovePlayer(this);
+            var newZone = World.ZoneManager.Load(newZoneId);
+            CurrentZone = newZone;
+            CurrentZone.AddPlayer(this);
+        }
+
+        public void SendMessage(string channel, string message)
+        {
+            Client.Send(new ServerMessagePacket(channel, message));
+        }
+
+        public void SendForm(BmlForm form)
+        {
+            Client.Send(new BmlFormPacket(form));
+        }
+
+        public void AddItemToInventory(Item item)
+        {
+            World.RegisterItem(item);
+            Client.Send(new AddInventoryItem(item));
         }
     }
 }

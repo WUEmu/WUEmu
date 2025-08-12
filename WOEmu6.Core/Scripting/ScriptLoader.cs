@@ -1,82 +1,66 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using NLua;
+using Microsoft.Extensions.FileSystemGlobbing;
+using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
+using MoonSharp.Interpreter;
 using Serilog;
-using WOEmu6.Core.Timers;
 
 namespace WOEmu6.Core.Scripting
 {
     public class ScriptLoader
     {
         private readonly World world;
-        private readonly Lua lua;
-        // TODO: move to script host class
-        private readonly List<ScriptTimer> timers;
-
+        private readonly string basePath;
+        private readonly Dictionary<string, string> scripts;
+        
         public ScriptLoader(ServerContext serverContext)
         {
             this.world = serverContext.World;
-            this.lua = serverContext.Lua;
-            timers = new List<ScriptTimer>();
+            basePath = Path.Combine(world.basePath, "scripts");
+            scripts = new Dictionary<string, string>();
+            UserData.RegisterAssembly(typeof(ScriptLoader).Assembly);
+            CollectScripts();
         }
 
-        public void Initialize()
+        public string GetPath(string scriptName)
         {
-            lua.RegisterFunction("TimerNew", this, typeof(ScriptLoader).GetMethod("TimerNew"));
-            lua["World"] = new ScriptWorld(world);
-            
-            LoadCreatures();
-            // LoadSkills();
-        }
+            if (!scripts.TryGetValue(scriptName, out var path))
+            {
+                Log.Error("Could not find script {name}", scriptName);
+                return null;
+            }
 
-        public void TimerNew(string name, int seconds, LuaFunction handler)
-        {
-            var timer = new ScriptTimer(name, seconds, handler);
-            timers.Add(timer);
-            timer.Start();
+            return path;
         }
         
-
-        private void LoadConstants()
+        private void CollectScripts()
         {
+            var matcher = new Matcher();
+            matcher.AddInclude("**/**/main.lua");
+            var files = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(basePath)));
             
-        }
-
-        private void LoadCreatures()
-        {
-            var basePath = Path.Combine(world.basePath, "scripts", "creatures");
-            var scriptsDirectory = new DirectoryInfo(basePath);
-            var scripts = scriptsDirectory.GetFiles("*.lua");
-
-            foreach (var script in scripts)
+            foreach (var script in files.Files)
             {
-                lua.State.NewTable();
-                lua.State.SetGlobal("Creature");
-                lua.DoFile(script.FullName);
-                // lua.State.GetGlobal("Creature");
-                lua.State.GetGlobal("Creature");
-                lua.State.PushString("name");
-                lua.State.GetTable(-2);
-                var name = lua.State.ToString(-1);
-                lua.State.Pop(1);
-                lua.State.SetGlobal(name);
-                lua.State.PushNil();
-                lua.State.SetGlobal("Creature");
+                var fullPath = Path.Combine(basePath, script.Path);
+                var s = new Script();
+                try
+                {
+                    s.DoFile(fullPath);
+                }
+                catch (ScriptRuntimeException ex)
+                {
+                }
+                var ns = s.Globals.Get("Namespace").String;
+                var scriptName = s.Globals.Get("Name").String;
+                if (ns == null || scriptName == null)
+                {
+                    Log.Error("Script {path} does not contain a Namespace or Name global.", script.Path);
+                    continue;
+                }
                 
-                Log.Information("Loaded Creature: {creatureType}", name);
-            }
-        }
-
-        private void LoadSkills()
-        {
-            var skillPath = Path.Combine(world.basePath, "scripts", "skills");
-            var scriptsPath = new DirectoryInfo(skillPath);
-            var scripts = scriptsPath.GetFiles("*.lua");
-
-            foreach (var script in scripts)
-            {
-                //lua["Skill"] = null;
-                lua.DoFile(script.FullName);
+                var fullName = $"{ns}.{scriptName}";
+                scripts.Add(fullName, fullPath);
+                Log.Debug("Collected script: {fullName}", fullName);
             }
         }
     }

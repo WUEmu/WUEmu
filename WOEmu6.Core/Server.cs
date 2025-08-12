@@ -18,15 +18,11 @@ namespace WOEmu6.Core
                 .CreateLogger();
             
             var serverContext = ServerContext.Instance.Value;
-            var loader = new ScriptLoader(serverContext);
-            loader.Initialize();
-
             var ipEndPoint = new IPEndPoint(IPAddress.Any, 3724);
             var socket = new TcpListener(ipEndPoint);
             socket.Start();
-            // Console.WriteLine("Waiting for connections...");
             Log.Information("Server started, waiting for players...");
-
+            
             while (true)
             {
                 var client = socket.AcceptTcpClient();

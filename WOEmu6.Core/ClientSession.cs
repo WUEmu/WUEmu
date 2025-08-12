@@ -1,22 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
-using System.Text;
 using Serilog;
 using WO.Core;
-using WOEmu6.Core.Actions;
 using WOEmu6.Core.Network;
-using WOEmu6.Core.Objects;
+using WOEmu6.Core.Packets.Client;
 using WOEmu6.Core.Packets.Server;
+using WOEmu6.Core.Threading;
 
-namespace WOEmu6.Core.Packets
+namespace WOEmu6.Core
 {
-    public class ClientSession
+    public class ClientSession : IThread
     {
-        private ServerContext serverContext;
+        private readonly ServerContext serverContext;
         private readonly TcpClient client;
         private readonly Stream stream;
         private readonly Encryption encryption;
+
+        private Queue<IOutgoingPacket> outQueue;
+        private Queue<IIncomingPacket> inQueue;
 
         public ClientSession(TcpClient client)
         {
@@ -24,9 +27,14 @@ namespace WOEmu6.Core.Packets
             this.stream = client.GetStream();
             encryption = new Encryption();
             serverContext = ServerContext.Instance.Value;
+
+            inQueue = new Queue<IIncomingPacket>();
+            outQueue = new Queue<IOutgoingPacket>();
         }
 
         public Player Player { get; set; }
+
+        public string Name => "Client Session";
 
         public void Run()
         {
@@ -66,15 +74,17 @@ namespace WOEmu6.Core.Packets
             }
             catch (IOException ex)
             {
-                // User disconnected.
                 Log.Information("User disconnected.");
+                if (Player != null)
+                {
+                    Player.CurrentZone.RemovePlayer(Player);
+                    serverContext.World.PlayerDisconnected(Player);
+                }
             }
         }
 
         public void Send(IOutgoingPacket packet)
         {
-            // Console.WriteLine($"Writing packet {packet.GetType().Name} {packet.Opcode} (signed={(sbyte)packet.Opcode})");
-            
             var writer = new PacketWriter();
             writer.WriteByte(packet.Opcode);
             packet.Write(serverContext, writer);
@@ -82,11 +92,6 @@ namespace WOEmu6.Core.Packets
             encryption.Encrypt(bytes, 0, bytes.Length);
             stream.Write(bytes);
             stream.Flush();
-        }
-
-        public void PerformAction<TTarget>(PlayerAction<TTarget> target) where TTarget : ObjectBase
-        {
-            
         }
     }
 }

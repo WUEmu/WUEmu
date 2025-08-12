@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using WOEmu6.Core.Actions;
-using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Scripting;
 using WOEmu6.Core.Utilities;
+using WOEmu6.Core.Zones;
 
 namespace WOEmu6.Core.Objects
 {
@@ -16,12 +16,15 @@ namespace WOEmu6.Core.Objects
         public byte Layer { get; }
         
         private int encodedValue;
+        
+        public Lazy<Zone> Zone { get; }
 
         public Tile(int encodedValue, short x, short y)
         {
             X = x;
             Y = y;
             Layer = 0;
+            Zone = new Lazy<Zone>(() => ServerContext.Instance.Value.World.ZoneManager.Load(X, Y), true);
             this.encodedValue = encodedValue;
             Id = new WurmId(ObjectType.Tile, 0, 0); // todo: encode properly
         }
@@ -33,6 +36,7 @@ namespace WOEmu6.Core.Objects
             Height = height;
             TileType = type;
             Data = data;
+            Zone = new Lazy<Zone>(() => ServerContext.Instance.Value.World.ZoneManager.Load(X, Y), true);
         }
 
         public TileType TileType
@@ -59,8 +63,6 @@ namespace WOEmu6.Core.Objects
 
         public override IList<ContextMenuEntry> GetContextMenu(ClientSession session)
         {
-            session.Send(new AddInventoryItem(new TestItem("care")));
-            
             var res = new List<ContextMenuEntry>
             {
                 new ContextMenuEntry(9234, "Make Dirt"),
@@ -150,11 +152,11 @@ namespace WOEmu6.Core.Objects
                     session.Send(new TileStripPacket((short)X, (short)Y, 1, 1 ));
                     break;
 
-                case 201:
-                {
-                    session.Send(new StartPlaceItemPacket(new TestItem("model.furniture.table.square.small")));
-                    break;
-                }
+                // case 201:
+                // {
+                    // session.Send(new StartPlaceItemPacket(new TestItem("model.furniture.table.square.small")));
+                    // break;
+                // }
                 
                 case 3:
                     Height += 10;
@@ -201,14 +203,14 @@ namespace WOEmu6.Core.Objects
 
                 case 8:
                 {
-                    var c = new ScriptedCreature("Dragon");
+                    var c = new ScriptedCreature("wuemu.dev.creature.Dragon", Zone.Value);
                     c.IsSolid = true;
                     c.Condition = CreatureCondition.Diseased;
                     c.Position = new Position3D<float>(session.Player.X, session.Player.Y, session.Player.Z);
                     c.Rotation = session.Player.Rotation;
                     c.Face = 1;
                     c.Kingdom = 1;
-                    session.Send(new AddCreaturePacket(c));
+                    Zone.Value.AddCreature(c);
                     break;
                 }
 

@@ -2,6 +2,8 @@
 {
     public class WorldConfiguration
     {
+        public string Database { get; set; }
+        
         public float SpawnX { get; set; }
         
         public float SpawnY { get; set; }

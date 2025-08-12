@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{9FAAE549-E
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WUEmu.Persistence", "WUEmu.Persistence\WUEmu.Persistence.csproj", "{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{A30AC6F3-7E73-48BA-93ED-596989C4578D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A30AC6F3-7E73-48BA-93ED-596989C4578D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A30AC6F3-7E73-48BA-93ED-596989C4578D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

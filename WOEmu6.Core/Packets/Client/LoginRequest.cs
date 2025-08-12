@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using WO.Core;
 using WOEmu6.Core.Packets.Server;
+using WOEmu6.Core.Scripting;
 
 namespace WOEmu6.Core.Packets.Client
 {
@@ -84,16 +85,10 @@ namespace WOEmu6.Core.Packets.Client
             client.Send(new SetSpeedPacket(5.0f));
             client.Send(new StartMovingPacket());
             client.Send(new TeleportPacket(client.Player.X, client.Player.Y, client.Player.Z, 0, true, true, true, 0));
+            client.Player.AddItemToInventory(new ScriptedItem("wuemu.dev.items.DevWand"));
             
-            
-            ServerContext.Instance.Value.World.players.Add(client.Player);
-            
-//            client.Send(new AddSkillPacket(new Skill(
-//                context, null, "Programming", 9000, 9000
-//            )));
-            
-            // var form = new BmlForm(1, "Message Of The Day", @"varray{center{header{text='WOEmu 6.0';}};label{text='Welcome to WOemu'};input{id='test';maxlines='5';text='This is a test';maxchars='1024';};button{text='Do Something';id='do_it'};}");
-            // client.Send(new BmlFormPacket(form));
+            client.Player.CurrentZone.AddPlayer(client.Player);
+            ServerContext.Instance.Value.World.PlayerJoined(client.Player);
         }
     }
 }

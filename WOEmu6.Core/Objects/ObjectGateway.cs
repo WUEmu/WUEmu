@@ -5,6 +5,13 @@ namespace WOEmu6.Core.Objects
 {
     public class ObjectGateway
     {
+        private readonly ObjectPool _pool;
+
+        public ObjectGateway(ObjectPool pool)
+        {
+            _pool = pool;
+        }
+        
         public ObjectBase GetObject(WurmId id)
         {
             var world = ServerContext.Instance.Value.World;
@@ -33,13 +40,17 @@ namespace WOEmu6.Core.Objects
 
                 case ObjectType.Creature:
                 {
-                    lock (world.creaturesLock)
-                    {
-                        if (world.creatures.TryGetValue(id, out var creature))
-                            return creature;
-                    }
-                    
-                    Log.Warning("Creature with ID {id} not found", id);
+                    var res = _pool.GetCreature(id);
+                    if (res != null)
+                        return res;
+                    break;
+                }
+
+                case ObjectType.Item:
+                {
+                    var obj = world.GetItem(id);
+                    if (obj != null)
+                        return obj;
                     break;
                 }
 
@@ -48,6 +59,7 @@ namespace WOEmu6.Core.Objects
                     break;
             }
 
+            Log.Warning("Object with ID {id} not found", id);
             return null;
         }
     }

@@ -8,40 +8,42 @@ using WOEmu6.Core.Zones;
 namespace WOEmu6.Core.Scripting
 {
     [MoonSharpUserData]
-    public class ScriptedCreature : Creature
+    public class ScriptedItem : Item
     {
         private readonly ScriptWorld _world;
         private readonly string creatureName;
         private readonly Script script;
         private readonly Table gameObject;
-        
-        public ScriptedCreature(string scriptName, Zone zone) : base(zone) 
+
+        public ScriptedItem(string scriptName)
         {
-            var gameScript = new GameScript("Creature");
+            var gameScript = new GameScript("Item");
             gameObject = gameScript.GameObject;
-            gameScript.GameObject["SetModel"] = (Action<string>)SetModel;
             script = gameScript;
             script.DoFile(scriptName);
 
             var initFunc = gameScript.GameObject.Get("Initialize").Function;
             initFunc.Call(this);
         }
-
+        
         public void SetModel(string model) => Model = model;
 
         public void SetName(string name) => Name = name;
-
+        
         public void SetHoverText(string text) => HoverText = text;
 
         public void SetRarity(byte rarity) => Rarity = rarity;
 
-        public void SetCreatureType(byte type) => CreatureType = type;
-
+        public void SetIcon(short icon) => Icon = icon;
+        
         public override IList<ContextMenuEntry> GetContextMenu(ClientSession session)
         {
             var baseList = base.GetContextMenu(session);
             var fn = gameObject.Get("GetContextMenu").Function;
-            var menuItems = fn.Call(this, DynValue.Nil).Table;
+            if (fn == null)
+                return baseList;
+            
+            var menuItems = fn.Call(this, session.Player).Table;
             foreach (var x in menuItems.Values)
             {
                 var item = x.Table;
@@ -56,7 +58,7 @@ namespace WOEmu6.Core.Scripting
             base.OnMenuItemClick(session, itemId);
             
             var fn = gameObject.Get("MenuItemClick").Function;
-            fn.Call(this, session.Player, itemId);
+            fn?.Call(this, session.Player, itemId);
         }
     }
 }

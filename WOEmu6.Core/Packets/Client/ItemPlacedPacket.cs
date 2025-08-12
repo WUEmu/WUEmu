@@ -30,7 +30,7 @@ namespace WOEmu6.Core.Packets.Client
 
         public void Handle(ClientSession client)
         {
-            client.Send(new AddItemPacket(new TestItem("model.furniture.table.square.small"), Position.X, Position.Y, Position.Z, true, Rotation));
+            // client.Send(new AddItemPacket(new TestItem("model.furniture.table.square.small"), Position.X, Position.Y, Position.Z, true, Rotation));
         }
     }
 }

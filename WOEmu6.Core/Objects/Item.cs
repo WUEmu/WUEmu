@@ -2,23 +2,36 @@
 {
     public abstract class Item : ObjectBase
     {
-        public abstract string Name { get; }
-        
-        public abstract string HoverText { get; }
-        
-        public abstract string Model { get; }
+        protected Item(WurmId id)
+        {
+            Id = id;
+        }
 
-        public virtual byte Material { get; } = 38;
+        protected Item() : this(ServerContext.Instance.Value.WurmIdGenerator.NewWurmId(ObjectType.Item))
+        {
+        }
         
-        public abstract string Description { get; }
-
-        public virtual float SizeModifier { get; } = 1.0f;
-
-        public virtual byte Rarity { get; } = 0;
-
-        public virtual float Quality { get; } = 0;
+        public string Name { get; set; }
         
-        public virtual float Damage { get; } = 0;
+        public string CustomName { get; set; } 
+        
+        public string HoverText { get; set; }
+        
+        public string Model { get; set; }
+
+        public byte Material { get; set; } = 38;
+        
+        public short Icon { get; set; }
+        
+        public string Description { get; set; }
+ 
+        public float SizeModifier { get; set; } = 1.0f;
+
+        public byte Rarity { get; set; } = 0;
+
+        public float Quality { get; set; } = 0;
+        
+        public float Damage { get; set; } = 0;
 
         protected override ObjectType Type => ObjectType.Item;
     }

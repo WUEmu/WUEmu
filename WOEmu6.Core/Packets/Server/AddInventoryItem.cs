@@ -24,10 +24,10 @@ namespace WOEmu6.Core.Packets.Server
             else
                 writer.PushLong(0L);
             writer.PushLong(Item.Id);
-            writer.WriteShort(946);
-            writer.WriteBytePrefixedString("Base Name");
-            writer.WriteBytePrefixedString("Hover");
-            writer.WriteBytePrefixedString("Custom Name");
+            writer.WriteShort(Item.Icon);
+            writer.WriteBytePrefixedString(Item.Name);
+            writer.WriteBytePrefixedString(Item.HoverText);
+            writer.WriteBytePrefixedString(Item.CustomName);
             writer.PushFloat(1.0f);
             writer.PushFloat(0.1f);
             writer.PushInt(5000);

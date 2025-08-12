@@ -8,7 +8,7 @@ namespace WOEmu6.Core.Commands
         public bool Execute(ClientSession client, string[] arguments)
         {
             var loader = new ScriptLoader(ServerContext.Instance.Value);
-            loader.Initialize();
+            // loader.Initialize();
             return true;
         }
     }

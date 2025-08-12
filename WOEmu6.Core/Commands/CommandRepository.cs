@@ -16,12 +16,12 @@ namespace WOEmu6.Core.Commands
             RegisterCommand("tp", new TeleportCommand());
             RegisterCommand("speed", new SetSpeedCommand());
             RegisterCommand("weather", new WeatherCommand());
-            RegisterCommand("item", new SpawnItem());
             RegisterCommand("music", new PlayMusicCommand());
             RegisterCommand("book", new BookTestCommand());
             RegisterCommand("fartiles", new FarTilesCommand());
             RegisterCommand("recon", new ReconnectCommand());
             RegisterCommand("reload", new ReloadCommand());
+            RegisterCommand("exec", new ScriptCommand());
         }
 
         public void RegisterCommand(string command, IChatCommand handler)

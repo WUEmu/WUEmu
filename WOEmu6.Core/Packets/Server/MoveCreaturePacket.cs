@@ -24,8 +24,8 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.PushLong(Id);
-            writer.PushFloat(TargetPosition.X);
             writer.PushFloat(TargetPosition.Y);
+            writer.PushFloat(TargetPosition.X);
             writer.WriteByte(Rotation);
         }
     }

@@ -1,5 +1,8 @@
-﻿namespace WOEmu6.Core.Utilities
+﻿using MoonSharp.Interpreter;
+
+namespace WOEmu6.Core.Utilities
 {
+    [MoonSharpUserData]
     public class Position2D<TCoordinate>
     {
         public Position2D(TCoordinate x, TCoordinate y)
@@ -13,6 +16,7 @@
         public TCoordinate Y { get; }
     }
 
+    [MoonSharpUserData]
     public class Position3D<TCoordinate> : Position2D<TCoordinate>
     {
         public Position3D(TCoordinate x, TCoordinate y, TCoordinate z) 

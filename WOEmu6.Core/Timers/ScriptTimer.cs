@@ -1,13 +1,14 @@
 ﻿using System;
-using NLua;
+using MoonSharp.Interpreter;
 
 namespace WOEmu6.Core.Timers
 {
+    [MoonSharpUserData]
     public class ScriptTimer : TimerBase
     {
-        private readonly LuaFunction _handler;
+        private readonly Closure _handler;
 
-        public ScriptTimer(string name, int seconds, LuaFunction handler)
+        public ScriptTimer(string name, int seconds, Closure handler)
         {
             _handler = handler;
             Name = name;

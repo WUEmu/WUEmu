@@ -24,6 +24,7 @@ namespace WOEmu6.Core.Packets.Client
             RegisterPacket(new MapAnnotationPacket());
             RegisterPacket(new FishingPacket());
             RegisterPacket(new ItemPlacedPacket());
+            RegisterPacket(new EquipItemPacket());
         }
 
         public void RegisterPacket(IIncomingPacket packet) => packetList[packet.Opcode] = packet;

@@ -1,5 +1,8 @@
-﻿namespace WOEmu6.Core.BML
+﻿using MoonSharp.Interpreter;
+
+namespace WOEmu6.Core.BML
 {
+    [MoonSharpUserData]
     public class BmlForm
     {
         public short Id { get; }

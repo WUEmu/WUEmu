@@ -22,7 +22,7 @@ namespace WOEmu6.Core.File
             int zoneY = y / ZoneSize;
             var tileType = (TileType)(((zoneX * 10) + zoneY) % (int)TileType.PotteryBricks);
             
-            return new Tile(x, y, 1, tileType, 0);
+            return new Tile(x, y, 1, tileType == TileType.Hole ? TileType.MineDoorWood : tileType, 0);
         }
 
         public void SetTile(int x, int y, int value)
