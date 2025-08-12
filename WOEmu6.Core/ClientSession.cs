@@ -31,7 +31,6 @@ namespace WOEmu6.Core.Packets
         public void Run()
         {
             try
-
             {
                 while (true)
                 {

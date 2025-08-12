@@ -72,7 +72,6 @@ namespace WOEmu6.Core.Objects
                     break;
                 
                 case 5001:
-                    session.Send(new RemoveChatUserPacket("Jan"));
                     session.Send(new RemoveCreaturePacket(Id));
                     break;
             }

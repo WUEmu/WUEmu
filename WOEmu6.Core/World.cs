@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Serilog;
@@ -18,12 +19,16 @@ namespace WOEmu6.Core
         // TODO: this must be zoned in the future
         public Dictionary<long, Creature> creatures;
         public object creaturesLock = new object();
+
+        public List<Player> players;
+        public object playerLock = new object();
         
         public World(string name = "default") //float spawnX, float spawnY)
         {
             Log.Information("Loading world {world}", name);
 
             creatures = new Dictionary<long, Creature>();
+            players = new List<Player>();
             
             basePath = Path.Combine("worlds", name);
             using (var fs = System.IO.File.Open(Path.Combine(basePath, "world.json"), FileMode.Open))

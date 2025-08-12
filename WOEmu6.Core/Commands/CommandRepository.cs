@@ -21,6 +21,7 @@ namespace WOEmu6.Core.Commands
             RegisterCommand("book", new BookTestCommand());
             RegisterCommand("fartiles", new FarTilesCommand());
             RegisterCommand("recon", new ReconnectCommand());
+            RegisterCommand("reload", new ReloadCommand());
         }
 
         public void RegisterCommand(string command, IChatCommand handler)

@@ -84,6 +84,10 @@ namespace WOEmu6.Core.Packets.Client
             client.Send(new SetSpeedPacket(5.0f));
             client.Send(new StartMovingPacket());
             client.Send(new TeleportPacket(client.Player.X, client.Player.Y, client.Player.Z, 0, true, true, true, 0));
+            
+            
+            ServerContext.Instance.Value.World.players.Add(client.Player);
+            
 //            client.Send(new AddSkillPacket(new Skill(
 //                context, null, "Programming", 9000, 9000
 //            )));

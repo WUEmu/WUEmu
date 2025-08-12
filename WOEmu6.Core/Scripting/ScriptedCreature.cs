@@ -15,6 +15,11 @@ namespace WOEmu6.Core.Scripting
             creatureName = name;
             ServerContext.Instance.Value.Lua.NewThread(out thread);
             lua = thread.State;
+            //lua["World"] = new ScriptWorld(world);
+            
+            ServerContext.Instance.Value.Lua.XMove(lua, new ScriptWorld(ServerContext.Instance.Value.World));
+            lua.SetGlobal("World");
+            
             
             // Call the initialize method
             lua.GetGlobal(name);
@@ -26,15 +31,15 @@ namespace WOEmu6.Core.Scripting
 
         public void PushSelf() => ServerContext.Instance.Value.Lua.XMove(lua, this);
 
-        public void SetModel(string model)
-        {
-            Model = model;
-        }
+        public void SetModel(string model) => Model = model;
 
-        public void SetName(string name)
-        {
-            Name = name;
-        }
+        public void SetName(string name) => Name = name;
+
+        public void SetHoverText(string text) => HoverText = text;
+
+        public void SetRarity(byte rarity) => Rarity = rarity;
+
+        public void SetCreatureType(byte type) => CreatureType = type;
 
         // public override IList<ContextMenuEntry> GetContextMenu(ClientSession session)
         // {

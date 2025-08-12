@@ -204,13 +204,11 @@ namespace WOEmu6.Core.Objects
                     var c = new ScriptedCreature("Dragon");
                     c.IsSolid = true;
                     c.Condition = CreatureCondition.Diseased;
-                    c.HoverText = "It peers into your soul...";
                     c.Position = new Position3D<float>(session.Player.X, session.Player.Y, session.Player.Z);
                     c.Rotation = session.Player.Rotation;
                     c.Face = 1;
                     c.Kingdom = 1;
                     session.Send(new AddCreaturePacket(c));
-                    session.Send(new AddChatUserPacket(c.Id, "Jan"));
                     break;
                 }
 

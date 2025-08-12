@@ -10,14 +10,13 @@ namespace WOEmu6.Core
 {
     public class Player
     {
-        private readonly ClientSession client;
         private List<PlayerTimer> timers;
         private object timerLock = new object();
 
         public Player(ClientSession client, string name)
         {
             World = ServerContext.Instance.Value.World;
-            this.client = client;
+            this.Client = client;
             Name = name;
             X = World.SpawnX;
             Y = World.SpawnY;
@@ -26,6 +25,8 @@ namespace WOEmu6.Core
         }
         
         public WurmId Id { get => -1; }
+        
+        public ClientSession Client { get; }
 
         public World World { get; }
         
@@ -44,7 +45,7 @@ namespace WOEmu6.Core
         /// Sets the status text in the player's GUI in the right panel. 
         /// </summary>
         /// <param name="text">The text to show to the player.</param>
-        public void SetStatusText(string text) => client.Send(new SetStatusBarPacket(text));
+        public void SetStatusText(string text) => Client.Send(new SetStatusBarPacket(text));
 
         public void Move(float x, float y, float z, float rotation)
         {

@@ -1,7 +1,8 @@
-﻿using System.IO;
-using IronPython.Modules;
+﻿using System.Collections.Generic;
+using System.IO;
 using NLua;
 using Serilog;
+using WOEmu6.Core.Timers;
 
 namespace WOEmu6.Core.Scripting
 {
@@ -9,17 +10,36 @@ namespace WOEmu6.Core.Scripting
     {
         private readonly World world;
         private readonly Lua lua;
+        // TODO: move to script host class
+        private readonly List<ScriptTimer> timers;
 
         public ScriptLoader(ServerContext serverContext)
         {
             this.world = serverContext.World;
             this.lua = serverContext.Lua;
+            timers = new List<ScriptTimer>();
         }
 
         public void Initialize()
         {
+            lua.RegisterFunction("TimerNew", this, typeof(ScriptLoader).GetMethod("TimerNew"));
+            lua["World"] = new ScriptWorld(world);
+            
             LoadCreatures();
             // LoadSkills();
+        }
+
+        public void TimerNew(string name, int seconds, LuaFunction handler)
+        {
+            var timer = new ScriptTimer(name, seconds, handler);
+            timers.Add(timer);
+            timer.Start();
+        }
+        
+
+        private void LoadConstants()
+        {
+            
         }
 
         private void LoadCreatures()
