@@ -1,5 +1,4 @@
-﻿using WO.Core;
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
@@ -14,13 +13,13 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => -13 & 0xFF;
-        
+
         public string Channel { get; }
 
         public WurmId Id { get; }
-        
+
         public string UserName { get; }
-        
+
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteBytePrefixedString(Channel);

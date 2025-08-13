@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Serilog;
@@ -13,16 +12,16 @@ namespace WOEmu6.Core
 {
     public class World
     {
-        public string basePath;
-        private WorldConfiguration configuration;
-        private List<WorldTimer> timers;
-        private object timerLock = new object();
+        public readonly string basePath;
+        private readonly WorldConfiguration configuration;
+        private readonly List<WorldTimer> timers;
+        private readonly object timerLock = new object();
 
-        private List<Player> allPlayers;
-        private object allPlayersLock = new object();
+        private readonly List<Player> allPlayers;
+        private readonly object allPlayersLock = new object();
 
-        private Dictionary<WurmId, Item> allItems;
-        private object allItemsLock = new object();
+        private readonly Dictionary<WurmId, Item> allItems;
+        private readonly object allItemsLock = new object();
 
         public World(string name = "default") //float spawnX, float spawnY)
         {

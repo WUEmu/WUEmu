@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Serilog;
-using WO.Core;
 using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
@@ -13,13 +12,13 @@ namespace WOEmu6.Core.Packets.Client
     {
         // TODO: THIS MUST BE REMOVED IN THE FUTURE!!
         public static long AnnotationCounter = 0;
-        
+
         public byte Opcode => -43 & 0xFF;
-        
+
         public MapAnnotationCommand Command { get; private set; }
-        
+
         public MapAnnotation Annotation { get; private set; }
-        
+
         public void Read(PacketReader reader)
         {
             Command = (MapAnnotationCommand)reader.ReadByte();
@@ -34,10 +33,11 @@ namespace WOEmu6.Core.Packets.Client
                     var x = reader.ReadInt();
                     var y = reader.ReadInt();
                     var icon = reader.ReadByte();
-                    Annotation = new MapAnnotation(AnnotationCounter++, type, new Position2D<int>(x, y), name, server, icon);
+                    Annotation = new MapAnnotation(AnnotationCounter++, type, new Position2D<int>(x, y), name, server,
+                        icon);
                     break;
                 }
-                
+
                 case MapAnnotationCommand.Delete:
                     var id = reader.ReadLong();
                     var xxx = (MapAnnotationType)reader.ReadByte();

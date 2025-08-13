@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using Serilog;
-using WO.Core;
 using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Client;
 using WOEmu6.Core.Packets.Server;
@@ -17,7 +15,7 @@ namespace WOEmu6.Core
         ReadPacketLength,
         ReadPayload
     }
-    
+
     public class ClientSession : IThread
     {
         private readonly ServerContext serverContext;
@@ -26,7 +24,7 @@ namespace WOEmu6.Core
 
         private ProtocolState protocolState;
         private byte[] receiveBuffer;
-        
+
         private Queue<IOutgoingPacket> outQueue;
         private readonly object outQueueLock = new object();
         private Queue<IIncomingPacket> inQueue;
@@ -67,7 +65,7 @@ namespace WOEmu6.Core
                     serverContext.World.PlayerDisconnected(Player);
                 }
             }
-            
+
             encryption.Decrypt(receiveBuffer);
             if (protocolState == ProtocolState.ReadPacketLength)
             {
@@ -95,7 +93,7 @@ namespace WOEmu6.Core
             }
             else
                 throw new NotSupportedException("Unsupported protocol state");
-            
+
             socket.BeginReceive(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, EndReceive, null);
         }
 
@@ -129,7 +127,7 @@ namespace WOEmu6.Core
                             encryption.Encrypt(bytes, 0, bytes.Length);
                             socket.Send(bytes);
                         }
-                        
+
                         IIncomingPacket[] toHandle;
                         lock (inQueueLock)
                         {

@@ -1,5 +1,4 @@
-﻿using WO.Core;
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Utilities;
 
@@ -15,13 +14,13 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => 36;
-        
+
         public WurmId Id { get; }
-        
+
         public Position2D<float> TargetPosition { get; }
-        
+
         public byte Rotation { get; }
-        
+
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteLong(Id);

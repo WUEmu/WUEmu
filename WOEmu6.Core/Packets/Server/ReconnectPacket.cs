@@ -1,5 +1,4 @@
-﻿using WO.Core;
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -13,13 +12,13 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => 23;
-        
+
         public string IpAddress { get; }
-        
+
         public int Port { get; }
-        
+
         public string Token { get; }
-        
+
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteBytePrefixedString(IpAddress);

@@ -1,5 +1,4 @@
 ﻿using System;
-using WO.Core;
 using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 
@@ -8,11 +7,11 @@ namespace WOEmu6.Core.Packets.Client
     public class ClientMessagePacket : IIncomingPacket
     {
         public byte Opcode => 0x63;
-        
+
         public string Channel { get; private set; }
-        
+
         public string Text { get; private set; }
-        
+
         public void Read(PacketReader reader)
         {
             Text = reader.ReadBytePrefixedString();

@@ -1,12 +1,11 @@
-﻿using System.Diagnostics;
-using WO.Core;
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
     public class FishingStartPacket : IOutgoingPacket
     {
-        public FishingStartPacket(float minRadius, float maxRadius, FishingRodType rod, byte rodMaterial, FishingReelType reel, byte reelMaterial, FishingFloatType f, FishingBaitType bait, bool auto)
+        public FishingStartPacket(float minRadius, float maxRadius, FishingRodType rod, byte rodMaterial,
+            FishingReelType reel, byte reelMaterial, FishingFloatType f, FishingBaitType bait, bool auto)
         {
             MinRadius = minRadius;
             MaxRadius = maxRadius;
@@ -20,25 +19,25 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => -64 & 0xFF;
-        
+
         public float MinRadius { get; }
-        
+
         public float MaxRadius { get; }
-        
+
         public FishingRodType Rod { get; }
-        
+
         public byte RodMaterial { get; }
-        
+
         public FishingReelType Reel { get; }
-        
+
         public byte ReelMaterial { get; }
-        
+
         public FishingFloatType Float { get; }
-        
+
         public FishingBaitType Bait { get; }
-        
+
         public bool Auto { get; }
-        
+
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteByte((byte)FishingSubCommand.StartFishing);

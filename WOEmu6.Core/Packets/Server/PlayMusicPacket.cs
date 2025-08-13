@@ -1,5 +1,4 @@
-﻿using WO.Core;
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -18,21 +17,21 @@ namespace WOEmu6.Core.Packets.Server
 
 
         public byte Opcode => 115;
-        
+
         public string Name { get; }
-        
+
         public float X { get; }
-        
+
         public float Y { get; }
-        
+
         public float Z { get; }
-        
+
         public float Pitch { get; }
-        
+
         public float Volume { get; }
-        
+
         public float Priority { get; }
-        
+
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteBytePrefixedString(Name);

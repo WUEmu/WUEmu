@@ -51,7 +51,7 @@
     {
         Planning = 0xFF,
         Building = 0,
-        Completed = 0b10000000
+        Completed = 127
     }
 
     public enum StructureFloorMaterial : byte

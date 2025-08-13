@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WO.Core;
+
 using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Utilities;

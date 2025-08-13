@@ -1,5 +1,4 @@
-﻿using WO.Core;
-using WOEmu6.Core.BML;
+﻿using WOEmu6.Core.BML;
 using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
@@ -12,9 +11,9 @@ namespace WOEmu6.Core.Packets.Server
         {
             Form = form;
         }
-        
+
         public byte Opcode => 106;
-        
+
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteByte((byte)1); // part no. for text longer than the max short length for the packet.

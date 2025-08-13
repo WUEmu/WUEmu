@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace WO.Core.Encryption
+namespace WOEmu6.Core.Network
 {
     public class WORandom
     {

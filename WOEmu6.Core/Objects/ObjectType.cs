@@ -14,6 +14,7 @@
         Plan = 0x10,
         CaveTile = 0x11,
         Skill = 0x12,
+        FloorOrRoof = 0x17,
         TileCorner = 0x1B
     }
 

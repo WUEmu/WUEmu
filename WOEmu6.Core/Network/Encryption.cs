@@ -1,6 +1,4 @@
-﻿using WO.Core.Encryption;
-
-namespace WOEmu6.Core.Network
+﻿namespace WOEmu6.Core.Network
 {
     public class Encryption
     {

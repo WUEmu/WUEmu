@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using WO.Core;
 using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
@@ -13,9 +12,9 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => -43 & 0xFF;
-        
+
         public IList<MapAnnotation> Annotations { get; }
-        
+
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteByte(0);

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using WO.Core;
 using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 
@@ -10,9 +9,9 @@ namespace WOEmu6.Core.Packets.Client
         public byte Opcode => 0x61;
 
         public IReadOnlyList<long> Targets { get; private set; }
-        
+
         public short EntryId { get; private set; }
-        
+
         public long Subject { get; private set; }
 
         public void Read(PacketReader reader)
@@ -24,7 +23,7 @@ namespace WOEmu6.Core.Packets.Client
             for (var i = 0; i < count; i++)
                 target.Add(reader.ReadLong());
             Targets = target;
-            
+
             EntryId = reader.ReadShort();
         }
 

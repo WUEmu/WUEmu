@@ -1,5 +1,4 @@
-﻿using WO.Core;
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
@@ -9,7 +8,7 @@ namespace WOEmu6.Core.Packets.Server
         public AddStructureWallPacket(Structure structure, StructureWall wall) : this(structure.Id, wall)
         {
         }
-        
+
         public AddStructureWallPacket(WurmId structureId, StructureWall wall)
         {
             StructureId = structureId;
@@ -17,7 +16,7 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => 49;
-        
+
         public WurmId StructureId { get; }
         public StructureWall Wall { get; }
 
@@ -38,10 +37,10 @@ namespace WOEmu6.Core.Packets.Server
                 writer.WriteByte(Wall.Color.G);
                 writer.WriteByte(Wall.Color.B);
             }
+
             writer.WriteShort(Wall.Z);
             writer.WriteByte((byte)0); //layer
             writer.WriteByte((byte)1); // wall orientation (??????)
-            
         }
     }
 }

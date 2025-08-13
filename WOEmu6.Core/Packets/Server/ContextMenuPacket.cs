@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using WO.Core;
 using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
@@ -15,7 +14,7 @@ namespace WOEmu6.Core.Packets.Server
             Caption = caption;
         }
     }
-    
+
     public class ContextMenuPacket : IOutgoingPacket
     {
         public ContextMenuPacket(byte requestId, IList<ContextMenuEntry> menuItems, string wikiPage = null)
@@ -26,11 +25,11 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => 0x14;
-        
+
         public byte RequestId { get; }
-        
+
         public IList<ContextMenuEntry> MenuItems { get; }
-        
+
         public string WikiPage { get; }
 
         public void Write(ServerContext context, PacketWriter writer)
@@ -43,7 +42,7 @@ namespace WOEmu6.Core.Packets.Server
                 writer.WriteBytePrefixedString(entry.Caption);
                 writer.WriteByte((byte)0); // ?
             }
-            
+
             writer.WriteBytePrefixedString(WikiPage);
         }
     }

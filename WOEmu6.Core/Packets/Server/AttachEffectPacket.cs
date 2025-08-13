@@ -1,12 +1,12 @@
-﻿using WO.Core;
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
 {
     public class AttachEffectPacket : IOutgoingPacket
     {
-        public AttachEffectPacket(WurmId target, EffectType effect, byte data0 = 0, byte data1 = 0, byte data2 = 0, byte data3 = 0)
+        public AttachEffectPacket(WurmId target, EffectType effect, byte data0 = 0, byte data1 = 0, byte data2 = 0,
+            byte data3 = 0)
         {
             Target = target;
             Effect = effect;
@@ -15,18 +15,18 @@ namespace WOEmu6.Core.Packets.Server
             Data2 = data2;
             Data3 = data3;
         }
-        
+
         public byte Opcode => 109;
 
         public WurmId Target { get; }
-        
+
         public EffectType Effect { get; }
         public byte Data0 { get; }
-        
+
         public byte Data1 { get; }
-        
+
         public byte Data2 { get; }
-        
+
         public byte Data3 { get; }
 
         public void Write(ServerContext context, PacketWriter writer)

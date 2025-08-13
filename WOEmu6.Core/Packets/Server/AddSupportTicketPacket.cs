@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using WO.Core;
 using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
@@ -15,15 +14,16 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public int ActionId { get; }
-        
+
         public string Caption { get; }
-        
+
         public string Description { get; }
     }
-    
+
     public class AddSupportTicketPacket : IOutgoingPacket
     {
-        public AddSupportTicketPacket(long ticketId, SupportTicketCategory category, string contents, ColorCode color, string description, SupportTicketAction[] actions = null)
+        public AddSupportTicketPacket(long ticketId, SupportTicketCategory category, string contents, ColorCode color,
+            string description, SupportTicketAction[] actions = null)
         {
             TicketId = ticketId;
             Category = category;
@@ -34,17 +34,17 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => 0xDE;
-        
+
         public long TicketId { get; }
-        
+
         public SupportTicketCategory Category { get; }
-        
+
         public string Contents { get; }
-        
+
         public ColorCode Color { get; }
-        
+
         public string Description { get; }
-        
+
         public SupportTicketAction[] Actions { get; }
 
         public void Write(ServerContext context, PacketWriter writer)
@@ -55,7 +55,7 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteBytePrefixedString(Contents);
             writer.WriteByte((byte)Color);
             writer.WriteShortPrefixedString(Description);
-            
+
             writer.WriteByte((byte)Actions.Length);
             foreach (var action in Actions)
             {

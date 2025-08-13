@@ -189,6 +189,7 @@ namespace WOEmu6.Core.Objects
                 case 6:
                 {
                     session.Send(new AddStructurePacket(new Structure(StructureType.House, "My House", new Position2D<short>(X, Y), 0)));
+                    session.Send(new StructureBuildPlanPacket(new WurmId(ObjectType.Structure, 0, 1), 0, [new(X, Y)]));
                     break;
                 }
 

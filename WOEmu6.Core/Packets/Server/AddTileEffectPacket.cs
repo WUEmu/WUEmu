@@ -1,7 +1,5 @@
-﻿using WO.Core;
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
-using WOEmu6.Core.Utilities;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -16,15 +14,15 @@ namespace WOEmu6.Core.Packets.Server
         }
 
         public byte Opcode => -4 & 0xFF;
-        
+
         public Tile Tile { get; }
-        
+
         public TileEffectType EffectType { get; }
-        
+
         public short EffectHeight { get; }
-        
+
         public bool Loop { get; }
-        
+
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteShort(Tile.X);
