@@ -1,4 +1,4 @@
-﻿namespace WOEmu6.Core
+﻿namespace WOEmu6.Core.Configuration
 {
     public class WorldConfiguration
     {

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Serilog;
+using WOEmu6.Core.Configuration;
 using WOEmu6.Core.File;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
@@ -20,17 +22,19 @@ namespace WOEmu6.Core
         private readonly List<Player> allPlayers;
         private readonly object allPlayersLock = new object();
 
-        private readonly Dictionary<WurmId, Item> allItems;
-        private readonly object allItemsLock = new object();
+        public event EventHandler<Player> OnPlayerJoined;
+        
+        public event EventHandler<Player> OnPlayerLeft;
+        
+        public event EventHandler<ChatMessage> OnPlayerChat;
 
-        public World(string name = "default") //float spawnX, float spawnY)
+        public World(string dataPath, string name = "default") //float spawnX, float spawnY)
         {
             Log.Information("Loading world {world}", name);
 
             allPlayers = new List<Player>();
-            allItems = new Dictionary<WurmId, Item>();
             
-            basePath = Path.Combine("worlds", name);
+            basePath = Path.Combine(dataPath, "worlds", name);
             using (var fs = System.IO.File.Open(Path.Combine(basePath, "world.json"), FileMode.Open))
             {
                 var reader = new StreamReader(fs);
@@ -43,8 +47,8 @@ namespace WOEmu6.Core
 
             timers = new List<WorldTimer>();
             TopLayer = new ZoneTestMesh(); //configuration.SurfaceMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.SurfaceMeshFile)) : new ZoneTestMesh();
-            CaveLayer = configuration.CaveMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.CaveMeshFile)) : new EmptyMesh();
-            Flags = configuration.FlagMeshFile != null ? new FileMesh(this, Path.Combine(basePath, configuration.FlagMeshFile)) : new EmptyMesh();
+            CaveLayer = configuration.CaveMeshFile != null ? new FileMesh(this, Path.Combine(basePath, "mesh", configuration.CaveMeshFile)) : new EmptyMesh();
+            Flags = configuration.FlagMeshFile != null ? new FileMesh(this, Path.Combine(basePath, "mesh", configuration.FlagMeshFile)) : new EmptyMesh();
             
             AllObjects = new ObjectPool();
             Objects = new ObjectGateway(AllObjects);
@@ -94,41 +98,44 @@ namespace WOEmu6.Core
         {
             lock (allPlayersLock)
                 allPlayers.Add(player);
+            OnPlayerJoined?.Invoke(this, player);
         }
 
         public void PlayerDisconnected(Player player)
         {
             lock (allPlayersLock)
                 allPlayers.Remove(player);
+            OnPlayerLeft?.Invoke(this, player);
         }
 
         public void RegisterItem(Item item)
         {
-            lock (allItemsLock)
-            {
-                if (!allItems.TryAdd(item.Id, item))
-                    return;
-            }
-
+            AllObjects.AddItem(item);
             Log.Debug("New item registered: {name}, id={id}", item.Name, item.Id);
         }
 
         public void DeregisterItem(Item item)
         {
-            lock (allItemsLock)
-                allItems.Remove(item.Id);
+            AllObjects.RemoveItem(item);
             Log.Debug("Item deregistered: {name}, id={id}", item.Name, item.Id);
         }
 
-        public Item GetItem(WurmId id)
-        {
-            lock (allItemsLock)
-            {
-                if (allItems.TryGetValue(id, out var item))
-                    return item;
-            }
+        public Item GetItem(WurmId id) => AllObjects.GetItem(id);
 
-            return null;
+        public void PlayerChat(ChatMessage message)
+        {
+            if (message.Text.StartsWith("/"))
+            {
+                var tokens = message.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var cmd = ServerContext.Instance.Value.Commands.GetCommand(tokens[0]);
+                if (cmd == null)
+                    message.Sender.Client.Send(new ServerMessagePacket(":Event", $"Unrecognized command '{message.Text}'.", 255, 0, 0));
+                else
+                    cmd.Execute(message.Sender.Client, tokens[1..]);
+                return;
+            }
+            
+            OnPlayerChat?.Invoke(this, message);
         }
     }
 }

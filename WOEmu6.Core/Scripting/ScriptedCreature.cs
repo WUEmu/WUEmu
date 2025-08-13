@@ -10,18 +10,25 @@ namespace WOEmu6.Core.Scripting
     [MoonSharpUserData]
     public class ScriptedCreature : Creature
     {
+        private readonly string _scriptName;
         private readonly ScriptWorld _world;
         private readonly string creatureName;
-        private readonly Script script;
-        private readonly Table gameObject;
+        private Script script;
+        private Table gameObject;
         
-        public ScriptedCreature(string scriptName, Zone zone) : base(zone) 
+        public ScriptedCreature(string scriptName, Zone zone) : base(zone)
+        {
+            _scriptName = scriptName;
+            Initialize();
+        }
+
+        public void Initialize()
         {
             var gameScript = new GameScript("Creature");
             gameObject = gameScript.GameObject;
             gameScript.GameObject["SetModel"] = (Action<string>)SetModel;
             script = gameScript;
-            script.DoFile(scriptName);
+            script.DoFile(_scriptName);
 
             var initFunc = gameScript.GameObject.Get("Initialize").Function;
             initFunc.Call(this);
@@ -40,6 +47,8 @@ namespace WOEmu6.Core.Scripting
         public override IList<ContextMenuEntry> GetContextMenu(ClientSession session)
         {
             var baseList = base.GetContextMenu(session);
+            baseList.Add(new ContextMenuEntry(9999, "(RELOAD SCRIPT)"));
+            
             var fn = gameObject.Get("GetContextMenu").Function;
             var menuItems = fn.Call(this, DynValue.Nil).Table;
             foreach (var x in menuItems.Values)
@@ -53,6 +62,13 @@ namespace WOEmu6.Core.Scripting
 
         public override void OnMenuItemClick(ClientSession session, short itemId)
         {
+            if (itemId == 9999)
+            {
+                Initialize();
+                session.Player.SendMessage(":Script", $"Script reloaded for {Name}", 0f, 1f, 0f);
+                return;
+            }
+            
             base.OnMenuItemClick(session, itemId);
             
             var fn = gameObject.Get("MenuItemClick").Function;

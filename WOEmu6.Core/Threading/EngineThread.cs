@@ -8,10 +8,12 @@ namespace WOEmu6.Core.Threading
     {
         private readonly IThread _thread;
         private readonly Thread internalThread;
+        private readonly CancellationTokenSource cancellationTokenSource;
 
         public EngineThread(IThread thread)
         {
             _thread = thread;
+            cancellationTokenSource = new CancellationTokenSource();
             internalThread = new Thread(RunWrapper);
         }
 
@@ -23,14 +25,14 @@ namespace WOEmu6.Core.Threading
 
         internal void Stop()
         {
-            
+            cancellationTokenSource.Cancel();
         }
 
         private void RunWrapper()
         {
             try
             {
-                _thread.Run(CancellationToken.None);
+                _thread.Run(cancellationTokenSource.Token);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MoonSharp.Interpreter;
 using Serilog;
 using WOEmu6.Core.Objects;
@@ -79,6 +80,20 @@ namespace WOEmu6.Core.Zones
                 player.Client.Send(new AddCreaturePacket(creature));
             
             Log.Information("Creature {name} has been added.", creature.Name);
+        }
+
+        public void AddItem(Item item)
+        {
+            if (item.SpatialPosition == null)
+                throw new NotSupportedException("Can not place an item that is not spatial");
+            
+            objectPool.AddItem(item);
+            Player[] currentPlayers;
+            lock (playersLock)
+                currentPlayers = players.ToArray();
+            
+            foreach (var player in currentPlayers)
+                player.Client.Send(new AddItemPacket(item));
         }
 
         public void RemoveCreature(Creature creature)

@@ -35,6 +35,8 @@ namespace WOEmu6.Core.Scripting
         
         private void CollectScripts()
         {
+            scripts.Add("world", Path.Combine(basePath, "world.lua"));
+            
             var matcher = new Matcher();
             matcher.AddInclude("**/**/main.lua");
             var files = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(basePath)));

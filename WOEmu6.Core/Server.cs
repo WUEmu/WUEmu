@@ -20,7 +20,8 @@ namespace WOEmu6.Core
 
         public void Run(CancellationToken cancellationToken)
         {
-            if (UseSteam)
+            serverContext = ServerContext.Instance.Value;
+            if (serverContext.Configuration.UseSteam)
             {
                 if (!SteamAPI.Init())
                 {
@@ -43,7 +44,6 @@ namespace WOEmu6.Core
                 SteamGameServer.LogOnAnonymous();
             }
 
-            serverContext = ServerContext.Instance.Value;
             var serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             var ipEndPoint = new IPEndPoint(IPAddress.Any, 3724);
             serverSocket.Bind(ipEndPoint);
@@ -51,7 +51,9 @@ namespace WOEmu6.Core
             serverSocket.BeginAccept(OnAccept, serverSocket);
 
             Log.Information("Server started, waiting for players...");
-            Thread.CurrentThread.Join();
+            while (!cancellationToken.IsCancellationRequested)
+                Thread.CurrentThread.Join(3000);
+            Log.Information("Main Server Thread stopped");
         }
 
         private void OnAccept(IAsyncResult result)

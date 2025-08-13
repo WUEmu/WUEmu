@@ -19,6 +19,8 @@ namespace WOEmu6.Core.Scripting
             Script.Globals["World"] = ServerContext.Instance.Value.ScriptWorld;
             Script.Globals["BmlForm"] = typeof(BmlForm);
             Script.Globals["ItemIcon"] = EnumToLuaTable.Create<ItemIcon>(Script);
+            // Script.Globals["WallType"] = EnumToLuaTable.Create<WallType>(Script);
+            // Script.Globals["EffectType"] = EnumToLuaTable.Create<EffectType>(Script);
             Script.Options.DebugPrint = str => Log.Information("<{str}>", str);
             Script.Options.ScriptLoader = new MoonSharpScriptLoader(ServerContext.Instance.Value.ScriptLoader);
         }

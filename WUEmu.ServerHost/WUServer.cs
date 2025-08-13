@@ -17,7 +17,7 @@ namespace WUEmu.ServerHost
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Bye Felicia");
+            ServerContext.Instance.Value.Threads.StopAllThreads();
             return Task.CompletedTask;
         }
     }

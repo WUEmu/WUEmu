@@ -1,7 +1,7 @@
 ﻿using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
-using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Utilities;
+using WOEmu6.Core.Zones;
 
 namespace WOEmu6.Core.Packets.Client
 {
@@ -30,7 +30,11 @@ namespace WOEmu6.Core.Packets.Client
 
         public void Handle(ClientSession client)
         {
-            // client.Send(new AddItemPacket(new TestItem("model.furniture.table.square.small"), Position.X, Position.Y, Position.Z, true, Rotation));
+            var item = client.Player.World.GetItem(Id);
+            item.SpatialPosition = Position;
+            var zone = client.Player.World.ZoneManager.Load(new ZoneId(Position.X, Position.Y));
+            zone.AddItem(item);
+            item.OnPlaced(client.Player);
         }
     }
 }

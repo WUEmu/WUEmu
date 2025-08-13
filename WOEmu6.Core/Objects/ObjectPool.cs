@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WOEmu6.Core.Objects
@@ -11,10 +12,14 @@ namespace WOEmu6.Core.Objects
         private List<Structure> structures;
         private object structuresLock = new object();
 
+        private readonly Dictionary<WurmId, Item> items;
+        private object itemsLock = new object();
+        
         public ObjectPool()
         {
             creatures = new Dictionary<WurmId, Creature>();
             structures = new List<Structure>();
+            items = new Dictionary<WurmId, Item>();
         }
 
         public void AddCreature(Creature creature)
@@ -46,6 +51,29 @@ namespace WOEmu6.Core.Objects
             lock (creaturesLock)
                 res = creatures.Values.ToArray();
             return res;
+        }
+
+        public void AddItem(Item item)
+        {
+            lock (itemsLock)
+                items.Add(item.Id, item);
+        }
+        
+        public void RemoveItem(Item item)
+        {
+            lock (itemsLock)
+                items.Remove(item.Id);
+        }
+
+        public Item GetItem(WurmId id)
+        {
+            lock (itemsLock)
+            {
+                if (items.TryGetValue(id, out var item))
+                    return item;
+            }
+
+            return null;
         }
     }
 }

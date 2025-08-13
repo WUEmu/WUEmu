@@ -18,7 +18,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\Data\**" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="..\Data\**" CopyToOutputDirectory="Never" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="server.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

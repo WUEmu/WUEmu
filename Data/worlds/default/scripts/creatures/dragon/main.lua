@@ -1,11 +1,7 @@
 Namespace = "wuemu.dev.creature"
 Name = "Dragon"
 
-require "wuemu.bml"
-
-function do_walk()
-    World.SendMessage(":Local", "This is a scripted timer!")
-end
+-- require "wuemu.bml"
 
 function Creature:Initialize()
     local colors = {"red", "blue", "green", "black", "white"}
@@ -23,7 +19,7 @@ end
 function Creature:GetContextMenu(session)
     return {
         {Id=2000, Caption="Who are you?"},
-        {Id=2005, Caption="Talk to me"}
+        {Id=2005, Caption="Talk to me"},
     }
 end
 
@@ -44,11 +40,3 @@ function Creature:MenuItemClick(player, id)
         player:SendForm(form)
     end
 end
-
-print("Loaded " .. Name)
-
-function what()
-    print("hello")
-end
-
-World:TimerNew("Test Timer", 5, what, true)

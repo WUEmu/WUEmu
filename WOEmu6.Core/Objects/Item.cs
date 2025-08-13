@@ -1,4 +1,7 @@
-﻿namespace WOEmu6.Core.Objects
+﻿using WOEmu6.Core.Packets.Server;
+using WOEmu6.Core.Utilities;
+
+namespace WOEmu6.Core.Objects
 {
     public abstract class Item : ObjectBase
     {
@@ -32,6 +35,19 @@
         public float Quality { get; set; } = 0;
         
         public float Damage { get; set; } = 0;
+        
+        public Position3D<float> SpatialPosition { get; set; }
+
+        public bool IsSpatial => SpatialPosition != null;
+
+        public void StartPlacing(Player player)
+        {
+            player.Client.Send(new StartPlaceItemPacket(this));
+        }
+
+        public virtual void OnPlaced(Player player)
+        {
+        }
 
         protected override ObjectType Type => ObjectType.Item;
     }

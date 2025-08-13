@@ -8,6 +8,7 @@ namespace WOEmu6.Core.Threading
         // private List<EngineThread> threads;
         private readonly Dictionary<Guid, EngineThread> threads;
         private object threadLock = new object();
+        private bool allowNewThreads = true;
         
         public ThreadManager()
         {
@@ -16,6 +17,9 @@ namespace WOEmu6.Core.Threading
 
         public Guid Start(IThread thread)
         {
+            if (!allowNewThreads)
+                return Guid.Empty;
+            
             var id = Guid.NewGuid();
             var engineThread = new EngineThread(thread);
             
@@ -30,6 +34,16 @@ namespace WOEmu6.Core.Threading
         {
             lock (threadLock)
                 threads.Remove(id);
+        }
+
+        public void StopAllThreads()
+        {
+            allowNewThreads = false;
+            lock (threadLock)
+            {
+                foreach (var thread in threads.Values)
+                    thread.Stop();
+            }
         }
     }
 }

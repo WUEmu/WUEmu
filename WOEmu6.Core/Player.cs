@@ -6,6 +6,7 @@ using WOEmu6.Core.BML;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets;
 using WOEmu6.Core.Packets.Server;
+using WOEmu6.Core.Scripting;
 using WOEmu6.Core.Timers;
 using WOEmu6.Core.Zones;
 
@@ -110,9 +111,9 @@ namespace WOEmu6.Core
             CurrentZone.AddPlayer(this);
         }
 
-        public void SendMessage(string channel, string message)
+        public void SendMessage(string channel, string message, float r = 1.0f, float g = 1.0f, float b = 1.0f)
         {
-            Client.Send(new ServerMessagePacket(channel, message));
+            Client.Send(new ServerMessagePacket(channel, message, (byte)(r * 255), (byte)(g * 255), (byte)(b * 255)));
         }
 
         public void SendForm(BmlForm form)
@@ -125,5 +126,26 @@ namespace WOEmu6.Core
             World.RegisterItem(item);
             Client.Send(new AddInventoryItem(item));
         }
+
+        public void RemoveItemFromInventory(Item item)
+        {
+            Client.Send(new RemoveItemFromInventoryPacket(-1, item.Id));            
+        }
+
+        public void AddItemToInventory(string itemName)
+        {
+            var item = new ScriptedItem(itemName);
+            AddItemToInventory(item);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">model.animation.use, use, open, close, shoot, die, give, deny, sprawl, idle, dodge, wounded, meditate</param>
+        /// <param name="loop"></param>
+        public void PlayAnimation(string name, bool loop) =>
+            Client.Send(new AttachAnimationPacket(-1, name, loop, false));
+
+        public void JoinChannel(string channel) => Client.Send(new AddChatUserPacket(-1, Name, channel));
     }
 }

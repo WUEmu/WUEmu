@@ -8,7 +8,13 @@ end
 
 function Item:GetContextMenu(player)
     return {
-        {Id=1000, Caption="Place a table"},
-        {Id=1001, Caption="Talk to me"}
+        {Id=1000, Caption="Give me the board"}
     }
+end
+
+function Item:MenuItemClick(player, id)
+    if id == 1000 then
+        player:PlayAnimation("spell.tornado", false)
+        player:AddItemToInventory("wuemu.dev.items.TheBoard")
+    end
 end
