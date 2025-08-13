@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Scripting;
 
@@ -23,7 +24,7 @@ namespace WOEmu6.Core.Packets.Client
         
         public void Read(PacketReader reader)
         {
-            Version = reader.PopInt();
+            Version = reader.ReadInt();
             UserName = reader.ReadBytePrefixedString();
             Password = reader.ReadBytePrefixedString();
             ServerPassword = reader.ReadBytePrefixedString();

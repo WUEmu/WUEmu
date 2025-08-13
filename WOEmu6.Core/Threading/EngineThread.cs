@@ -1,0 +1,41 @@
+﻿using System;
+using System.Threading;
+using Serilog;
+
+namespace WOEmu6.Core.Threading
+{
+    public class EngineThread
+    {
+        private readonly IThread _thread;
+        private readonly Thread internalThread;
+
+        public EngineThread(IThread thread)
+        {
+            _thread = thread;
+            internalThread = new Thread(RunWrapper);
+        }
+
+        internal void Start()
+        {
+            Log.Debug("Starting thread {thread}", _thread.Name);
+            internalThread.Start();
+        }
+
+        internal void Stop()
+        {
+            
+        }
+
+        private void RunWrapper()
+        {
+            try
+            {
+                _thread.Run(CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Exception in thread {thread}", _thread.Name);
+            }
+        }
+    }
+}

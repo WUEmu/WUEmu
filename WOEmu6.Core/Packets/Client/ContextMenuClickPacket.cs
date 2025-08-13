@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
@@ -16,15 +17,15 @@ namespace WOEmu6.Core.Packets.Client
 
         public void Read(PacketReader reader)
         {
-            var count = reader.PopShort();
-            Subject = reader.PopLong();
+            var count = reader.ReadShort();
+            Subject = reader.ReadLong();
 
             var target = new List<long>();
             for (var i = 0; i < count; i++)
-                target.Add(reader.PopLong());
+                target.Add(reader.ReadLong());
             Targets = target;
             
-            EntryId = reader.PopShort();
+            EntryId = reader.ReadShort();
         }
 
         public void Handle(ClientSession client)

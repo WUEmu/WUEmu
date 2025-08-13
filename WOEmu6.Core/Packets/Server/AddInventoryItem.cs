@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
@@ -18,19 +19,19 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushLong(-1L);
+            writer.WriteLong(-1L);
             if (ParentId != null)
-                writer.PushLong(ParentId);
+                writer.WriteLong(ParentId);
             else
-                writer.PushLong(0L);
-            writer.PushLong(Item.Id);
+                writer.WriteLong(0L);
+            writer.WriteLong(Item.Id);
             writer.WriteShort(Item.Icon);
             writer.WriteBytePrefixedString(Item.Name);
             writer.WriteBytePrefixedString(Item.HoverText);
             writer.WriteBytePrefixedString(Item.CustomName);
-            writer.PushFloat(1.0f);
-            writer.PushFloat(0.1f);
-            writer.PushInt(5000);
+            writer.WriteFloat(1.0f);
+            writer.WriteFloat(0.1f);
+            writer.WriteInt(5000);
             writer.WriteBoolean(false);
             writer.WriteBoolean(false);
             writer.WriteBoolean(false);

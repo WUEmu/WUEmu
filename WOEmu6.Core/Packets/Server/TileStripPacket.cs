@@ -1,5 +1,6 @@
 ﻿using System;
 using WO.Core;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -50,7 +51,7 @@ namespace WOEmu6.Core.Packets.Server
                         tempTileY = tempTileX = 0;
                     }
                     
-                    writer.PushInt(mesh.GetTile(tempTileX, tempTileY));
+                    writer.WriteInt(mesh.GetTile(tempTileX, tempTileY));
                     if (WithExtraData)
                         writer.WriteByte((byte)(flagsMesh.GetTile(tempTileX, tempTileY) & 0xFF));
                 }

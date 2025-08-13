@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
@@ -28,13 +29,13 @@ namespace WOEmu6.Core.Packets.Client
         public void Read(PacketReader reader)
         {
             SteamId = reader.ReadBytePrefixedString();
-            AuthTicket = reader.PopLong();
-            var ticketArrayLength = reader.PopInt();
+            AuthTicket = reader.ReadLong();
+            var ticketArrayLength = reader.ReadInt();
             var tickets = new List<byte>();
             for (var i = 0; i < ticketArrayLength; i++)
                 tickets.Add(reader.ReadByte());
             Tickets = tickets.ToArray();
-            TokenLength = reader.PopLong();
+            TokenLength = reader.ReadLong();
         }
 
         public void Handle(ClientSession session)

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Serilog;
 using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
 
@@ -19,8 +20,8 @@ namespace WOEmu6.Core.Packets.Client
         public void Read(PacketReader reader)
         {
             RequestId = reader.ReadByte();
-            Target = reader.PopLong();
-            Source = reader.PopLong();
+            Target = reader.ReadLong();
+            Source = reader.ReadLong();
         }
 
         public void Handle(ClientSession client)

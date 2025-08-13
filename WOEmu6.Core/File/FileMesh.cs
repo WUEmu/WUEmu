@@ -3,6 +3,7 @@ using System.Buffers.Binary;
 using System.IO;
 using Serilog;
 using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.File
@@ -41,7 +42,7 @@ namespace WOEmu6.Core.File
             // Read header
             var header = reader.ReadBytes(1024);
             var headerReader = new PacketReader(header);
-            var magic = headerReader.PopLong();
+            var magic = headerReader.ReadLong();
             if (magic != MeshFileMagic)
                 throw new Exception("Mesh file magic mismatch!");
 

@@ -3,6 +3,7 @@ using WOEmu6.Core.Commands;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Client;
 using WOEmu6.Core.Scripting;
+using WOEmu6.Core.Threading;
 
 namespace WOEmu6.Core
 {
@@ -12,6 +13,7 @@ namespace WOEmu6.Core
         
         private ServerContext()
         {
+            Threads = new ThreadManager();
             IncomingPacketFactory = new IncomingPacketFactory();
             Commands = new CommandRepository();
             WurmIdGenerator = new WurmIdGenerator(5_000);
@@ -33,5 +35,7 @@ namespace WOEmu6.Core
         public ScriptLoader ScriptLoader { get; }
         
         public ScriptWorld ScriptWorld { get; }
+        
+        public ThreadManager Threads { get; }
     }
 }

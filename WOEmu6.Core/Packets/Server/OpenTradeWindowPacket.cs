@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -19,10 +20,10 @@ namespace WOEmu6.Core.Packets.Server
         public void Write(ServerContext context, PacketWriter writer)
         {
             writer.WriteBytePrefixedString(OtherPartyName);
-            writer.PushLong(IsInitiatedByThisPlayer ? 1L : 0L);
-            writer.PushLong(0);
-            writer.PushLong(0);
-            writer.PushLong(0);
+            writer.WriteLong(IsInitiatedByThisPlayer ? 1L : 0L);
+            writer.WriteLong(0);
+            writer.WriteLong(0);
+            writer.WriteLong(0);
         }
     }
 }

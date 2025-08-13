@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
 using WO.Core;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -33,15 +34,15 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushFloat(X);
-            writer.PushFloat(Y);
-            writer.PushFloat(Z);
-            writer.PushFloat(Rotation);
+            writer.WriteFloat(X);
+            writer.WriteFloat(Y);
+            writer.WriteFloat(Z);
+            writer.WriteFloat(Rotation);
             writer.WriteByte((byte)(Local ? 1 : 0));
             writer.WriteByte((byte)(IsOnSurface ? 0 : -1));
             writer.WriteByte((byte)(Disembark ? 1 : 0));
             writer.WriteByte(StartCommandingType);
-            writer.PushInt(TeleportCounter);
+            writer.WriteInt(TeleportCounter);
         }
     }
 }

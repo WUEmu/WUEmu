@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
@@ -36,11 +37,11 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushLong(Item.Id);
-            writer.PushFloat(X);
-            writer.PushFloat(Y);
-            writer.PushFloat(Rotation);
-            writer.PushFloat(Z);
+            writer.WriteLong(Item.Id);
+            writer.WriteFloat(X);
+            writer.WriteFloat(Y);
+            writer.WriteFloat(Rotation);
+            writer.WriteFloat(Z);
             writer.WriteBytePrefixedString(Item.Name);
             writer.WriteBytePrefixedString(Item.HoverText);
             writer.WriteBytePrefixedString(Item.Model);
@@ -49,10 +50,10 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteBytePrefixedString(Item.Description);
             writer.WriteShort(50); // image number
             writer.WriteByte((byte)1);
-            writer.PushFloat(Item.Quality);
-            writer.PushFloat(Item.Damage);
-            writer.PushFloat(Item.SizeModifier);
-            writer.PushLong(0); // bridge?
+            writer.WriteFloat(Item.Quality);
+            writer.WriteFloat(Item.Damage);
+            writer.WriteFloat(Item.SizeModifier);
+            writer.WriteLong(0); // bridge?
             writer.WriteByte(Item.Rarity);
             writer.WriteByte((byte)1); // 1 means able to placed on top something about containers
             writer.WriteBoolean(false); // has extra data

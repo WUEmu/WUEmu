@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{513FC23F-C579-47E8-A782-52B9B1EB9010}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WOEmu6.Core", "WOEmu6.Core\WOEmu6.Core.csproj", "{A30AC6F3-7E73-48BA-93ED-596989C4578D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{9FAAE549-E538-410C-AE77-7836206DAE14}"
@@ -11,16 +9,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{9FAAE549-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WUEmu.Persistence", "WUEmu.Persistence\WUEmu.Persistence.csproj", "{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WUEmu.ServerHost", "WUEmu.ServerHost\WUEmu.ServerHost.csproj", "{A48D0872-CA98-4B01-916C-A50B8D6639AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{513FC23F-C579-47E8-A782-52B9B1EB9010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{513FC23F-C579-47E8-A782-52B9B1EB9010}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{513FC23F-C579-47E8-A782-52B9B1EB9010}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{513FC23F-C579-47E8-A782-52B9B1EB9010}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A30AC6F3-7E73-48BA-93ED-596989C4578D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A30AC6F3-7E73-48BA-93ED-596989C4578D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A30AC6F3-7E73-48BA-93ED-596989C4578D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,6 +25,10 @@ Global
 		{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2B6E0C0-40FD-4E73-9D84-343FB851AEBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A48D0872-CA98-4B01-916C-A50B8D6639AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A48D0872-CA98-4B01-916C-A50B8D6639AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A48D0872-CA98-4B01-916C-A50B8D6639AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A48D0872-CA98-4B01-916C-A50B8D6639AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

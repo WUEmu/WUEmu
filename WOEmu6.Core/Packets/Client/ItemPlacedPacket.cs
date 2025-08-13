@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Utilities;
@@ -19,13 +20,13 @@ namespace WOEmu6.Core.Packets.Client
         
         public void Read(PacketReader reader)
         {
-            Id = reader.PopLong();
-            ParentId = reader.PopLong();
-            var x = reader.PopFloat();
-            var y = reader.PopFloat();
-            var z = reader.PopFloat();
+            Id = reader.ReadLong();
+            ParentId = reader.ReadLong();
+            var x = reader.ReadFloat();
+            var y = reader.ReadFloat();
+            var z = reader.ReadFloat();
             Position = new Position3D<float>(x, y, z);
-            Rotation = reader.PopFloat();
+            Rotation = reader.ReadFloat();
         }
 
         public void Handle(ClientSession client)

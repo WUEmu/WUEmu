@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Buffers.Binary;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Net;
 
-namespace WO.Core
+namespace WOEmu6.Core.Network
 {
     public class PacketWriter
     {
+        private readonly MemoryStream stream;
+        private readonly BinaryWriter writer;
+        
         public PacketWriter()
         {
             stream = new MemoryStream();
@@ -22,17 +22,11 @@ namespace WO.Core
 
         public void WriteBoolean(bool b) => writer.Write((byte)(b ? 1 : 0));
 
-        public void PushInt(int p)
-        {
-            writer.Write(IPAddress.HostToNetworkOrder(p));
-        }
+        public void WriteInt(int p) => writer.Write(BinaryPrimitives.ReverseEndianness(p));
 
-        public void PushLong(long p)
-        {
-            writer.Write(IPAddress.HostToNetworkOrder(p));
-        }
+        public void WriteLong(long p) => writer.Write(BinaryPrimitives.ReverseEndianness(p));
 
-        public void PushFloat(float p)
+        public void WriteFloat(float p)
         {
             byte[] _f = BitConverter.GetBytes(p);
             Array.Reverse(_f);
@@ -43,7 +37,7 @@ namespace WO.Core
 
         public void WriteShort(ushort p) => writer.Write(BinaryPrimitives.ReverseEndianness(p));
 
-        public void PushBytes(byte[] p)
+        public void WriteBytes(byte[] p)
         {
             writer.Write(p);
         }
@@ -59,13 +53,13 @@ namespace WO.Core
             if (str.Length > 255)
                 throw new ArgumentOutOfRangeException(nameof(str), "String can not be longer than 255 characters.");
             WriteByte((byte)str.Length);
-            PushBytes(Encoding.UTF8.GetBytes(str));
+            WriteBytes(Encoding.UTF8.GetBytes(str));
         }
 
         public void WriteShortPrefixedString(string str)
         {
             WriteShort((short)str.Length);
-            PushBytes(Encoding.UTF8.GetBytes(str));
+            WriteBytes(Encoding.UTF8.GetBytes(str));
         }
 
         public byte[] Finish()
@@ -82,8 +76,5 @@ namespace WO.Core
             
             return encapsulated;
         }
-
-        private MemoryStream stream;
-        private BinaryWriter writer;
     }
 }

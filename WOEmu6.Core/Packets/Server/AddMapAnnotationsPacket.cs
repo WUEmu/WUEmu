@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
@@ -21,7 +22,7 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteShort((short)Annotations.Count);
             foreach (var annotation in Annotations)
             {
-                writer.PushLong(annotation.Id);
+                writer.WriteLong(annotation.Id);
                 writer.WriteByte((byte)annotation.Type);
                 writer.WriteShortPrefixedString(annotation.Server);
                 writer.WriteShort((short)annotation.Position.X);

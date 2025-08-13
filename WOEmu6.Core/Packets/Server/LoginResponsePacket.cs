@@ -1,5 +1,6 @@
 ﻿using System;
 using WO.Core;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -38,24 +39,24 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteByte((byte)(Success ? 1 : 0));
             writer.WriteShortPrefixedString(WelcomeMessage);
             writer.WriteByte(Layer);
-            writer.PushLong(Time);
-            writer.PushLong(DateTime.Now.Ticks);
-            writer.PushFloat(Rotation);
-            writer.PushFloat(X);
-            writer.PushFloat(Y);
-            writer.PushFloat(Z);
+            writer.WriteLong(Time);
+            writer.WriteLong(DateTime.Now.Ticks);
+            writer.WriteFloat(Rotation);
+            writer.WriteFloat(X);
+            writer.WriteFloat(Y);
+            writer.WriteFloat(Z);
             writer.WriteShortPrefixedString("model.creature.humanoid.human.player");
             writer.WriteByte(Power);
             
             writer.WriteByte((byte)0); // command type (for vehicles?)
             writer.WriteShort(10); // retry seconds?
-            writer.PushLong(0);//face
+            writer.WriteLong(0);//face
             writer.WriteByte((byte)0); //kingdom template
-            writer.PushInt(0); //teleport counter
+            writer.WriteInt(0); //teleport counter
             writer.WriteByte((byte)1); //blood?
-            writer.PushLong(0); // bridge id
-            writer.PushFloat(3); //ground offset
-            writer.PushInt(32); // tile size X
+            writer.WriteLong(0); // bridge id
+            writer.WriteFloat(3); //ground offset
+            writer.WriteInt(32); // tile size X
             
             ;
             // var msg = Encoding.UTF8.GetBytes("Welcome to... WOEmu 5.0. It's been 84 years.");

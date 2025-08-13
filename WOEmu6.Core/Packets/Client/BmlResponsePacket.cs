@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Serilog;
 using WO.Core;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Client
 {
@@ -23,7 +24,7 @@ namespace WOEmu6.Core.Packets.Client
         {
             byte verifier = reader.ReadByte();
             ButtonId = reader.ReadBytePrefixedString();
-            var parameterCount = reader.PopShort();
+            var parameterCount = reader.ReadShort();
 
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             for (var i = 0; i < parameterCount; i++)

@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
@@ -16,8 +17,8 @@ namespace WOEmu6.Core.Packets.Client
         public void Read(PacketReader reader)
         {
             RequestId = reader.ReadByte();
-            TargetId = reader.PopLong();
-            SourceId = reader.PopLong();
+            TargetId = reader.ReadLong();
+            SourceId = reader.ReadLong();
         }
 
         public void Handle(ClientSession client)

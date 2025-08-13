@@ -1,9 +1,11 @@
-﻿namespace WOEmu6.Core.Threading
+﻿using System.Threading;
+
+namespace WOEmu6.Core.Threading
 {
     public interface IThread
     {
         string Name { get; }
 
-        void Run();
+        void Run(CancellationToken cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client

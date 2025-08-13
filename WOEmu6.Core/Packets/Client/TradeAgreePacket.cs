@@ -1,5 +1,6 @@
 ﻿using System;
 using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
@@ -15,7 +16,7 @@ namespace WOEmu6.Core.Packets.Client
         public void Read(PacketReader reader)
         {
             Agreed = reader.ReadBoolean();
-            SequenceNumber = reader.PopInt();
+            SequenceNumber = reader.ReadInt();
         }
 
         public void Handle(ClientSession client)

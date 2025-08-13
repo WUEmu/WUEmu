@@ -1,5 +1,6 @@
 ﻿using WO.Core;
 using WOEmu6.Core.BML;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -21,8 +22,8 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteBytePrefixedString(Form.Title);
             writer.WriteShort(Form.Width);
             writer.WriteShort(Form.Height);
-            writer.PushFloat(Form.X);
-            writer.PushFloat(Form.Y);
+            writer.WriteFloat(Form.X);
+            writer.WriteFloat(Form.Y);
             writer.WriteByte((byte)(Form.Resizable ? 1 : 0));
             writer.WriteByte((byte)(Form.Closeable ? 1 : 0));
             writer.WriteByte(Form.R);

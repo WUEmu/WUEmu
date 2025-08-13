@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Client
 {
@@ -14,10 +15,10 @@ namespace WOEmu6.Core.Packets.Client
         
         public void Read(PacketReader reader)
         {
-            X = reader.PopFloat();
-            Y = reader.PopFloat();
-            Z = reader.PopFloat();
-            Rotation = reader.PopFloat();
+            X = reader.ReadFloat();
+            Y = reader.ReadFloat();
+            Z = reader.ReadFloat();
+            Rotation = reader.ReadFloat();
             var bm = reader.ReadByte();
             Layer = reader.ReadByte();
         }

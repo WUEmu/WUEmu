@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
@@ -16,14 +17,14 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushLong(Creature.Id);
+            writer.WriteLong(Creature.Id);
             writer.WriteBytePrefixedString(Creature.Model);
             writer.WriteBoolean(Creature.IsSolid);
-            writer.PushFloat(Creature.Position.Y);
-            writer.PushFloat(Creature.Position.X);
-            writer.PushLong(0); // bridge
-            writer.PushFloat(Creature.Rotation);
-            writer.PushFloat(Creature.Position.Z);
+            writer.WriteFloat(Creature.Position.Y);
+            writer.WriteFloat(Creature.Position.X);
+            writer.WriteLong(0); // bridge
+            writer.WriteFloat(Creature.Rotation);
+            writer.WriteFloat(Creature.Position.Z);
             writer.WriteBytePrefixedString(Creature.Name);
             writer.WriteBytePrefixedString(Creature.HoverText);
             writer.WriteBoolean(Creature.IsFloating);
@@ -31,7 +32,7 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteByte(Creature.CreatureType);
             writer.WriteByte(Creature.Material);
             writer.WriteByte(Creature.Kingdom);
-            writer.PushLong(Creature.Face);
+            writer.WriteLong(Creature.Face);
             writer.WriteBoolean(Creature.IsBloodKingdom);
             writer.WriteByte((byte)Creature.Condition);
             writer.WriteByte(Creature.Rarity);

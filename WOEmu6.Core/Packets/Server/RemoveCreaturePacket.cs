@@ -1,5 +1,6 @@
 ﻿using System;
 using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
@@ -19,7 +20,7 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushLong(Id);
+            writer.WriteLong(Id);
         }
     }
 }

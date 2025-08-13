@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WO.Core;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -48,8 +49,8 @@ namespace WOEmu6.Core.Packets.Server
 
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushInt(1);
-            writer.PushLong(TicketId);
+            writer.WriteInt(1);
+            writer.WriteLong(TicketId);
             writer.WriteByte((byte)Category);
             writer.WriteBytePrefixedString(Contents);
             writer.WriteByte((byte)Color);
@@ -58,7 +59,7 @@ namespace WOEmu6.Core.Packets.Server
             writer.WriteByte((byte)Actions.Length);
             foreach (var action in Actions)
             {
-                writer.PushInt(action.ActionId);
+                writer.WriteInt(action.ActionId);
                 writer.WriteBytePrefixedString(action.Caption);
                 writer.WriteBytePrefixedString(action.Description);
             }

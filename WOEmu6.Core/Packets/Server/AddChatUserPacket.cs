@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
@@ -24,7 +25,7 @@ namespace WOEmu6.Core.Packets.Server
         {
             writer.WriteBytePrefixedString(Channel);
             writer.WriteBytePrefixedString(UserName);
-            writer.PushLong(Id);
+            writer.WriteLong(Id);
         }
     }
 }

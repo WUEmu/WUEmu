@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 
 namespace WOEmu6.Core.Packets.Server
 {
@@ -23,11 +24,11 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushFloat(Cloudiness);
-            writer.PushFloat(Fog);
-            writer.PushFloat(Rain);
-            writer.PushFloat(WindRotation);
-            writer.PushFloat(WindPower);
+            writer.WriteFloat(Cloudiness);
+            writer.WriteFloat(Fog);
+            writer.WriteFloat(Rain);
+            writer.WriteFloat(WindRotation);
+            writer.WriteFloat(WindPower);
         }
     }
 }

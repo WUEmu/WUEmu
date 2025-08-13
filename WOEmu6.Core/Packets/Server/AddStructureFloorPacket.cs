@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Utilities;
 
@@ -29,7 +30,7 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushLong(StructureId);
+            writer.WriteLong(StructureId);
             writer.WriteShort(Position.X);
             writer.WriteShort(Position.Y);
             writer.WriteShort(0); // height

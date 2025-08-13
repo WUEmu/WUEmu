@@ -1,4 +1,5 @@
 ﻿using WO.Core;
+using WOEmu6.Core.Network;
 using WOEmu6.Core.Objects;
 using WOEmu6.Core.Utilities;
 
@@ -23,9 +24,9 @@ namespace WOEmu6.Core.Packets.Server
         
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.PushLong(Id);
-            writer.PushFloat(TargetPosition.Y);
-            writer.PushFloat(TargetPosition.X);
+            writer.WriteLong(Id);
+            writer.WriteFloat(TargetPosition.Y);
+            writer.WriteFloat(TargetPosition.X);
             writer.WriteByte(Rotation);
         }
     }
