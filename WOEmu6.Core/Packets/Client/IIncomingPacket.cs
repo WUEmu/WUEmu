@@ -6,6 +6,8 @@ namespace WOEmu6.Core.Packets.Client
     {
         byte Opcode { get; }
 
+        bool AllowAnonymous { get; }
+
         void Read(PacketReader reader);
 
         void Handle(ClientSession client);

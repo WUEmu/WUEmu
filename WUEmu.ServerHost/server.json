@@ -1,6 +1,6 @@
 ﻿{
   "port": 3724,
-  "useSteam": false,
+  "useSteam": true,
   "dataPath": "..\\..\\Data",
   "world": "default"
 }

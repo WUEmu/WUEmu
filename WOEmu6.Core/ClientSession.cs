@@ -44,6 +44,8 @@ namespace WOEmu6.Core
         }
 
         public Player Player { get; set; }
+        
+        public bool Authenticated { get; set; }
 
         public string Name => "Client Session";
 
@@ -137,6 +139,12 @@ namespace WOEmu6.Core
 
                         foreach (var packet in toHandle)
                         {
+                            if (!packet.AllowAnonymous && !Authenticated)
+                            {
+                                Log.Error("Client trying to send game packets but is not yet authenticated!!!");
+                                continue;
+                            }
+                            
                             try
                             {
                                 packet.Handle(this);

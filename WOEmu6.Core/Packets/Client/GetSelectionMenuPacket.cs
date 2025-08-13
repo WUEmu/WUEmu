@@ -9,6 +9,8 @@ namespace WOEmu6.Core.Packets.Client
     public class GetSelectionMenuPacket : IIncomingPacket
     {
         public byte Opcode => -23 & 0xFF;
+        
+        public bool AllowAnonymous => false;
 
         public byte RequestId { get; private set; }
 

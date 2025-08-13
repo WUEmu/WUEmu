@@ -8,6 +8,8 @@ namespace WOEmu6.Core.Packets.Client
     public class EquipItemPacket : IIncomingPacket
     {
         public byte Opcode => -32 & 0xFF;
+        
+        public bool AllowAnonymous => false;
 
         public List<WurmId> Sources { get; private set; }
 

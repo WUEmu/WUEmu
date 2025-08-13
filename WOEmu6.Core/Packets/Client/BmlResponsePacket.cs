@@ -7,6 +7,8 @@ namespace WOEmu6.Core.Packets.Client
     public class BmlResponsePacket : IIncomingPacket
     {
         public byte Opcode => 106;
+        
+        public bool AllowAnonymous => false;
 
         /// <summary>
         /// The ID of the button pressed by the player.

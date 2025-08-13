@@ -7,6 +7,8 @@ namespace WOEmu6.Core.Packets.Client
     public class ContextMenuClickPacket : IIncomingPacket
     {
         public byte Opcode => 0x61;
+        
+        public bool AllowAnonymous => false;
 
         public IReadOnlyList<long> Targets { get; private set; }
 

@@ -8,6 +8,8 @@ namespace WOEmu6.Core.Packets.Client
     {
         public byte Opcode => 0xDE;
         
+        public bool AllowAnonymous => false;
+        
         public byte TicketCategory { get; private set; }
         
         public string Contents { get; private set; }

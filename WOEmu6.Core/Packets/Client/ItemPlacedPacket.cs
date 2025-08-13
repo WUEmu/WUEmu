@@ -8,6 +8,8 @@ namespace WOEmu6.Core.Packets.Client
     public class ItemPlacedPacket : IIncomingPacket
     {
         public byte Opcode => -63 & 0xFF;
+        
+        public bool AllowAnonymous => false;
 
         public WurmId Id { get; private set; }
 

@@ -7,6 +7,8 @@ namespace WOEmu6.Core.Packets.Client
     public class FishingPacket : IIncomingPacket
     {
         public byte Opcode => -64 & 0xFF;
+        
+        public bool AllowAnonymous => false;
 
         public byte SubCommand { get; private set; }
 

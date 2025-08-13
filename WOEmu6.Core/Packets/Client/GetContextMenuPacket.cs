@@ -6,6 +6,8 @@ namespace WOEmu6.Core.Packets.Client
     public class GetContextMenuPacket : IIncomingPacket
     {
         public byte Opcode => 0x7E;
+        
+        public bool AllowAnonymous => false;
 
         public byte RequestId { get; private set; }
 

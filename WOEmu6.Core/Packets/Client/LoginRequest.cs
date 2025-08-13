@@ -10,6 +10,8 @@ namespace WOEmu6.Core.Packets.Client
     {
         public byte Opcode => 0xF1;
         
+        public bool AllowAnonymous => false;
+        
         public int Version { get; private set; }
         
         public string UserName { get; private set; }

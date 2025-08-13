@@ -1,6 +1,4 @@
-﻿using System;
-
-using WOEmu6.Core.Network;
+﻿using WOEmu6.Core.Network;
 using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
@@ -8,6 +6,8 @@ namespace WOEmu6.Core.Packets.Client
     public class TradeAgreePacket : IIncomingPacket
     {
         public byte Opcode => 42;
+        
+        public bool AllowAnonymous => false;
         
         public bool Agreed { get; private set; }
         

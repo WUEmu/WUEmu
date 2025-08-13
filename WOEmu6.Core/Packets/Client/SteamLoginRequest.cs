@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-
+using Serilog;
 using WOEmu6.Core.Network;
-using WOEmu6.Core.Packets.Server;
 
 namespace WOEmu6.Core.Packets.Client
 {
@@ -11,6 +10,8 @@ namespace WOEmu6.Core.Packets.Client
     public class SteamLoginRequest : IIncomingPacket
     {
         public byte Opcode => 0xCC;
+        
+        public bool AllowAnonymous => true;
         
         /// <summary>
         /// Steam ID of the player logging in.
@@ -25,6 +26,8 @@ namespace WOEmu6.Core.Packets.Client
         public byte[] Tickets { get; private set; }
         
         public long TokenLength { get; private set; }
+        
+        internal ClientSession Session { get; private set; }
 
         public void Read(PacketReader reader)
         {
@@ -40,8 +43,9 @@ namespace WOEmu6.Core.Packets.Client
 
         public void Handle(ClientSession session)
         {
-            var response = new SteamLoginResponsePacket(true);
-            session.Send(response);
+            Log.Debug("Starting authentication for Steam user {steamId}...", SteamId);
+            Session = session;
+            ServerContext.Instance.Value.SteamAuthenticator.StartAuthentication(this);
         }
     }
 }

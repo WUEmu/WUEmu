@@ -6,6 +6,8 @@ namespace WOEmu6.Core.Packets.Client
     {
         public byte Opcode => 36;
 
+        public bool AllowAnonymous => false;
+        
         public float X { get; private set; }
         public float Y { get; private set; }
         public float Z { get; private set; }

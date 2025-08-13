@@ -5,6 +5,7 @@ using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Client;
 using WOEmu6.Core.Scripting;
 using WOEmu6.Core.Threading;
+using WOEmu6.Core.Utilities;
 
 namespace WOEmu6.Core
 {
@@ -16,6 +17,7 @@ namespace WOEmu6.Core
         {
             var loader = new ConfigFileLoader("server.json");
             Configuration = loader.GetConfig<ServerConfiguration>();
+            SteamAuthenticator = new SteamAuthenticator();
             
             Threads = new ThreadManager();
             IncomingPacketFactory = new IncomingPacketFactory();
@@ -43,5 +45,7 @@ namespace WOEmu6.Core
         public ScriptWorld ScriptWorld { get; }
         
         public ThreadManager Threads { get; }
+        
+        public SteamAuthenticator SteamAuthenticator { get; }
     }
 }

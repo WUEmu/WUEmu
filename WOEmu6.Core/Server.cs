@@ -15,6 +15,8 @@ namespace WOEmu6.Core
         private ServerContext serverContext;
         private Callback<SteamServersConnected_t> onConnectedCallback;
         private Callback<ValidateAuthTicketResponse_t> onValidateCallback;
+        private Callback<GSPolicyResponse_t> onPolicyResponse;
+
 
         public string Name => "Main Server Thread";
 
@@ -31,7 +33,8 @@ namespace WOEmu6.Core
 
                 onValidateCallback = Callback<ValidateAuthTicketResponse_t>.CreateGameServer(ValidateAuthTicket);
                 onConnectedCallback = Callback<SteamServersConnected_t>.CreateGameServer(OnSteamServersConnected);
-                if (!GameServer.Init(0, 3724, 27016, EServerMode.eServerModeNoAuthentication, "1.0.0.0"))
+                onPolicyResponse =  Callback<GSPolicyResponse_t>.CreateGameServer(OnPolicyResponse);
+                if (!GameServer.Init(0, 3724, 27016, EServerMode.eServerModeAuthenticationAndSecure, "1.0.0.0"))
                 {
                     Log.Error("GameServer.Init() failed");
                     return;
@@ -41,7 +44,9 @@ namespace WOEmu6.Core
                 SteamGameServer.SetDedicatedServer(true);
                 SteamGameServer.SetProduct("wurmunlimitedserver");
                 SteamGameServer.SetGameDescription("Wurm Unlimited Server");
+                SteamGameServer.SetGameTags("version=1.9.1.5;");
                 SteamGameServer.LogOnAnonymous();
+                SteamGameServer.SetAdvertiseServerActive(true);
             }
 
             var serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -52,7 +57,11 @@ namespace WOEmu6.Core
 
             Log.Information("Server started, waiting for players...");
             while (!cancellationToken.IsCancellationRequested)
-                Thread.CurrentThread.Join(3000);
+            {
+                GameServer.RunCallbacks();
+                Thread.CurrentThread.Join(100);
+            }
+
             Log.Information("Main Server Thread stopped");
         }
 
@@ -67,6 +76,12 @@ namespace WOEmu6.Core
             serverContext.Threads.Start(clientSession);
         }
 
+        private void OnPolicyResponse(GSPolicyResponse_t response)
+        {
+            Log.Information("OnPolicyResponse {respobnse}", response.m_bSecure);
+            Log.Information("srv {id}", SteamGameServer.GetSteamID().ToString());
+        }
+        
         private void OnSteamServersConnected(SteamServersConnected_t response)
         {
             Log.Information("Connected to Steam servers!");
@@ -79,7 +94,13 @@ namespace WOEmu6.Core
 
         private void ValidateAuthTicket(ValidateAuthTicketResponse_t pResponse)
         {
+            if (pResponse.m_eAuthSessionResponse != EAuthSessionResponse.k_EAuthSessionResponseOK)
+            {
+                Log.Error("Error in ValidateAuthTicket: {res}", pResponse.m_eAuthSessionResponse);
+                return;
+            }
             
+            serverContext.SteamAuthenticator.AuthenticationSuccessful(pResponse.m_SteamID.m_SteamID);
         }
     }
 }

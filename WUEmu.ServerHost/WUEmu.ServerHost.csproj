@@ -19,6 +19,10 @@
 
     <ItemGroup>
         <Content Include="..\Data\**" CopyToOutputDirectory="Never" />
+        <Content Include="..\deps\steam_api64.dll">
+          <Link>steam_api64.dll</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>

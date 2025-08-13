@@ -6,6 +6,8 @@ namespace WOEmu6.Core.Packets.Client
     public class ClientMessagePacket : IIncomingPacket
     {
         public byte Opcode => 0x63;
+        
+        public bool AllowAnonymous => false;
 
         public string Channel { get; private set; }
 

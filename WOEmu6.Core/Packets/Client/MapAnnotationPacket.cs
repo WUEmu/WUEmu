@@ -14,6 +14,8 @@ namespace WOEmu6.Core.Packets.Client
         public static long AnnotationCounter = 0;
 
         public byte Opcode => -43 & 0xFF;
+        
+        public bool AllowAnonymous => false;
 
         public MapAnnotationCommand Command { get; private set; }
 
