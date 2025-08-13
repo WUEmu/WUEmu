@@ -1,0 +1,7 @@
+{
+  "SpawnX": 1600.0,
+  "SpawnY": 2000.0,
+  "SurfaceMeshFile": "top_layer.map",
+  "CaveMeshFile": "map_cave.map",
+  "FlagMeshFile": "flags.map"
+}
