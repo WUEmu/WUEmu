@@ -11,8 +11,6 @@ namespace WOEmu6.Core.Scripting
     public class ScriptedCreature : Creature
     {
         private readonly string _scriptName;
-        private readonly ScriptWorld _world;
-        private readonly string creatureName;
         private Script script;
         private Table gameObject;
         

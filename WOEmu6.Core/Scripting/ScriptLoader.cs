@@ -49,7 +49,7 @@ namespace WOEmu6.Core.Scripting
                 {
                     s.DoFile(fullPath);
                 }
-                catch (ScriptRuntimeException ex)
+                catch (ScriptRuntimeException)
                 {
                 }
                 var ns = s.Globals.Get("Namespace").String;

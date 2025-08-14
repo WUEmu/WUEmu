@@ -127,10 +127,7 @@ namespace WOEmu6.Core
             Client.Send(new AddInventoryItem(item));
         }
 
-        public void RemoveItemFromInventory(Item item)
-        {
-            Client.Send(new RemoveItemFromInventoryPacket(-1, item.Id));            
-        }
+        public void RemoveItemFromInventory(Item item) => Client.Send(new RemoveItemFromInventoryPacket(-1, item.Id));
 
         public void AddItemToInventory(string itemName)
         {

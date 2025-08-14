@@ -31,4 +31,10 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="..\Data\worlds\default\scripts\actions\">
+        <Link>worlds\default\scripts\actions</Link>
+      </Folder>
+    </ItemGroup>
+
 </Project>

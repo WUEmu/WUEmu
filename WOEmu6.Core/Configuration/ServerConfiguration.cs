@@ -6,6 +6,8 @@
         
         public int Port { get; set; }
         
+        public string Database { get; set; } 
+        
         public string DataPath { get; set; }
         
         public string World { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using Serilog;
 using WOEmu6.Core.Configuration;
@@ -9,11 +10,14 @@ using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Timers;
 using WOEmu6.Core.Zones;
+using WUEmu.Persistence;
+using WUEmu.Persistence.Entities;
 
 namespace WOEmu6.Core
 {
     public class World
     {
+        private readonly string _name;
         public readonly string basePath;
         private readonly WorldConfiguration configuration;
         private readonly List<WorldTimer> timers;
@@ -30,10 +34,10 @@ namespace WOEmu6.Core
 
         public World(string dataPath, string name = "default") //float spawnX, float spawnY)
         {
+            _name = name;
             Log.Information("Loading world {world}", name);
 
             allPlayers = new List<Player>();
-            
             basePath = Path.Combine(dataPath, "worlds", name);
             using (var fs = System.IO.File.Open(Path.Combine(basePath, "world.json"), FileMode.Open))
             {
@@ -54,6 +58,8 @@ namespace WOEmu6.Core
             Objects = new ObjectGateway(AllObjects);
             ZoneManager = new ZoneManager(this, TopLayer);
         }
+        
+        public int WorldId { get; private set; }
 
         public float SpawnX { get; }
         
@@ -70,6 +76,21 @@ namespace WOEmu6.Core
         public ZoneManager ZoneManager { get; }
         
         public ObjectPool AllObjects { get; }
+
+        public void SetId(WurmDbContext db)
+        {
+            var existingWorld = db.Worlds.SingleOrDefault(w => w.Name == _name);
+            if (existingWorld == null)
+            {
+                var res = db.Worlds.Add(new WorldData { Name = _name });
+                db.SaveChanges(); 
+                WorldId = res.Entity.WorldId;
+            }
+            else
+                WorldId = existingWorld.WorldId;
+            
+            Log.Debug("World has ID {id}", WorldId);
+        }
 
         public void RegisterTimer(WorldTimer timer, bool startImmediately = true)
         {

@@ -1,5 +1,6 @@
 ﻿{
   "port": 3724,
+  "database": "Host=127.0.0.1;Database=wuemu;Username=wuemu;Password=wuemu",
   "useSteam": false,
   "dataPath": "..\\..\\Data",
   "world": "default"

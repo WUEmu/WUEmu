@@ -37,13 +37,13 @@ namespace WOEmu6.Core.Network
 
         public bool ReadBoolean() => reader.ReadByte() == 1;
 
-        public string ReadBytePrefixedString(Encoding? encoding = null)
+        public string ReadBytePrefixedString(Encoding encoding = null)
         {
             var length = ReadByte();
             return (encoding ?? Encoding.UTF8).GetString(ReadBytes(length));
         }
 
-        public string ReadShortPrefixedString(Encoding? encoding = null)
+        public string ReadShortPrefixedString(Encoding encoding = null)
         {
             var length = ReadShort();
             return (encoding ?? Encoding.UTF8).GetString(ReadBytes(length));
