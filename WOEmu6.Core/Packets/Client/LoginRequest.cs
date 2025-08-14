@@ -82,7 +82,6 @@ namespace WOEmu6.Core.Packets.Client
             // Bottom right
             client.Send(new TileStripPacket((short)(client.Player.TileX + 50), (short)(client.Player.TileY + 50), 100, 100));
             
-            client.Send(new AddKingdomPacket(1, "DniFan's Royal Commonwealth"));
             client.Send(new AddChatUserPacket(-1, client.Player.Name));
             client.Send(new UpdateWeatherPacket(0.8f, 0, 1.0f, 0, 0));
             client.Send(new SetSpeedPacket(5.0f));

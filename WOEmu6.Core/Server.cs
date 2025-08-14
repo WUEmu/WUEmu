@@ -10,13 +10,10 @@ namespace WOEmu6.Core
 {
     public class Server : IThread
     {
-        private const bool UseSteam = false;
-        
         private ServerContext serverContext;
         private Callback<SteamServersConnected_t> onConnectedCallback;
         private Callback<ValidateAuthTicketResponse_t> onValidateCallback;
         private Callback<GSPolicyResponse_t> onPolicyResponse;
-
 
         public string Name => "Main Server Thread";
 
@@ -33,7 +30,7 @@ namespace WOEmu6.Core
 
                 onValidateCallback = Callback<ValidateAuthTicketResponse_t>.CreateGameServer(ValidateAuthTicket);
                 onConnectedCallback = Callback<SteamServersConnected_t>.CreateGameServer(OnSteamServersConnected);
-                onPolicyResponse =  Callback<GSPolicyResponse_t>.CreateGameServer(OnPolicyResponse);
+                onPolicyResponse = Callback<GSPolicyResponse_t>.CreateGameServer(OnPolicyResponse);
                 if (!GameServer.Init(0, 3724, 27016, EServerMode.eServerModeAuthenticationAndSecure, "1.0.0.0"))
                 {
                     Log.Error("GameServer.Init() failed");
@@ -56,10 +53,18 @@ namespace WOEmu6.Core
             serverSocket.BeginAccept(OnAccept, serverSocket);
 
             Log.Information("Server started, waiting for players...");
-            while (!cancellationToken.IsCancellationRequested)
+            if (serverContext.Configuration.UseSteam)
             {
-                GameServer.RunCallbacks();
-                Thread.CurrentThread.Join(100);
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    GameServer.RunCallbacks();
+                    Thread.CurrentThread.Join(100);
+                }
+            }
+            else
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                    Thread.CurrentThread.Join(2500);
             }
 
             Log.Information("Main Server Thread stopped");
@@ -71,6 +76,8 @@ namespace WOEmu6.Core
             var socket = serverSocket.EndAccept(result);
 
             var clientSession = new ClientSession(socket);
+            if (!serverContext.Configuration.UseSteam)
+                clientSession.Authenticated = true;
             clientSession.StartRead();
             serverSocket.BeginAccept(OnAccept, serverSocket);
             serverContext.Threads.Start(clientSession);
@@ -81,7 +88,7 @@ namespace WOEmu6.Core
             Log.Information("OnPolicyResponse {respobnse}", response.m_bSecure);
             Log.Information("srv {id}", SteamGameServer.GetSteamID().ToString());
         }
-        
+
         private void OnSteamServersConnected(SteamServersConnected_t response)
         {
             Log.Information("Connected to Steam servers!");
@@ -99,7 +106,7 @@ namespace WOEmu6.Core
                 Log.Error("Error in ValidateAuthTicket: {res}", pResponse.m_eAuthSessionResponse);
                 return;
             }
-            
+
             serverContext.SteamAuthenticator.AuthenticationSuccessful(pResponse.m_SteamID.m_SteamID);
         }
     }

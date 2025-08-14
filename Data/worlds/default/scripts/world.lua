@@ -1,4 +1,7 @@
-﻿print("What is going on?")
+﻿function World:Initialize()
+    self:NewKingdom(1, "DniFan's Royal Commonwealth")
+    self:NewKingdom(2, "The Black Marsh Separatists")
+end
 
 function World:OnPlayerJoined(player)
     player:JoinChannel(":Script")

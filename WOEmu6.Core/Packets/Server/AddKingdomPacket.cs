@@ -1,29 +1,24 @@
 ﻿using WOEmu6.Core.Network;
+using WOEmu6.Core.Objects;
 
 namespace WOEmu6.Core.Packets.Server
 {
     public class AddKingdomPacket : IOutgoingPacket
     {
-        public AddKingdomPacket(byte id, string name, string suffix = "default")
+        public AddKingdomPacket(Kingdom kingdom)
         {
-            Id = id;
-            Name = name;
-            Suffix = suffix;
+            Kingdom = kingdom;
         }
 
         public byte Opcode => 39;
 
-        public byte Id { get; }
-
-        public string Name { get; }
-
-        public string Suffix { get; }
+        public Kingdom Kingdom { get; } 
 
         public void Write(ServerContext context, PacketWriter writer)
         {
-            writer.WriteByte(Id);
-            writer.WriteBytePrefixedString(Name);
-            writer.WriteBytePrefixedString(Suffix);
+            writer.WriteByte(Kingdom.Id);
+            writer.WriteBytePrefixedString(Kingdom.Name);
+            writer.WriteBytePrefixedString(Kingdom.Suffix);
         }
     }
 }

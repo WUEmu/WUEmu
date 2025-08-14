@@ -2,6 +2,7 @@
 using System.Net;
 using MoonSharp.Interpreter;
 using Serilog;
+using WOEmu6.Core.Objects;
 using WOEmu6.Core.Packets.Server;
 using WOEmu6.Core.Timers;
 
@@ -14,9 +15,14 @@ namespace WOEmu6.Core.Scripting
         private readonly Table scriptObject; 
         private readonly World _world;
         private readonly List<ScriptTimer> timers;
+        
+        private readonly List<Kingdom> kingdoms;
+        private readonly object kingdomsLock = new object();
 
         public ScriptWorld(World world, ScriptLoader loader)
         {
+            kingdoms = new List<Kingdom>();
+            
             _world = world;
             script = new Script();
             scriptObject = new Table(script);
@@ -38,6 +44,9 @@ namespace WOEmu6.Core.Scripting
                 var fn = scriptObject.Get("OnPlayerChat").Function;
                 fn.Call(this, message);
             };
+            
+            var fn = scriptObject.Get("Initialize").Function;
+            fn.Call(this);
         }
 
         public void SendMessage(string channel, string text, float r = 1.0f, float g = 1.0f, float b = 1.0f) =>
@@ -56,6 +65,18 @@ namespace WOEmu6.Core.Scripting
         {
             timers.Remove(timer);
             timer.Stop();
+        }
+
+        public Kingdom NewKingdom(int id, string name)
+        {
+            var k = new Kingdom((byte)id, name);
+            lock (kingdomsLock)
+            {
+                kingdoms.Add(k);
+            }
+
+            Log.Information("New kingdom: id={id}, name={name}", id, name);
+            return k;
         }
     }
 }
