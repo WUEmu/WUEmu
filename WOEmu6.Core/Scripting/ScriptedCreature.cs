@@ -8,15 +8,18 @@ using WOEmu6.Core.Zones;
 namespace WOEmu6.Core.Scripting
 {
     [MoonSharpUserData]
-    public class ScriptedCreature : Creature
+    public class ScriptedCreature : Creature, IThinkable
     {
         private readonly string _scriptName;
         private Script script;
         private Table gameObject;
+        private Closure thinkFn;
+        private Dictionary<string, object> vars;
         
         public ScriptedCreature(string scriptName, Zone zone) : base(zone)
         {
             _scriptName = scriptName;
+            vars = new Dictionary<string, object>();
             Initialize();
         }
 
@@ -41,6 +44,26 @@ namespace WOEmu6.Core.Scripting
         public void SetRarity(byte rarity) => Rarity = rarity;
 
         public void SetCreatureType(byte type) => CreatureType = type;
+
+        public void SetVar(string var, object value) => vars[var] = value;
+
+        public object GetVar(string var)
+        {
+            if (!vars.TryGetValue(var, out var value))
+                return null;
+            return value;
+        }
+
+        public void SetThink(bool think)
+        {
+            if (!think)
+                ServerContext.Instance.Value.World.ThinkTimer.DeregisterThinkable(this);
+            else
+            {
+                thinkFn = gameObject.Get("Think")?.Function;
+                ServerContext.Instance.Value.World.ThinkTimer.RegisterThinkable(this);
+            }
+        }
 
         public override IList<ContextMenuEntry> GetContextMenu(ClientSession session)
         {
@@ -71,6 +94,11 @@ namespace WOEmu6.Core.Scripting
             
             var fn = gameObject.Get("MenuItemClick").Function;
             fn.Call(this, session.Player, itemId);
+        }
+
+        public void Think(int frame)
+        {
+            thinkFn.Call(this, frame);
         }
     }
 }

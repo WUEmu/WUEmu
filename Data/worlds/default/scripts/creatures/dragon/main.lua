@@ -12,6 +12,7 @@ function Creature:Initialize()
     self:SetName("A scary dragon")
 	self:SetRarity(5)
 	self:SetCreatureType(6)
+	self:SetThink(true)
 
     print(self.CurrentZone.Width)
 end
@@ -39,4 +40,20 @@ function Creature:MenuItemClick(player, id)
         local form = BmlForm.__new(100, "Conversation with dragon", content)
         player:SendForm(form)
     end
+end
+
+function Creature:Think(frame)
+    -- TODO: make Spawn callback when creature is spawned in the world/zone.
+    if frame % 20 > 0 then
+        return
+    end
+
+    if self:GetVar("OriginalX") == nil then
+        self:SetVar("OriginalX", self.Position.X)        
+        self:SetVar("OriginalY", self.Position.Y)        
+    end
+
+    local random_x = math.random(1, 20)
+    local random_y = math.random(1, 20)
+    self:Move(self:GetVar("OriginalX") + random_x, self:GetVar("OriginalY") + random_y, self.Rotation)
 end

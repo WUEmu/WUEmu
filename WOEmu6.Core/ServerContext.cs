@@ -20,7 +20,7 @@ namespace WOEmu6.Core
         {
             var loader = new ConfigFileLoader("server.json");
             Configuration = loader.GetConfig<ServerConfiguration>();
-            SteamAuthenticator = new SteamAuthenticator();
+            SteamAuthenticator = new SteamAuthenticator(Configuration);
             DatabaseFactory = WurmDbContext.CreatePool(Configuration.Database);
             
             Threads = new ThreadManager();

@@ -57,6 +57,8 @@ namespace WOEmu6.Core
             AllObjects = new ObjectPool();
             Objects = new ObjectGateway(AllObjects);
             ZoneManager = new ZoneManager(this, TopLayer);
+            ThinkTimer = new ThinkTimer();
+            RegisterTimer(ThinkTimer);
         }
         
         public int WorldId { get; private set; }
@@ -76,6 +78,8 @@ namespace WOEmu6.Core
         public ZoneManager ZoneManager { get; }
         
         public ObjectPool AllObjects { get; }
+        
+        public ThinkTimer ThinkTimer { get; }
 
         public void SetId(WurmDbContext db)
         {

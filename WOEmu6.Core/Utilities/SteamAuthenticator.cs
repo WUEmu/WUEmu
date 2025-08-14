@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Serilog;
 using Steamworks;
+using WOEmu6.Core.Configuration;
 using WOEmu6.Core.Packets.Client;
 using WOEmu6.Core.Packets.Server;
 
@@ -8,11 +9,13 @@ namespace WOEmu6.Core.Utilities
 {
     public class SteamAuthenticator
     {
+        private readonly ServerConfiguration _configuration;
         private readonly Dictionary<ulong, SteamLoginRequest> loginRequests;
         private object requestsLock = new object();
         
-        public SteamAuthenticator()
+        public SteamAuthenticator(ServerConfiguration configuration)
         {
+            _configuration = configuration;
             loginRequests = new Dictionary<ulong, SteamLoginRequest>();
         }
 
@@ -29,6 +32,12 @@ namespace WOEmu6.Core.Utilities
                 }
                 
                 loginRequests.Add(steamIdAsUlong, request);
+                if (!_configuration.UseSteam)
+                {
+                    AuthenticationSuccessful(steamIdAsUlong);
+                    return;
+                }
+                
                 var result = SteamGameServer.BeginAuthSession(request.Tickets, (int)request.TokenLength, new CSteamID(ulong.Parse(request.SteamId)));
                 if (result != EBeginAuthSessionResult.k_EBeginAuthSessionResultOK)
                 {
